@@ -1,82 +1,99 @@
 <template>
 
-<div id="blue-editor">
+  <div id="blue-editor">
     <NavBar></NavBar>
-    
+
     <div class='toolbar' style='position:absolute;top:45px;right:2%'>
-      <vs-button v-on:click="graphPreview" class='tool_button' radius color="#1473e6" type="filled" icon="view_quilt"></vs-button>
-      <vs-button v-on:click="cleanPanel" class='tool_button' radius color="#1473e6" type="filled" icon="autorenew"></vs-button>
-      <vs-button v-on:click="cleanChart" class='tool_button' radius color="#1473e6" type="filled" icon="delete"></vs-button>
-      <vs-button v-on:click="downloadSetting" class='tool_button' radius color="#1473e6" type="filled" icon="cloud_download"></vs-button>
+      <vs-button v-on:click="undoAction" class='tool_button' radius color="#1473e6" type="filled"
+                 icon="undo"></vs-button>
+      <vs-button v-on:click="redoAction" class='tool_button' radius color="#1473e6" type="filled"
+                 icon="redo"></vs-button>
+      <vs-button v-on:click="graphPreview" class='tool_button' radius color="#1473e6" type="filled"
+                 icon="view_quilt"></vs-button>
+      <vs-button v-on:click="cleanPanel" class='tool_button' radius color="#1473e6" type="filled"
+                 icon="autorenew"></vs-button>
+      <vs-button v-on:click="cleanChart" class='tool_button' radius color="#1473e6" type="filled"
+                 icon="delete"></vs-button>
+      <vs-button v-on:click="downloadSetting" class='tool_button' radius color="#1473e6" type="filled"
+                 icon="cloud_download"></vs-button>
     </div>
+
     <vs-row style="height:1075px">
       <!--整个高度为10-->
-
-      <vs-col id='data_list_container' vs-justify="left" vs-align="top" vs-w="2" style="max-height:1080px;overflow-y:scroll;box-shadow:0 2px 12px 0 rgba(0,0,0, 0.1);">
+      <vs-col id='data_list_container' vs-justify="left" vs-align="top" vs-w="2"
+              style="max-height:1080px;overflow-y:scroll;box-shadow:0 2px 12px 0 rgba(0,0,0, 0.1);">
         <!--该列放置数据和操作-->
         <!--数据列-->
-
-        <vs-divider border-style="solid" color="dark" >DATALIST AREA</vs-divider>
+        <vs-divider border-style="solid" color="dark">DATALIST AREA</vs-divider>
         <vs-row vs-h="5" style="display:block">
-            
-            <div id='data_list'>
-              <vs-collapse accordion :key="index" v-for="(data, index) in dataList">
-                <vs-collapse-item style="background:rgb(142,170,255); border-radius:10px">
-                  <div slot="header" style="color:white; border-left:white solid 2px; padding-left:10px; font-size:15px">
-                    {{data.name}}
-                  </div>
-                  <vs-button type="line" @click="initTable(data.name)">{{buttonName}}</vs-button>
-                  <span style="color:white;padding:5px;float:right;font-size:15px">Length: {{data.length}}</span>
-                  <vs-divider style="margin:3px"></vs-divider>
-                  <div :key="index" v-for="(dim, index) in data.dimensions">
-                    <vs-list-item>
-                      <h3 style="float:left;color:white">{{dim.name}}</h3>
-                       <vs-select style="float:left;width:80%" v-model="dim.type">
-                        <vs-select-item :key="index" :value="item.value" :text="item.text" v-for="(item,index) in dataTypes" />
-                      </vs-select>
-                        <vs-avatar style="float:right;margin:0px;margin-left:10px; background:rgb(167,189,255)" :color="dim.color" text="+" v-on:click="createNewComponent(data.name, dim)"/>
-                    </vs-list-item>
-                  </div>
-                </vs-collapse-item>
-              </vs-collapse >
-            </div>
+          <div id='data_list'>
+            <vs-collapse accordion :key="index" v-for="(data, index) in dataList">
+              <vs-collapse-item style="background:rgb(142,170,255); border-radius:10px">
+                <div slot="header" style="color:white; border-left:white solid 2px; padding-left:10px; font-size:15px">
+                  {{ data.name }}
+                </div>
+                <vs-button type="line" @click="initTable(data.name)">{{ buttonName }}</vs-button>
+                <span style="color:white;padding:5px;float:right;font-size:15px">Length: {{ data.length }}</span>
+                <vs-divider style="margin:3px"></vs-divider>
+                <div :key="index" v-for="(dim, index) in data.dimensions">
+                  <vs-list-item>
+                    <h3 style="float:left;color:white">{{ dim.name }}</h3>
+                    <vs-select style="float:left;width:80%" v-model="dim.type">
+                      <vs-select-item :key="index" :value="item.value" :text="item.text"
+                                      v-for="(item,index) in dataTypes"/>
+                    </vs-select>
+                    <vs-avatar style="float:right;margin:0px;margin-left:10px; background:rgb(167,189,255)"
+                               :color="dim.color" text="+" v-on:click="createNewComponent(data.name, dim)"/>
+                  </vs-list-item>
+                </div>
+              </vs-collapse-item>
+            </vs-collapse>
+          </div>
         </vs-row>
         <!--功能列-->
-        <vs-divider border-style="solid" color="dark" >FUNCTION AREA</vs-divider>
+        <vs-divider border-style="solid" color="dark">FUNCTION AREA</vs-divider>
         <vs-row vs-h="5">
-            <div id='editor'>
-              <vs-collapse accordion :key="item.name" v-for="item in componentTypes">
-                <vs-collapse-item style="background:rgb(142,170,255); border-radius:10px">
-                  <div slot="header" style="color:white; border-left:white solid 2px; padding-left:10px; font-size:15px">
-                    {{item.name}}
-                  </div>
-                  <vs-list :key="index" v-for="(meta, index) in item.childrens">
-                    <vs-button style="width:80%; justify-content: left; margin-left:10%" color="rgb(167,189,255)" type="filled"  v-on:click="createNewComponent(meta)" icon="add_circle">{{meta}}</vs-button>
-                    <vs-divider></vs-divider>
-                  </vs-list>
-                </vs-collapse-item>
-              </vs-collapse >
-            </div>
+          <div id='editor'>
+            <vs-collapse accordion :key="item.name" v-for="item in componentTypes">
+              <vs-collapse-item style="background:rgb(142,170,255); border-radius:10px">
+                <div slot="header" style="color:white; border-left:white solid 2px; padding-left:10px; font-size:15px">
+                  {{ item.name }}
+                </div>
+                <vs-list :key="index" v-for="(meta, index) in item.childrens">
+                  <vs-button style="width:80%; justify-content: left; margin-left:10%" color="rgb(167,189,255)"
+                             type="filled" v-on:click="createNewComponent(meta)" icon="add_circle">{{ meta }}
+                  </vs-button>
+                  <vs-divider></vs-divider>
+                </vs-list>
+              </vs-collapse-item>
+            </vs-collapse>
+          </div>
         </vs-row>
 
       </vs-col>
-      
+
 
       <vs-col vs-w="10">
-        
+
         <vs-row>
           <!--该列放置蓝图-->
           <vs-col vs-align="center" vs-w="12" style="box-shadow:0 2px 12px 0 rgba(0,0,0, 0.1)">
-            <div id='preview' style="background:rgba(0,0,0,0.05)"><svg id ='editorborad'></svg></div>
+            <div id='preview' style="background:rgba(0,0,0,0.05)">
+              <svg id='editorborad'></svg>
+            </div>
           </vs-col>
         </vs-row>
 
-        <vs-row v-if="!isTable" id="preview_container" vs-w="12" style="display:flex; padding:20px 20px 20px 20px; height:38%">
+        <vs-row v-if="!isTable" id="preview_container" vs-w="12"
+                style="display:flex; padding:20px 20px 20px 20px; height:38%">
           <!--该列放置生成图-->
-          <vs-col vs-type="flex" vs-align="center" vs-w="12" style="display:flex; box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1)">
+          <vs-col vs-type="flex" vs-align="center" vs-w="12"
+                  style="display:flex; box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1)">
             <div style="padding:0 15px 0 15px; height:80%;">
               <div style=" padding-top: 10px" :key="index" v-for="(meta, index) in viewerbuttonbox">
-                <vs-button color="primary" type="border" v-bind:id="meta.id" :style="{display: meta.style}" v-on:click="generateChart(meta.id, meta)">{{meta.content}}</vs-button>
+                <vs-button color="primary" type="border" v-bind:id="meta.id" :style="{display: meta.style}"
+                           v-on:click="generateChart(meta.id, meta)">{{ meta.content }}
+                </vs-button>
               </div>
             </div>
             <div style="height:85%; border-right: 1px solid rgba(0,0,0,0.2)"></div>
@@ -86,7 +103,7 @@
 
         <vs-row v-if="isTable" vs-w="12">
           <vs-col vs-type="flex" vs-align="center" vs-w="12">
-            <data-preview-table :tabledata="tableData"></data-preview-table>   
+            <data-preview-table :tabledata="tableData"></data-preview-table>
           </vs-col>
         </vs-row>
       </vs-col>
@@ -96,8 +113,7 @@
       <TemplateB v-if="B" ref='msg-B'></TemplateB>
       <AutoPage></AutoPage>
     </vs-popup>
-
-</div>
+  </div>
 
 </template>
 <script>
@@ -114,7 +130,7 @@ import blueComponentTypes from "../../assets/blueComponentTypes.json";
 import modelConfig from "../../assets/modelConfig.json";
 import VegaModel from "../../common/BlueComponents/vegaModel";
 import viewerbutton from "../../assets/vsbuttonbox.json";
-import { keys } from 'd3';
+import {keys} from 'd3';
 import TemplateA from "../ViewLayouts/TemplateA"
 import TemplateB from "../ViewLayouts/TemplateB"
 import NavBar from "../../common/NavBar/NavBar"
@@ -126,12 +142,12 @@ export default {
   name: "blue-editor",
   data() {
     return {
-      buttonName:"Preview",
+      buttonName: "Preview",
       dataList: [], //data candidates list
       componentTypes: blueComponentTypes, // components' types of blueprint
       modelConfig: modelConfig, //configuration detail of each component model
       dataTypes: config.typesPrefab, //Store all the data type which supported by vega-lite
-      viewerbuttonbox:viewerbutton, //store/init the viewer review button
+      viewerbuttonbox: viewerbutton, //store/init the viewer review button
       container: "", //canvas to drawing blueprint
       selectedData: {}, //The dimensions in dataset which been selected by user
       dataComponent: {}, //The exsiting components in canvas (used to check the exsiting)
@@ -140,29 +156,29 @@ export default {
       mouseAction: "", //mouse action label which used to change the mouse action state
       drawingLine: "", //The line which is being darwing by user
       contextData: "", //Shows which dataset which is using in blueprint
-      dataConnection:{}, //unknown function
-      loadedDatasets:{}, //accroding datacomponent to loaded datasets
-      blueComponentsTypeCount:{}, //store the count of component according to different type
-      blueLinesName:[], // store the links between components
-      blueComponentNameList:[], //the index made of componentid
-      exstingPorts:[], //all of the component port in blueprint
-      vegaObjectObj:{}, //vegaobject is used to generate graph throgh
-      chartData:{}, //store the data in different chart
-      comChartCount:{}, // chart count -> distinguish chart
-      chartLayout:{}, //layout is the preset typesetting
-      chartLayoutObj:{}, //更新chartLayoutObj 用于存储layout-port-config
+      dataConnection: {}, //unknown function
+      loadedDatasets: {}, //accroding datacomponent to loaded datasets
+      blueComponentsTypeCount: {}, //store the count of component according to different type
+      blueLinesName: [], // store the links between components
+      blueComponentNameList: [], //the index made of componentid
+      exstingPorts: [], //all of the component port in blueprint
+      vegaObjectObj: {}, //vegaobject is used to generate graph throgh
+      chartData: {}, //store the data in different chart
+      comChartCount: {}, // chart count -> distinguish chart
+      chartLayout: {}, //layout is the preset typesetting
+      chartLayoutObj: {}, //更新chartLayoutObj 用于存储layout-port-config
       popupActivo4: false,
-      layoutIdName:{}, //{"layout-0": "Template A"}
+      layoutIdName: {}, //{"layout-0": "Template A"}
       layoutlist: ["A", "B"],
       A: false,
       B: false,
-      tableData:null,
-      isTable:false,
-      model_config_text:"", // store configuration of chart
-      calculatorDict:{},
-      blueLinesDelSignal:false, //true has been delete
-      lastBlueLines:[],
-      lineColor:{
+      tableData: null,
+      isTable: false,
+      model_config_text: "", // store configuration of chart
+      calculatorDict: {},
+      blueLinesDelSignal: false, //true has been delete
+      lastBlueLines: [],
+      lineColor: {
         "Chart": "#967ADC",
         "Caculator": "#37BC9B",
         "Layout": "#37BC22",
@@ -170,13 +186,13 @@ export default {
       }
     }
   },
-  components:{
-      TemplateA,
-      TemplateB,
-      DataPreviewTable,
-      NavBar
+  components: {
+    TemplateA,
+    TemplateB,
+    DataPreviewTable,
+    NavBar
   },
-  created(){
+  created() {
     //
     this.openFullScreen()
   },
@@ -184,22 +200,22 @@ export default {
     //Intialized the blueprint canvas
     chartInit(container, props) {
       let that = this;
-      let bluecomponentscountInit = function(that){
+      let bluecomponentscountInit = function (that) {
         //init blue componets counts
-        for(const key in that.componentTypes){
-          if(key == "Chart"){
-            that.componentTypes[key]["childrens"].forEach( (d,i) => {
-              if(!that.comChartCount.hasOwnProperty(d)){
+        for (const key in that.componentTypes) {
+          if (key == "Chart") {
+            that.componentTypes[key]["childrens"].forEach((d, i) => {
+              if (!that.comChartCount.hasOwnProperty(d)) {
                 that.comChartCount[d] = 0
               }
             })
           }
-          if(!that.blueComponentsTypeCount.hasOwnProperty(key)){
+          if (!that.blueComponentsTypeCount.hasOwnProperty(key)) {
             that.blueComponentsTypeCount[key] = 0
           }
         }
       }
-      
+
       for (let key in props) {
         this.data[key] = props[key];
       }
@@ -208,31 +224,39 @@ export default {
       this.chartResize(window.innerWidth * 0.825, window.innerHeight * 0.6);
       bluecomponentscountInit(that)
       this.containerListener()
-      setTimeout(function(){
-        that.notifications({'title':'Congratulations', 'text': 'drag and click to start your amazing work~', 'color': 'rgb(31,116,225)'})
+      setTimeout(function () {
+        that.notifications({
+          'title': 'Congratulations',
+          'text': 'drag and click to start your amazing work~',
+          'color': 'rgb(31,116,225)'
+        })
       }, 3000)
     },
     //container listener
-    containerListener(){
+    containerListener() {
       //distinguish click and dblclick
       let that = this
+
       function clickcancel() {
         var event = d3.dispatch('click', 'dblclick')
-        function cc(selection){
+
+        function cc(selection) {
           var down,
             tolerance = 5,
             last,
             wait = null;
-            // euclidean distance
-          function dist(a, b){
+
+          // euclidean distance
+          function dist(a, b) {
             return Math.sqrt(Math.pow(a[0] - b[0], 2), Math.pow(a[1] - b[1], 2));
           }
-          selection.on('mousedown', function(){
+
+          selection.on('mousedown', function () {
             down = d3.mouse(document.body);
             last = +new Date();
           });
-          selection.on('mouseup', function(){
-            if (dist(down, d3.mouse(document.body)) > tolerance){
+          selection.on('mouseup', function () {
+            if (dist(down, d3.mouse(document.body)) > tolerance) {
               return;
             } else {
               if (wait) {
@@ -241,8 +265,8 @@ export default {
                 event.call("dblclick", this, d3.event)
                 //event.dblclick(d3.event);
               } else {
-                wait = window.setTimeout((function(e){
-                  return function(){
+                wait = window.setTimeout((function (e) {
+                  return function () {
                     event.call("click", this, e)
                     //event.click(e);
                     wait = null;
@@ -252,19 +276,22 @@ export default {
             }
           });
         };
-        let rebind = function(target, source) {
+        let rebind = function (target, source) {
           var i = 1, n = arguments.length, method;
           while (++i < n) target[method = arguments[i]] = d3_rebind(target, source, source[method]);
           return target;
         };
+
         function d3_rebind(target, source, method) {
-          return function() {
+          return function () {
             var value = method.apply(source, arguments);
             return value === source ? target : value;
           };
         }
+
         return rebind(cc, event, 'on');
       }
+
       function deleteSingleLine() {
         that.drawingLine.remove()
         that.blueLines.pop()
@@ -272,13 +299,14 @@ export default {
         that.mouseAction == ""
         that.container.on("mousemove", null)
       }
+
       let cc = clickcancel()
       d3.select('#editorborad').call(cc);
-      
-      cc.on('click', function(d){
+
+      cc.on('click', function (d) {
       })
-      cc.on('dblclick', function(d){
-        if(that.mouseAction == "drawing_line" && that.drawingLine != ""){
+      cc.on('dblclick', function (d) {
+        if (that.mouseAction == "drawing_line" && that.drawingLine != "") {
           deleteSingleLine()
         }
       })
@@ -291,15 +319,15 @@ export default {
       this.width = width;
       this.height = height;
 
-      let drawGrids = function(that){
-        //Darwing the grids line in canvas which help user the recognize the canvas and components        
+      let drawGrids = function (that) {
+        //Darwing the grids line in canvas which help user the recognize the canvas and components
         let lineData = [];
         for (let i = 10; i < that.width; i += 20) {
-          lineData.push({ x1: i, y1: 0, x2: i, y2: that.height });
+          lineData.push({x1: i, y1: 0, x2: i, y2: that.height});
         }
 
         for (let i = 10; i < that.height; i += 20) {
-          lineData.push({ x1: 0, y1: i, x2: that.width, y2: i });
+          lineData.push({x1: 0, y1: i, x2: that.width, y2: i});
         }
 
         if (that.container != "") {
@@ -330,14 +358,14 @@ export default {
     },
 
     //create a new component to canvas which need a component type and a unique name
-    createNewComponent(){
+    createNewComponent() {
       let that = this,
         property = null,
         _com = null;
       //func
-      const addLineEvent = function(that, com){
+      const addLineEvent = function (that, com) {
         //darwing the connection line accroding to the mouse real-time position
-        that.container.on("mousemove", function(d) {
+        that.container.on("mousemove", function (d) {
           if (
             that.mouseAction == "drawing_line" &&
             that.drawingLine.getConnectInfo()["target"] == ""
@@ -349,17 +377,17 @@ export default {
           }
         });
       }
-      const addClickEvent2Circle = function(that, com){
+      const addClickEvent2Circle = function (that, com) {
         //boundind the click event to the circles which represent the ports in component
         //after click the circle, there will new a line in canvas
-        com.getAllCircles().on("click", function(d) {
+        com.getAllCircles().on("click", function (d) {
           console.log('dddddd:', d)
           let coverType = com.getType(),
-                coverColor = that.lineColor[coverType],
-                params = com.getParmas(),
-                x = d.parentX + d.x,
-                y = d.parentY + d.y,
-                sourceid = params.id;
+            coverColor = that.lineColor[coverType],
+            params = com.getParmas(),
+            x = d.parentX + d.x,
+            y = d.parentY + d.y,
+            sourceid = params.id;
 
           let line = (that.drawingLine = new BlueprintLine(
             that.container,
@@ -371,23 +399,23 @@ export default {
           ));
           that.blueLines.push(line);
           that.mouseAction = "drawing_line";
-          
+
           let allPorts = [];
 
-          that.blueComponents.forEach(function(component,i) {
+          that.blueComponents.forEach(function (component, i) {
             //let ports = component.getAllPorts();
             let parmas = component.getParmas()
             let _inPorts = parmas["inPorts"]
             let _outPorts = parmas["outPorts"]
             let _id = parmas["id"]
             if (d.type == "in") {
-              _outPorts.forEach(function(k) {
+              _outPorts.forEach(function (k) {
                 //k.parent = component.id
                 k.id = _id
                 allPorts.push(k);
               });
             } else {
-              _inPorts.forEach(function(k) {
+              _inPorts.forEach(function (k) {
                 //k.parent = component.id
                 k.id = _id
                 allPorts.push(k);
@@ -401,7 +429,7 @@ export default {
           addLineEvent(that, com)
         });
       }
-      const constructproperty = function(that, property, name){
+      const constructproperty = function (that, property, name) {
         let obj = JSON.parse(JSON.stringify(property))
         //according to this.blueComponentsTypeCount construct id and add 1
         //make inports outports full
@@ -412,38 +440,38 @@ export default {
         obj['x'] = 300 * Math.random() + 100;
         obj['y'] = 300 * Math.random() + 100;
 
-        for(let i=0; i<obj.inPorts.length; i++){
+        for (let i = 0; i < obj.inPorts.length; i++) {
           obj.inPorts[i]["parentX"] = obj['x'];
           obj.inPorts[i]["parentY"] = obj['y'];
           obj.inPorts[i]["parent"] = obj['name'];
           obj.inPorts[i]["parentid"] = obj['id'];
         }
-        if(obj.type != "Layout"){
+        if (obj.type != "Layout") {
           //layout do not have layout
-          for(let i=0; i<obj.outPorts.length; i++){
+          for (let i = 0; i < obj.outPorts.length; i++) {
             obj.outPorts[i]["parentX"] = obj['x'];
             obj.outPorts[i]["parentY"] = obj['y'];
             obj.outPorts[i]["parent"] = obj['name'];
             obj.outPorts[i]["parentid"] = obj['id'];
           }
         }
-        if(obj.type == "Layout"){
+        if (obj.type == "Layout") {
           that.layoutIdName[obj.id] = {}
           that.layoutIdName[obj.id]["name"] = obj.name
           that.layoutIdName[obj.id]["ref"] = "msg" + "-" + obj.name.split(" ")[1]
         }
-        if(obj.type == "Chart"){
+        if (obj.type == "Chart") {
           let propertiesname = obj.name + "-" + that.comChartCount[obj.name];
           that.comChartCount[obj.name] = that.comChartCount[obj.name] + 1
 
-          that.viewerbuttonbox.every(function(d,i){
-            if(d['style'] == 'none'){
+          that.viewerbuttonbox.every(function (d, i) {
+            if (d['style'] == 'none') {
               d['style'] = 'block';
               d['content'] = propertiesname;
               obj["name"] = propertiesname;
               d["id"] = obj['id']
               return false
-            }else{
+            } else {
               return true
             }
           })
@@ -453,7 +481,7 @@ export default {
         that.blueComponents.push(_com);
         addClickEvent2Circle(that, _com);
       }
-      const dimensionSelected = function(that, source, dim){
+      const dimensionSelected = function (that, source, dim) {
         dim.checked = !dim.checked;
         if (dim.checked == true) dim.color = "#808080";
         else dim.color = "#202020";
@@ -500,15 +528,15 @@ export default {
           properties["id"] = source;
           properties['x'] = 300 * Math.random() + 100;
           properties['y'] = 300 * Math.random() + 100;
-          
+
 
           let _com = new BlueComponent(that.container, properties);
           that.dataComponent[source] = _com;
           addClickEvent2Circle(that, _com);
           that.blueComponents.push(_com);
 
-          if (!(source in that.loadedDatasets)){
-            dataHelper.getDataDetail(source).then(function(response) {
+          if (!(source in that.loadedDatasets)) {
+            dataHelper.getDataDetail(source).then(function (response) {
               //that.vegaObject.setData(response.data.data.values);
               that.loadedDatasets[source] = response.data.data.values
             });
@@ -518,22 +546,23 @@ export default {
 
       //logic
       //init generate property
-      if(arguments.length == 1){
+      if (arguments.length == 1) {
         //create function component
         let _name = arguments[0]
+        console.log(_name)
         constructproperty(that, that.modelConfig[_name], _name)
-      } else if(arguments.length == 2){
+      } else if (arguments.length == 2) {
         //create or add data component
         dimensionSelected(that, arguments[0], arguments[1])
       }
     },
 
     //generate chart
-    generateChart(id, meta){
+    generateChart(id, meta) {
       let result = this.vegaObjectObj[meta["id"]].getOutputForced();
       //Show the result in bottom canvas via vage compilier
-      vegaEmbed("#canvas", result, { theme: "default" });
-      this.notifications({"title":result.title.text, "text": "Generate success~", "color": 'rgb(31,116,225)'})
+      vegaEmbed("#canvas", result, {theme: "default"});
+      this.notifications({"title": result.title.text, "text": "Generate success~", "color": 'rgb(31,116,225)'})
     },
 
     //find the component by the component's name
@@ -551,19 +580,19 @@ export default {
         }
       }
     },
-    initTable(name){
-      dataHelper.getDataDetail(name).then(res=>{
+    initTable(name) {
+      dataHelper.getDataDetail(name).then(res => {
         // console.log(res.data.data.values)
         this.tableData = res.data.data.values
         this.$store.state.tableData = res.data.data.values
         this.isTable = !this.isTable
-        if(this.buttonName==='Preview')
+        if (this.buttonName === 'Preview')
           this.buttonName = 'CloseTable'
         else
           this.buttonName = 'Preview'
       })
     },
-    
+
     ///////////////////////////////
     // Add dimension to context data from candicate dataset
     // IF the component is exsit:
@@ -578,11 +607,11 @@ export default {
       // The case of source attribution is 「FIELD」 and target is 「ENCODING」
       if (source.attr == "field" && target.attr == "encoding") {
         //console.log(source.dimension_type, source.name, target.name)
-       //that.calculator[source["id"]] -> sum_miles_per_gallon_cylinders
+        //that.calculator[source["id"]] -> sum_miles_per_gallon_cylinders
         let metaName = '',
           metaType = ''
-        if(source.parentid != undefined){
-          if(source.parentid.split("-")[0] == "Calculator"){
+        if (source.parentid != undefined) {
+          if (source.parentid.split("-")[0] == "Calculator") {
             metaName = that.calculatorDict[source["id"]]
             metaType = "quantitative"
           } else {
@@ -590,16 +619,16 @@ export default {
             metaType = source.dimension_type
           }
         } else {
-            metaName = source.name
-            metaType = source.dimension_type
+          metaName = source.name
+          metaType = source.dimension_type
         }
-        
+
         let meta = {
           name: metaName, // source.name
           key: target.name,
           type: metaType//source.dimension_type
         };
-        
+
         let maker = that.modelConfig[target.parent].maker;
         //console.log("setEncoding", source, target, meta)
         that.vegaObjectObj[vegaObjKey].setEncoding(target.parent, meta);
@@ -612,7 +641,7 @@ export default {
 
         if (caculator_modules.operatorsSetted()) {
           let result = {};
-          
+
           if (target.parent == "Sum")
             result = caculator_modules.sum(that.vegaObjectObj[vegaObjKey].getData());
           else if (target.parent == "Reduce")
@@ -620,11 +649,11 @@ export default {
           else if (target.parent == "Multi")
             result = caculator_modules.multiple(that.vegaObjectObj[vegaObjKey].getData());
 
-          
+
           let newData = result.data,
             newName = result.name;
-          
-          if(!target.id in that.calculatorDict){
+
+          if (!target.id in that.calculatorDict) {
             that.calculatorDict[target["id"]] = newName
           }
 
@@ -638,20 +667,24 @@ export default {
       // The case of source attribution is 「FIELD」 and target is 「CONNECTOR」
 
       if (source.attr == "field" && target.attr == "connector") {
-        if(this.loadedDatasets[source.parent] == undefined){
-          await dataHelper.getDataDetail(source.parent).then(function(response) {
+        if (this.loadedDatasets[source.parent] == undefined) {
+          await dataHelper.getDataDetail(source.parent).then(function (response) {
             that.loadedDatasets[source.parent] = response.data.data.values
           });
         }
 
-        if (this.dataConnection[source.parent] == undefined){
-          this.dataConnection[source.parent] = {'data': this.loadedDatasets[source.parent], 'dataName':source.parent, 'dim':source.name}
+        if (this.dataConnection[source.parent] == undefined) {
+          this.dataConnection[source.parent] = {
+            'data': this.loadedDatasets[source.parent],
+            'dataName': source.parent,
+            'dim': source.name
+          }
           let connectionNames = d3.keys(this.dataConnection);
-          if (connectionNames.length == 2){
+          if (connectionNames.length == 2) {
             let data1 = this.dataConnection[connectionNames[0]];
             let data2 = this.dataConnection[connectionNames[1]];
 
-            if(target.parent == 'Left Join'){
+            if (target.parent == 'Left Join') {
               let newData = dataHelper.leftJoin(data1, data2)
               that.vegaObjectObj[vegaObjKey].setData(newData)
 
@@ -663,8 +696,7 @@ export default {
 
               this.contextData = this.contextData + '.' + source.parent
 
-            }
-            else if (target.parent == 'Right Join'){
+            } else if (target.parent == 'Right Join') {
 
               let newData = dataHelper.rightJoin(data1, data2)
               that.vegaObjectObj[vegaObjKey].setData(newData)
@@ -677,8 +709,7 @@ export default {
 
               this.contextData = this.contextData + '.' + source.parent
 
-            }
-            else if (target.parent == 'Inner Join'){
+            } else if (target.parent == 'Inner Join') {
 
               let newData = dataHelper.innerJoin(data1, data2)
               that.vegaObjectObj[vegaObjKey].setData(newData)
@@ -691,8 +722,7 @@ export default {
 
               this.contextData = this.contextData + '.' + source.parent
 
-            }
-            else{
+            } else {
 
               let newData = dataHelper.outerJoin(data1, data2)
               that.vegaObjectObj[vegaObjKey].setData(newData)
@@ -704,14 +734,17 @@ export default {
               _com2.addDataName2Ports()
 
               this.contextData = this.contextData + '.' + source.parent
-          
+
+            }
+          } else if (d3.keys(this.dataConnection).length > 2) {
+            this.dataConnection[source.parent] = {}
+            this.dataConnection[source.parent] = {
+              'data': this.loadedDatasets[source.parent],
+              'dataName': source.parent,
+              'dim': source.name
             }
           }
-          else if(d3.keys(this.dataConnection).length > 2){
-            this.dataConnection[source.parent] = {}
-            this.dataConnection[source.parent] = {'data': this.loadedDatasets[source.parent], 'dataName':source.parent, 'dim':source.name}
-          }
-         
+
         }
 
       }
@@ -723,7 +756,6 @@ export default {
 
         if (target.parent == "Filter") {
           this.getComponentByName(target.parent).showDataPreview(
-
             this.loadedDatasets[this.contextData],
             sourcePortName
           );
@@ -773,56 +805,56 @@ export default {
         }
       }
     },
-    catchConnect(option){
+    catchConnect(option) {
       // catch ConnectInfo
       let that = this
-      let interval = function(con){
+      let interval = function (con) {
         let i = 0;
-        let intr = setInterval(function() {
+        let intr = setInterval(function () {
           let conInfo = con.getConnectInfo()
-          if (conInfo.targetId != ""){
+          if (conInfo.targetId != "") {
             clearInterval(intr);
             that.buildBlueGraph(con)
           }
         }, 500)
       }
-      let emptyItems = function(){
-          that.chartLayout = {}
-          that.chartLayoutObj = {}
-          that.blueComponentNameList = []
-          that.vegaObjectObj = {}
-          that.chartData = {}
+      let emptyItems = function () {
+        that.chartLayout = {}
+        that.chartLayoutObj = {}
+        that.blueComponentNameList = []
+        that.vegaObjectObj = {}
+        that.chartData = {}
       }
-      let removeDeltedLine = function(){
+      let removeDeltedLine = function () {
         let savedLine = []
-        that.blueLines.forEach(function(d,i){
-          if(d.getConnectInfo().isDeleted == false){
+        that.blueLines.forEach(function (d, i) {
+          if (d.getConnectInfo().isDeleted == false) {
             savedLine.push(d)
           }
         })
         that.blueLines = savedLine
       }
-      if(option == "add"){
+      if (option == "add") {
         let tailNo = that.blueLines.length - 1;
         interval(that.blueLines[tailNo])
-      }else if(option == "delete"){
+      } else if (option == "delete") {
         //delete removed blueprint line
         that.blueLinesDelSignal = true
         removeDeltedLine()
-      }else if(option == "afterdelete"){
+      } else if (option == "afterdelete") {
         //empty the bluegraph map
         //buildBlueGraph
         emptyItems()
-        that.blueLines.forEach(function(d,i){
+        that.blueLines.forEach(function (d, i) {
           interval(d)
         })
-      }else if(option == "empty"){
+      } else if (option == "empty") {
         //empty the bluegraph map
         emptyItems()
       }
 
     },
-    buildBlueGraph(con){
+    buildBlueGraph(con) {
       let that = this
       let connect = con.getConnectInfo()
       let _source = connect.source
@@ -831,26 +863,26 @@ export default {
       //two dimensional matrix of storage blueprint connection logic
 
       //更新that.chartlayoutObj viewer- layout-0_chartA parentid + "_" + text
-      if(_target.attr == "Layout"){
+      if (_target.attr == "Layout") {
         //建立索引 用于更新layout-port
-        if(that.chartLayout[_source["parentid"]] == undefined){
+        if (that.chartLayout[_source["parentid"]] == undefined) {
           that.chartLayout[_source["parentid"]] = []
           let _name = _target.id + "_" + _target.text
           that.chartLayout[_source["parentid"]].push(_name)
-        }else{
+        } else {
           let _name = _target.id + "_" + _target.text
           that.chartLayout[_source["parentid"]].push(_name)
         }
 
         //更新chartLayoutObj 用于存储layout-port-config
-        if(that.chartLayoutObj[_target["id"]] == undefined){
+        if (that.chartLayoutObj[_target["id"]] == undefined) {
           that.chartLayoutObj[_target["id"]] = {}
 
           that.chartLayoutObj[_target["id"]][_target["text"]] = ""
           that.chartLayoutObj[_target["id"]][_target["text"]] = JSON.parse(JSON.stringify(that.vegaObjectObj[_source["parentid"]]))
 
-        }else{
-          if(that.chartLayoutObj[_target["id"]][_target["text"]] == undefined){
+        } else {
+          if (that.chartLayoutObj[_target["id"]][_target["text"]] == undefined) {
 
             that.chartLayoutObj[_target["id"]][_target["text"]] = ""
             that.chartLayoutObj[_target["id"]][_target["text"]] = JSON.parse(JSON.stringify(that.vegaObjectObj[_source["parentid"]]))
@@ -863,29 +895,29 @@ export default {
 
       let linkname = connect.sourceId + "_" + connect.targetId
       let addId = [connect.sourceId, connect.targetId]
-      addId.forEach(function(d){
-        if(that.blueComponentNameList.indexOf(d) == -1){
+      addId.forEach(function (d) {
+        if (that.blueComponentNameList.indexOf(d) == -1) {
           that.blueComponentNameList.push(d)
         }
       })
       //存入link
-      if(this.blueLinesName.indexOf(linkname) == -1){
+      if (this.blueLinesName.indexOf(linkname) == -1) {
         this.blueLinesName.push(linkname)
       }
       //建立根据componentIndex覆盖更新二维数组
-      this.blueComponentNameList.forEach(function(d, i){
+      this.blueComponentNameList.forEach(function (d, i) {
         componentGraph[i] = new Array()
       })
       //graph init
-      for(let i=0; i<this.blueComponentNameList.length; i++){
-        for(let j=0; j<this.blueComponentNameList.length; j++){
+      for (let i = 0; i < this.blueComponentNameList.length; i++) {
+        for (let j = 0; j < this.blueComponentNameList.length; j++) {
           componentGraph[i][j] = 0
         }
       }
-      for(let i=0; i<this.blueLinesName.length; i++){
+      for (let i = 0; i < this.blueLinesName.length; i++) {
         let indexsource = this.blueComponentNameList.indexOf(String(this.blueLinesName[i]).split('_')[0])
         let indextarget = this.blueComponentNameList.indexOf(String(this.blueLinesName[i]).split('_')[1])
-        
+
         componentGraph[indexsource][indextarget] = 1
       }
 
@@ -894,26 +926,26 @@ export default {
       let chartList = []
       let chartTreeLink = {}
 
-      for(let i=0 ;i<this.blueComponentNameList.length; i++){
-        if(this.blueComponentNameList[i] != ""){
-          if(this.getComponentById(this.blueComponentNameList[i]).getType() == "Chart"){
-          if(!chartDict.hasOwnProperty( this.blueComponentNameList[i] )){
-            chartDict[this.blueComponentNameList[i]] = i
-            chartList.push(this.blueComponentNameList[i])
+      for (let i = 0; i < this.blueComponentNameList.length; i++) {
+        if (this.blueComponentNameList[i] != "") {
+          if (this.getComponentById(this.blueComponentNameList[i]).getType() == "Chart") {
+            if (!chartDict.hasOwnProperty(this.blueComponentNameList[i])) {
+              chartDict[this.blueComponentNameList[i]] = i
+              chartList.push(this.blueComponentNameList[i])
             }
           }
         }
       }
 
       //根据view组件建立vegaObjectObj 若有新view则增加 若没有则删除/ 先执行删除 再增加/ 遍历两遍
-      Object.keys(that.vegaObjectObj).forEach(function(d){
-        if(chartList.indexOf(d) == -1){
+      Object.keys(that.vegaObjectObj).forEach(function (d) {
+        if (chartList.indexOf(d) == -1) {
           //如果在chartlist中没有该chart,则该chart已被删除,需从vegaObjectObj中去掉键值对
           delete that.vegaObjectObj[d]
         }
       })
-      chartList.forEach(function(d){
-        if(!(d in that.vegaObjectObj)){
+      chartList.forEach(function (d) {
+        if (!(d in that.vegaObjectObj)) {
           //不存在则新建vegaobject
           let _height = window.innerHeight * 0.29
           let _width = window.innerWidth * 0.7
@@ -923,22 +955,22 @@ export default {
           that.vegaObjectObj[d] = new VegaModel(parseInt(_height), parseInt(_width), d)
         }
       })
-      
+
       //根据chart组件进行遍历 获取有相连关系的组件
-      for(let i=0; i<chartList.length; i++){
+      for (let i = 0; i < chartList.length; i++) {
         chartTreeLink[chartList[i]] = []
         searchlink(chartDict[chartList[i]])
 
-        function searchlink(j){
-        for(let k=0; k<that.blueComponentNameList.length; k++){
-          if(componentGraph[k][j] == 1){
-            let _source = that.blueComponentNameList[k] //id
-            let _target = that.blueComponentNameList[j] //id
-            //将相连的组件存起来 或者 直接遍历两个相连组件间的边
-            let _st = _source + "_" + 
-            _target
-            chartTreeLink[chartList[i]].push(_st)
-            searchlink(k)
+        function searchlink(j) {
+          for (let k = 0; k < that.blueComponentNameList.length; k++) {
+            if (componentGraph[k][j] == 1) {
+              let _source = that.blueComponentNameList[k] //id
+              let _target = that.blueComponentNameList[j] //id
+              //将相连的组件存起来 或者 直接遍历两个相连组件间的边
+              let _st = _source + "_" +
+                _target
+              chartTreeLink[chartList[i]].push(_st)
+              searchlink(k)
             }
           }
           return;
@@ -946,22 +978,21 @@ export default {
       }
 
       let chartTreeLinkKeys = Object.keys(chartTreeLink)
-      chartTreeLinkKeys.forEach(function(d){
+      chartTreeLinkKeys.forEach(function (d) {
         let linkList = chartTreeLink[d]
 
-        linkList.forEach(function(value){
+        linkList.forEach(function (value) {
           let componentlist = value.split("_")
-          for(let i=0; i<componentlist.length; i++){
+          for (let i = 0; i < componentlist.length; i++) {
             let com = componentlist[i]
-            if(that.getComponentById(com).type == "Data"){
-              if(that.chartData[d] == undefined){
+            if (that.getComponentById(com).type == "Data") {
+              if (that.chartData[d] == undefined) {
                 that.chartData[d] = []
                 that.chartData[d].push(com)
                 let _loadedData = that.loadedDatasets[com]
                 that.vegaObjectObj[d].setData(_loadedData)
-              }
-              else{
-                if(that.chartData[d].indexOf(com) == -1){
+              } else {
+                if (that.chartData[d].indexOf(com) == -1) {
                   that.chartData[d].push(com)
                   let _loadedData = that.loadedDatasets[com]
                   that.vegaObjectObj[d].setData(_loadedData)
@@ -974,28 +1005,28 @@ export default {
 
       let connectionsDict = {}
 
-      for(let i=0; i<that.blueLines.length; i++){
+      for (let i = 0; i < that.blueLines.length; i++) {
         let lineInfo = that.blueLines[i].getConnectInfo()
         let _name = lineInfo.sourceId + '_' + lineInfo.targetId
-        if(!(_name in connectionsDict)){
+        if (!(_name in connectionsDict)) {
           connectionsDict[_name] = []
           connectionsDict[_name].push(lineInfo)
-        }else{
+        } else {
           connectionsDict[_name].push(lineInfo)
         }
       }
       //根据chart分组新建object 需要#list
       //this.vegaObject = new VegaModel(parseInt(this.height / 2.3), parseInt(this.width * 1.1), "Test")
       //vegaEmbed("#canvas", result, { theme: "default" });
-      for(let i=0; i<chartList.length; i++){
+      for (let i = 0; i < chartList.length; i++) {
         let _chart = chartList[i]
         let _componentLink = chartTreeLink[_chart]
 
-        for(let j=0; j<_componentLink.length; j++){
+        for (let j = 0; j < _componentLink.length; j++) {
           //component-component
           let _name = _componentLink[j]
           let _connections = connectionsDict[_name]
-          for(let k=0; k<_connections.length; k++){
+          for (let k = 0; k < _connections.length; k++) {
             //component port - component port
             let _vegaObject = that.vegaObjectObj[_chart]
             let _sourcelink = _connections[k].source
@@ -1006,55 +1037,59 @@ export default {
       }
       //vegaobject内存在sum/reduce等操作的数据啦 现在要做的就是把它对应起来
       //更新layout/chart/vegamodel
-       let chartLayoutKeys = Object.keys(that.chartLayout)
-       chartLayoutKeys.forEach(function(d){
-         that.chartLayout[d].forEach(function(v){
-           let _targetid = v.split("_")[0]
-           let _targettext = v.split("_")[1]
-           that.chartLayoutObj[_targetid][_targettext] = JSON.parse(JSON.stringify(that.vegaObjectObj[d]))
-         })
-       })
+      let chartLayoutKeys = Object.keys(that.chartLayout)
+      chartLayoutKeys.forEach(function (d) {
+        that.chartLayout[d].forEach(function (v) {
+          let _targetid = v.split("_")[0]
+          let _targettext = v.split("_")[1]
+          that.chartLayoutObj[_targetid][_targettext] = JSON.parse(JSON.stringify(that.vegaObjectObj[d]))
+        })
+      })
 
     },
-    notifications(message){
+    notifications(message) {
       this.$vs.notify({
-        title:message.title,
-        text:message.text,
-        color:message.color,
-        position:'bottom-right'
+        title: message.title,
+        text: message.text,
+        color: message.color,
+        position: 'bottom-right'
       })
     },
-    graphPreview(){
+    graphPreview() {
       //check which layout
       //only allowed to exist one layout in blueEditor
       let that = this
       let key = Object.keys(that.chartLayoutObj)
 
-      if(key.length == 0){
+      if (key.length == 0) {
         //alert notice that user should choose one layout
-        that.notifications({'title':'Notice', 'text': 'Please select a layout', 'color': 'danger'})
-      } else if(key.length == 1){
-        that.layoutlist.forEach(function(d){
-          if(d == that.layoutIdName[key[0]]["name"].split(" ")[1]){
+        that.notifications({'title': 'Notice', 'text': 'Please select a layout', 'color': 'danger'})
+      } else if (key.length == 1) {
+        that.layoutlist.forEach(function (d) {
+          if (d == that.layoutIdName[key[0]]["name"].split(" ")[1]) {
             that[d] = true
             let _ref = that.layoutIdName[key[0]]["ref"]
-            
+
             //owing to vue life circle, when the first click, the that.$refs[_ref] haven't loaded
             //when the second click, the that.$refs[_ref] have loaded
-            if(that.$refs[_ref] != undefined){
+            if (that.$refs[_ref] != undefined) {
               that.$refs[_ref].getModularInfo({"config": that.chartLayoutObj[key[0]], "layoutname": key[0]})
               that.model_config_text = JSON.parse(JSON.stringify(that.chartLayoutObj))
-              that.popupActivo4=!that.popupActivo4
+              that.popupActivo4 = !that.popupActivo4
             }
-          }else{
+          } else {
             that[d] = false
           }
         })
-      } else if(key.length == 2){
-        that.notifications({'title':'Notice', 'text': 'Please choose one layout. You have now chosen two layouts.', 'color': 'danger'})
+      } else if (key.length == 2) {
+        that.notifications({
+          'title': 'Notice',
+          'text': 'Please choose one layout. You have now chosen two layouts.',
+          'color': 'danger'
+        })
       }
     },
-    remove(com){
+    remove(com) {
       //find line connected with removedComponent
       //Cancellation bluecomponent and blueline methods: = null / delete in array
       //delete related variable
@@ -1065,13 +1100,13 @@ export default {
       //first removeGraph bluecomponent
       com.removeGraph()
       //second find connected blueline/ removed graph/ delete in array
-      for(let i=0; i<that.blueLines.length; i++){
+      for (let i = 0; i < that.blueLines.length; i++) {
         let lineinfo = that.blueLines[i].getConnectInfo()
         let _source = lineinfo.sourceId,
-            _target = lineinfo.targetId,
-            linkname = _source + "_" + _target
+          _target = lineinfo.targetId,
+          linkname = _source + "_" + _target
 
-        if(comid == _source || comid == _target){
+        if (comid == _source || comid == _target) {
           that.blueLines[i].remove();
           that.blueLines[i] = null;
           that.blueLines.splice(i, 1);
@@ -1081,28 +1116,28 @@ export default {
           that.blueLinesName.splice(index, 1)
         }
       }
-      
+
       //third delete component in array
-      for(let i=0; i<this.blueComponents.length; i++){
-        if(comid == this.blueComponents[i].getId()){
+      for (let i = 0; i < this.blueComponents.length; i++) {
+        if (comid == this.blueComponents[i].getId()) {
           this.blueComponents[i] = null;
           this.blueComponents.splice(i, 1);
-          
+
           break;
         }
       }
-      
+
       //remove ports
-      for(let i=0; i<that.exstingPorts.length; i++){
-        if(comid == that.exstingPorts[i].parentid){
+      for (let i = 0; i < that.exstingPorts.length; i++) {
+        if (comid == that.exstingPorts[i].parentid) {
           this.exstingPorts.splice(i, 1);
         }
       }
-      
-      if(comtype == "Data"){
+
+      if (comtype == "Data") {
         delete that.selectedData[comid]
         delete that.dataComponent[comid]
-      }else if(comtype == "Viewer" || comtype == "Chart"){
+      } else if (comtype == "Viewer" || comtype == "Chart") {
         let index = comid.split("-")[1]
         that.viewerbuttonbox[index]["content"] = "button" + index
         that.viewerbuttonbox[index]["style"] = "none"
@@ -1111,33 +1146,33 @@ export default {
       }
       that.blueComponentsTypeCount[comtype] = that.blueComponentsTypeCount[comtype] - 1
       // if exist viewer, "delete" remove button
-      if(that.blueComponentNameList.length > 0){
+      if (that.blueComponentNameList.length > 0) {
         that.blueComponentNameList.splice(that.blueComponentNameList.indexOf(comid), 1)
       }
     },
-    cleanChart(){
-      try{
+    cleanChart() {
+      try {
         document.getElementById("canvas").innerHTML = ""
-      }catch(err){
+      } catch (err) {
         console.log(err)
       }
     },
-    cleanPanel(){
+    cleanPanel() {
       let that = this
-      if(this.blueComponents.length == 0){
-        this.notifications({'title':'Notice', 'text': 'There are no components here.', 'color': 'danger'})
+      if (this.blueComponents.length == 0) {
+        this.notifications({'title': 'Notice', 'text': 'There are no components here.', 'color': 'danger'})
         return;
       }
       //clean draw panel
       this.cleanChart()
       //make sure remove all of the bluecomponents
-      this.blueComponents.forEach(function(d,i){
+      this.blueComponents.forEach(function (d, i) {
         that.remove(d)
       })
-      if(that.blueComponents[0] != null){
+      if (that.blueComponents[0] != null) {
         this.remove(that.blueComponents[0]);
       }
-      
+
       this.selectedData = {};
       this.dataComponent = {};
       this.blueComponents = [];
@@ -1153,33 +1188,33 @@ export default {
       this.chartData = {};
       this.chartLayout = {};
       this.chartLayoutObj = {};
-      for(let key in this.comChartCount){
+      for (let key in this.comChartCount) {
         this.comChartCount[key] = 0
       }
-      for(let key in this.blueComponentsTypeCount){
+      for (let key in this.blueComponentsTypeCount) {
         this.blueComponentsTypeCount[key] = 0
       }
-      this.notifications({'title':'Notice', 'text': 'clean panel success~', 'color': 'rgb(31,116,225)'})
+      this.notifications({'title': 'Notice', 'text': 'clean panel success~', 'color': 'rgb(31,116,225)'})
     },
-    openFullScreen: function(){
-            //el-icon-loading
-            const loading = this.$loading({
-            lock: true,
-            text: 'Loading',
-            spinner: 'el-icon-loading',
-            background: 'rgba(255, 255, 255, 1)'
-            });
-            setTimeout(() => {
-                loading.close();
-            }, 2000);
+    openFullScreen: function () {
+      //el-icon-loading
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(255, 255, 255, 1)'
+      });
+      setTimeout(() => {
+        loading.close();
+      }, 2000);
     },
-    downloadSetting: function(){
+    downloadSetting: function () {
       let that = this
-      let req = async function(){
+      let req = async function () {
         let key = Object.keys(that.chartLayoutObj)
-        if(key.length == 0){
-          that.notifications({'title':'Notice', 'text': 'Please connect a layout', 'color': 'danger'})
-        }else if(key.length == 1){
+        if (key.length == 0) {
+          that.notifications({'title': 'Notice', 'text': 'Please connect a layout', 'color': 'danger'})
+        } else if (key.length == 1) {
           let template = key[0]
           let obj = {
             "Layout-0": "templateA",
@@ -1195,32 +1230,46 @@ export default {
         }
       }
       req()
+    },
+
+    /*
+    author:GH
+    function:....
+    */
+    undoAction() {
+      alert("undo")
+    },
+    /*
+    author:GH
+    function:....
+    */
+    redoAction() {
+      alert("redo")
     }
-  
   },
   watch: {
     //Monitor the positon's change of component
     blueComponents: {
       handler(curVal, oldVal) {
         let that = this
-        if(curVal.length == oldVal.length){
-          for (let i = 0; i < this.blueComponents.length; i++){
-            if(this.blueComponents[i].isDelete){
+        if (curVal.length == oldVal.length) {
+          for (let i = 0; i < this.blueComponents.length; i++) {
+            if (this.blueComponents[i].isDelete) {
               that.remove(this.blueComponents[i])
               break;
             }
-            
+
             let curEle = curVal[i];
             let preEle = oldVal[i];
             //Obtain the newest postion of each component
             let curPos = curEle.getPos();
             let prePos = preEle.getPos();
 
-            if(this.blueLines.length > 0){
-              this.blueLines.forEach(function(line, i){
+            if (this.blueLines.length > 0) {
+              this.blueLines.forEach(function (line, i) {
                 //寻找与组件相关的blueLines
                 let connectInfo = line.getConnectInfo()
-                if(connectInfo.sourceId == curEle.getId() || connectInfo.targetId == curEle.getId()){
+                if (connectInfo.sourceId == curEle.getId() || connectInfo.targetId == curEle.getId()) {
                   line.parentPosUpdated(
                     curPos.dx, //delta of horizon postion
                     curPos.dy, //delta of vertical position
@@ -1243,7 +1292,7 @@ export default {
     blueLines: {
       handler(curVal, oldVal) {
         let that = this
-        if(that.blueLinesDelSignal == true){
+        if (that.blueLinesDelSignal == true) {
           // deleted blueprint line has been removed
           // update bluegraph map using option 'afterdelete'
           // turn blueLinesDelSignal to false
@@ -1253,17 +1302,17 @@ export default {
           curVal.forEach(d => {
             that.lastBlueLines.push(d)
           })
-        }else if(that.blueLinesDelSignal == false){
-          if(curVal.length > that.lastBlueLines.length && curVal.length != 0){
+        } else if (that.blueLinesDelSignal == false) {
+          if (curVal.length > that.lastBlueLines.length && curVal.length != 0) {
             //add line
             that.catchConnect("add")
           }
-          if(curVal.length < that.lastBlueLines.length){
+          if (curVal.length < that.lastBlueLines.length) {
             //delete line
-            if(curVal.length == 0){
+            if (curVal.length == 0) {
               // empty relative items
               this.catchConnect("empty")
-            }else{
+            } else {
               this.catchConnect("delete")
             }
           }
@@ -1278,7 +1327,7 @@ export default {
   mounted() {
     let that = this;
     this.chartInit("#preview");
-    
+
     //Set the init setting of textarea
     d3.selectAll("textarea")
       .style("color", "grey")
@@ -1295,8 +1344,8 @@ export default {
     dataHelper.getDataList().then(response => {
       this.dataList = response.data;
 
-      this.dataList.forEach(function(data) {
-        data.dimensions.forEach(function(d) {
+      this.dataList.forEach(function (data) {
+        data.dimensions.forEach(function (d) {
           d["checked"] = false;
           d["color"] = "#202020";
         });
@@ -1305,21 +1354,21 @@ export default {
     dataHelper.getAllData().then(response => {
     })
     //Global control the animation of line or others
-    setInterval(function() {
-      that.blueLines.forEach(function(line) {
+    setInterval(function () {
+      that.blueLines.forEach(function (line) {
         line.animate();
       });
 
-      that.blueComponents.forEach(function(com) {
+      that.blueComponents.forEach(function (com) {
         //com.animate();
       });
     }, 20);
-    setInterval(function(){
-      if(that.blueLines.length){
+    setInterval(function () {
+      if (that.blueLines.length) {
         let templength = that.blueLines.length;
-        for(let i=0; i<templength; i++){
-          if(that.blueLines[i].getConnectInfo().isDeleted == "true"){
-            that.blueLines.splice(i,1)
+        for (let i = 0; i < templength; i++) {
+          if (that.blueLines[i].getConnectInfo().isDeleted == "true") {
+            that.blueLines.splice(i, 1)
             templength = templength - 1
             console.log(true)
           }

@@ -1,5 +1,5 @@
 <template>
-    
+
     <div style="height:1075px">
         <NavBar></NavBar>
         <!-- <vs-row > -->
@@ -9,18 +9,18 @@
                 <data-list-bar/>
                 <data-previewer/>-->
             </vs-col>
-            
+
             <vs-col vs-w="10" vs-h="12" style="margin-left:1.5%;">
                 <DataTable></DataTable>
                 <DataPreview></DataPreview>
                 <!--
                 <data-preview-table/>
-                <data-list-viewer /> 
+                <data-list-viewer />
                 -->
 
             </vs-col>
         <!-- </vs-row> -->
-    </div> 
+    </div>
 </template>
 <script>
 
