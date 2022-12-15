@@ -71,8 +71,6 @@
         </vs-row>
 
       </vs-col>
-
-
       <vs-col vs-w="10">
 
         <vs-row>
@@ -429,6 +427,8 @@ export default {
           addLineEvent(that, com)
         });
       }
+
+      //构造对应图类型的数据：如Map
       const constructproperty = function (that, property, name) {
         let obj = JSON.parse(JSON.stringify(property))
         //according to this.blueComponentsTypeCount construct id and add 1
@@ -461,9 +461,10 @@ export default {
           that.layoutIdName[obj.id]["ref"] = "msg" + "-" + obj.name.split(" ")[1]
         }
         if (obj.type == "Chart") {
+          //统计当前图表的数量（在画布上的数量）--如Map-0,Map-1
           let propertiesname = obj.name + "-" + that.comChartCount[obj.name];
           that.comChartCount[obj.name] = that.comChartCount[obj.name] + 1
-
+          //设置vsbuttonbox的属性：当disply不为none时，修改其属性
           that.viewerbuttonbox.every(function (d, i) {
             if (d['style'] == 'none') {
               d['style'] = 'block';
@@ -548,8 +549,8 @@ export default {
       //init generate property
       if (arguments.length == 1) {
         //create function component
+        //获取参数
         let _name = arguments[0]
-        console.log(_name)
         constructproperty(that, that.modelConfig[_name], _name)
       } else if (arguments.length == 2) {
         //create or add data component
@@ -560,6 +561,7 @@ export default {
     //generate chart
     generateChart(id, meta) {
       let result = this.vegaObjectObj[meta["id"]].getOutputForced();
+      console.log(result)
       //Show the result in bottom canvas via vage compilier
       vegaEmbed("#canvas", result, {theme: "default"});
       this.notifications({"title": result.title.text, "text": "Generate success~", "color": 'rgb(31,116,225)'})

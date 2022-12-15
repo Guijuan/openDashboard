@@ -13,7 +13,7 @@ export default class VegaModel {
             "contains": "padding"
         }
         this.config = {}
-      
+
         this['data'].title = {
 
             "text": name,
@@ -22,7 +22,7 @@ export default class VegaModel {
         }
 
         this.layers = {}
-   
+
     }
     getData(){
 
@@ -44,12 +44,12 @@ export default class VegaModel {
             let meta = {'field': rule.name, 'type':rule.type}
 
             this.layers[parent].encoding[rule.key] = meta
-            
+
         }
         else{
 
             this.layers[parent] = {'encoding':{}}
-                
+
             let meta = {'field': rule.name, 'type':rule.type}
 
             this.layers[parent].encoding[rule.key] = meta
@@ -59,14 +59,14 @@ export default class VegaModel {
             this.layers[parent]['height'] = this.data["height"]
 
             this.data.layer.push(this.layers[parent])
-        
+
         }
-        
+
     }
     setDescription(text){
 
         this['data'].description = text
-    }  
+    }
 
     setMark(parent, mark){
 
@@ -117,7 +117,6 @@ export default class VegaModel {
 
     //Output vega configuration and without check
     getOutputForced(){
-
         return this.data
     }
 
