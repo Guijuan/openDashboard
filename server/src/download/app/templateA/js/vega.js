@@ -19820,7 +19820,7 @@
       domain = padDomain(type, domain, _.range, _.padding, _.exponent, _.constant);
     }
 
-    // adjust domain based on zero, min, max settings
+    // adjust domain based on zero, min, max Settingside
     if (zero || _.domainMin != null || _.domainMax != null || _.domainMid != null) {
       n = ((domain = domain.slice()).length - 1) || 1;
       if (zero) {
@@ -29885,7 +29885,7 @@
 
   /**
    * Initialize event handling configuration.
-   * @param {object} config - The configuration settings.
+   * @param {object} config - The configuration Settingside.
    * @return {object}
    */
   function initializeEventConfig(config) {

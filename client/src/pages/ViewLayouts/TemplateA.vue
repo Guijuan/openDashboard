@@ -3,33 +3,66 @@
     <div class="header">
       System Preview
     </div>
-    <div class="container">
-      <grid-layout class="gridLayout"
-                   :layout.sync="ttlayout"
-                   v-if="!(typeof ttlayout==='undefined')"
-                   :col-num="15"
-                   :row-height="30"
-                   :is-draggable="true"
-                   :is-resizable="true"
-                   :vertical-compact="true"
-                   :use-css-transforms="true"
-                   :style="{height:'800px'}"
-      >
-        <grid-item
-          v-for="item in ttlayout"
-          :key="item.i"
-          :static="item.static"
-          :x="item.x"
-          :y="item.y"
-          :w="item.w"
-          :h="item.h"
-          :i="item.i"
-          :id="item.i"
-        >
-          <div id="chartA"></div>
-        </grid-item>
-      </grid-layout>
-    </div>
+<!--    <div class="container">-->
+<!--      <grid-layout class="gridLayout"-->
+<!--                   :layout.sync="ttlayout"-->
+<!--                   v-if="!(typeof ttlayout==='undefined')"-->
+<!--                   :col-num="15"-->
+<!--                   :row-height="30"-->
+<!--                   :is-draggable="true"-->
+<!--                   :is-resizable="true"-->
+<!--                   :vertical-compact="true"-->
+<!--                   :use-css-transforms="true"-->
+<!--                   :style="{height:'800px'}"-->
+<!--      >-->
+<!--        <grid-item-->
+<!--          v-for="item in ttlayout"-->
+<!--          :key="item.i"-->
+<!--          :static="item.static"-->
+<!--          :x="item.x"-->
+<!--          :y="item.y"-->
+<!--          :w="item.w"-->
+<!--          :h="item.h"-->
+<!--          :i="item.i"-->
+<!--          :id="item.i"-->
+<!--        >-->
+<!--          <div id="chartA"></div>-->
+<!--        </grid-item>-->
+<!--      </grid-layout>-->
+<!--    </div>-->
+    <el-container>
+      <el-main>
+              <grid-layout class="gridLayout"
+                           :layout.sync="ttlayout"
+                           v-if="!(typeof ttlayout==='undefined')"
+                           :col-num="15"
+                           :row-height="30"
+                           :is-draggable="true"
+                           :is-resizable="true"
+                           :vertical-compact="true"
+                           :use-css-transforms="true"
+                           :style="{height:'800px'}"
+              >
+                <grid-item
+                  v-for="item in ttlayout"
+                  :key="item.i"
+                  :static="item.static"
+                  :x="item.x"
+                  :y="item.y"
+                  :w="item.w"
+                  :h="item.h"
+                  :i="item.i"
+                  :id="item.i"
+                >
+                  <div id="chartA"></div>
+                </grid-item>
+              </grid-layout>
+      </el-main>
+      <el-aside width="200px" style="border-left: 2px solid #eee9e9">
+        <el-divider><i class="el-icon-setting"></i></el-divider>
+        <SettingSide></SettingSide>
+      </el-aside>
+    </el-container>
     <!--        <div class="mutiItem">-->
     <!--            <div class="left">-->
     <!--                <div id="t1">-->
@@ -57,7 +90,7 @@
 import vegaEmbed from "vega-embed";
 import * as d3 from "d3";
 import VueGridLayout from 'vue-grid-layout';
-
+import SettingSide from '../Settingside/SettingSide'
 export default{
   data() {
     return {
@@ -106,7 +139,8 @@ export default{
     //chartC,
     //chartD
     GridLayout:VueGridLayout.GridLayout,
-    GridItem:VueGridLayout.GridItem
+    GridItem:VueGridLayout.GridItem,
+    SettingSide
   },
   watch:{
     layout:{
@@ -205,7 +239,7 @@ export default{
   width: 1800px;
   margin: 0 auto;
   height: 1000px;
-  background-color: #171C30;
+  background-color: #ffffff;
   border-radius:5px
 }
 .header{
@@ -238,6 +272,14 @@ export default{
   height:46%;
   width:96%;
   padding:2%
+}
+.el-aside {
+  color: #333;
+  text-align: center;
+  height: 1180px;
+}
+.el-color-picker{
+  z-index: 100;
 }
 /* Add space between Vega-Embed links  */
 .container{

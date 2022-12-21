@@ -5,7 +5,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state:{
-        tabledata:null
+        tabledata:null,
+      chartArray: [], //所有图的basedata
+      selectChartId: "", //选中图表的ID
+
     },
     actions:{
         changeData(ctx,data){

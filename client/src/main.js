@@ -12,6 +12,7 @@ import 'iview/dist/styles/iview.css'
 import 'vuesax/dist/vuesax.css' //Vuesax styles
 import 'element-ui/lib/theme-chalk/index.css';
 import 'material-icons/iconfont/material-icons.css';
+import {VTable,VPagination} from 'vue-easytable'
 //import store from './store'
 
 import Entrance from './pages/HomePage/Home'
@@ -23,6 +24,8 @@ Vue.use(VueRouter)
 Vue.use(iView)
 Vue.use(Vuex)
 Vue.use(ElementUI)
+Vue.component(VTable.name, VTable)
+Vue.component(VPagination.name, VPagination)
 Vue.use(Vuesax, {
   theme:{
     colors:{
@@ -136,7 +139,7 @@ const store = new Vuex.Store({
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app', 
+  el: '#app',
   router,
   store,
   components: { App },
