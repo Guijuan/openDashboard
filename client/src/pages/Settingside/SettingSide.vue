@@ -16,18 +16,14 @@
         <div v-if="key =='style'">
           <span>{{k}}</span>
           <div>
-            <div>
+            <div v-if="k==='backgroundColor'">
               <el-input class="colorInput" v-model="value.backgroundColor" size="mini"></el-input>
               <el-color-picker v-model="value.backgroundColor" size="mini"></el-color-picker>
             </div>
-<!--            <div v-if="k==='backgroundColor'">-->
-<!--              <el-input class="colorInput" v-model="value.backgroundColor" size="mini"></el-input>-->
-<!--              <el-color-picker v-model="value.backgroundColor" size="mini"></el-color-picker>-->
-<!--            </div>-->
-<!--            <div v-if="k==='fontColor'">-->
-<!--              <el-input class="colorInput" v-model="value.fontColor" size="mini"></el-input>-->
-<!--              <el-color-picker v-model="value.fontColor" size="mini"></el-color-picker>-->
-<!--            </div>-->
+            <div v-if="k==='fontColor'">
+              <el-input class="colorInput" v-model="value.fontColor" size="mini"></el-input>
+              <el-color-picker v-model="value.fontColor" size="mini"></el-color-picker>
+            </div>
           </div>
           <div v-for="(v, i, index) in val" :key="index">
             <el-input
@@ -262,8 +258,9 @@ export default {
     // },
     selectChartId: {
       handler(newVal){
-         if(newVal === "dashboard"){
-          this.baseData = this.$store.state.dashboardData.baseData
+        console.log('settting-watch-newVal',newVal);
+        if(newVal === "template"){
+          this.baseData = this.$store.state.templateData.baseData
         } else {
           this.baseData = this.$store.state.chartArray[newVal].baseData
         }
@@ -275,7 +272,7 @@ export default {
       this.baseData.data[rowIndex][field] = newValue;
     },
     sendIsActive(key) {
-      if (key == "dashboard") {
+      if (key == "template") {
         this.$store.commit("commitIsActive", !this.isClick);
       } else if (key == "startanalyzedata") {
         mapperdataM.startanalyzedata(); //不知道是否在这里用
@@ -309,5 +306,8 @@ export default {
 }
 .colorInput {
   padding-left: 10px !important;
+}
+.el-color-picker__panel{
+  z-index: 200000!important;
 }
 </style>

@@ -62,11 +62,21 @@ const store = new Vuex.Store({
     checkboxes:[],
     tableData : null,
     filesData: {},
-    currentTable: "barley"
+    currentTable: "barley",
+    chartArray: [], //所有图的basedata
+    selectChartId: "", //选中图表的ID
+    isActive: false,
+    templateData:""
   },
   mutations: {
+    changeSelectId(state, payload) {
+      state.selectChartId = payload;
+    },
     getFilesList (state, payload) {
       state.filesListData = payload.data
+    },
+    pushToTemplateData(state, payload) {
+      state.templateData= payload;
     },
     getFilesData (state, payload){
       if(!state.filesData[payload["title"]]){
@@ -96,7 +106,13 @@ const store = new Vuex.Store({
       console.log(1111, dataName, store.state.filesData.hasOwnProperty(dataName))
       //store.state.filesData.hasOwnProperty("")
       return store.state.filesData.hasOwnProperty(dataName) ? store.state.filesData["dataName"] : []
-    }
+    },
+    getIsActive: state=>{
+      return state.isActive
+    },
+    getSelectChartId:state=>{
+      return state.selectChartId
+    },
   },
   actions: {
     changeTableData(ctx,tableData){

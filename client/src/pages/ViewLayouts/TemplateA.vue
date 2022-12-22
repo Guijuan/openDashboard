@@ -30,8 +30,8 @@
 <!--        </grid-item>-->
 <!--      </grid-layout>-->
 <!--    </div>-->
-    <el-container>
-      <el-main>
+    <el-container v-on:click="getData">
+      <el-main @click.native="getData">
               <grid-layout class="gridLayout"
                            :layout.sync="ttlayout"
                            v-if="!(typeof ttlayout==='undefined')"
@@ -53,6 +53,7 @@
                   :h="item.h"
                   :i="item.i"
                   :id="item.i"
+                  @click.native="getData(item.i)"
                 >
                   <div id="chartA"></div>
                 </grid-item>
@@ -125,7 +126,23 @@ export default{
       ],
       draggable: true,
       resizable: true,
-      index: 0
+      index: 0,
+      baseData: {
+        //基本配置
+        MetaConfig: {
+          title: ""
+        },
+        style: {
+          backgroundColor: "",
+          fontColor: "" //字体颜色
+        },
+        data: [],
+        button: {
+          method: "template",
+          title: "apply to all charts"
+        }
+      },
+      selectChart:{}
     }
   },
   props:["layout"],
@@ -148,12 +165,45 @@ export default{
         console.log(curval)
       },
       deep: true
+    },
+    selectChart:{
+      handler(newVal) {
+        this.callReDraw(newVal.i,newVal.baseData)
+      },
+      deep:true
     }
   },
   mounted(){
     console.log('this.$store.state.layout',this.ttlayout);
+    this.$store.commit("pushToTemplateData", {baseData: this.baseData, i: "template" });
+    this.$store.commit("changeSelectId", "template");
   },
   methods:{
+    // 选中焦点时的触发事件，之后要改变setting状态栏
+    getData(id){
+      console.log('getData')
+      let re = /^[0-9]+.?[0-9]*/; //判断字符串是否为数字//判断正整数/[1−9]+[0−9]∗]∗/
+      if(!re.test(id)){
+        this.$store.commit('changeSelectId','template');
+        this.selectChart = this.$store.state.templateData;
+        console.log('selectChart',this.selectChart);
+        console.log(this.$store.state.selectChartId)
+      }else{
+        console.log('带参数的')
+        this.$store.commit('changeSelectId',id);
+        this.selectChart = this.$store.state.chartArray[id]
+        console.log('selectChart',this.selectChart);
+      }
+    },
+    callReDraw(id,newVal) {
+      let that = this;
+      if (id<2000) {
+        that.$refs[id][0].reDraw(newVal);
+      } else {
+        console.log('背景颜色更改');
+        document.getElementsByClassName("vue-grid-layout")[0].style.backgroundColor = newVal.style.backgroundColor;
+      }
+    },
     getModularInfo(m){
       let that = this
       this.layoutObj = JSON.parse(JSON.stringify(m))
@@ -300,6 +350,7 @@ export default{
 .container .vue-grid-item.vue-grid-placeholder {
   background: green;
 }
+/*控制背景颜色*/
 .vue-grid-layout {
   background: #eee;
 }
