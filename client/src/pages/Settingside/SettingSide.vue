@@ -110,7 +110,7 @@ export default {
     return {
       baseData: {
         MetaConfig: {
-          title: ""
+          title: "background"
         },
         style: {
           color: []
@@ -262,7 +262,54 @@ export default {
         if(newVal === "template"){
           this.baseData = this.$store.state.templateData.baseData
         } else {
-          this.baseData = this.$store.state.chartArray[newVal].baseData
+          console.log('图表配置')
+          // this.baseData = this.$store.state.chartArray[newVal].baseData
+          this.baseData = {
+              "MetaConfig": {
+                "title": "降雨量"
+              },
+              "style": {
+                "color": ["#f1d722"]
+              },
+              "id": "this.id",
+              "data": [
+                {
+                  "name": "Mon",
+                  "value": "10"
+                },
+                {
+                  "name": "Tue",
+                  "value": "706"
+                },
+                {
+                  "name": "Wed",
+                  "value": "239"
+                },
+                {
+                  "name": "Thu",
+                  "value": 172
+                }
+              ],
+              "datamappers": [
+                {
+                  "Fieldname": "value",
+                  "Fieldtype": "num",
+                  "Mapfrom": null,
+                  "Alias": null
+                },
+                {
+                  "Fieldname": "name",
+                  "Fieldtype": "string",
+                  "Mapfrom": null,
+                  "Alias": null
+                }
+              ],
+              "button": {
+                "method": "startanalyzedata",
+                "title": "Apply"
+              },
+              "mapperdatas": null
+          }
         }
       }
     }

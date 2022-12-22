@@ -53,7 +53,7 @@
                   :h="item.h"
                   :i="item.i"
                   :id="item.i"
-                  @click.native="getData(item.i)"
+                  @click.native.stop="getData(item.i)"
                 >
                   <div id="chartA"></div>
                 </grid-item>
@@ -191,7 +191,55 @@ export default{
       }else{
         console.log('带参数的')
         this.$store.commit('changeSelectId',id);
-        this.selectChart = this.$store.state.chartArray[id]
+        // this.selectChart = this.$store.state.chartArray[id]
+        this.selectChart = {
+          "baseData": {
+            "MetaConfig": {
+              "title": "降雨量"
+            },
+            "style": {
+              "color": ["#69C0FF"]
+            },
+            "id": "this.id",
+            "data": [
+              {
+                "name": "Mon",
+                "value": "10"
+              },
+              {
+                "name": "Tue",
+                "value": "706"
+              },
+              {
+                "name": "Wed",
+                "value": "239"
+              },
+              {
+                "name": "Thu",
+                "value": 172
+              }
+            ],
+            "datamappers": [
+              {
+                "Fieldname": "value",
+                "Fieldtype": "num",
+                "Mapfrom": null,
+                "Alias": null
+              },
+              {
+                "Fieldname": "name",
+                "Fieldtype": "string",
+                "Mapfrom": null,
+                "Alias": null
+              }
+            ],
+            "button": {
+              "method": "startanalyzedata",
+              "title": "Apply"
+            },
+            "mapperdatas": null
+          }
+        }
         console.log('selectChart',this.selectChart);
       }
     },
@@ -274,7 +322,9 @@ export default{
     generateGraph(){
       let that = this
       let charts = Object.keys(that.layoutObj["config"])
+      console.log(charts);
       charts.forEach(function(d){
+        console.log(that.layoutObj["config"][d]["data"]);
         vegaEmbed("#" + d, that.layoutObj["config"][d]["data"])
       })
     }
