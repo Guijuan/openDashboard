@@ -141,9 +141,32 @@
       "type":"Chart",
       "maker": "rect"
     },
+  "DataPanel":{
+    "inPorts": [
+      {"name":"x","text":"X","attr":"encoding","type":"in"},
+      {"name":"y","text":"Y","attr":"encoding","type":"in"},
+      {"name":"color","text":"Stroke","attr":"encoding","type":"in"}
+    ],
+    "outPorts": [
+      {"name":"out","text":"out","attr":"field","type":"out"}
+    ],
+    "type":"Chart",
+    "maker": "rect"
+  },
+  "CTable":{
+    "inPorts": [
+      {"name":"x","text":"X","attr":"encoding","type":"in"},
+      {"name":"y","text":"Y","attr":"encoding","type":"in"},
+      {"name":"color","text":"Stroke","attr":"encoding","type":"in"}
+    ],
+    "outPorts": [
+      {"name":"out","text":"out","attr":"field","type":"out"}
+    ],
+    "type":"Chart",
+    "maker": "rect"
+  },
 
     "Color":{
-
         "inPorts": [
             {"name":"In","text":"In","attr":"field" ,"type":"in"}
         ],
@@ -153,7 +176,6 @@
         "type":"Operator"
     },
     "Sum":{
-
         "inPorts": [
             {"name":"Num A","text":"Num A","attr":"operator","type":"in"},
             {"name":"Num B","text":"Num B","attr":"operator","type":"in"}

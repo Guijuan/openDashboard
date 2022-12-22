@@ -6,5 +6,8 @@
         {"id": "button5", "style": "none", "content": "button5"},
         {"id": "button6", "style": "none", "content": "button6"},
         {"id": "button7", "style": "none", "content": "button7"},
-        {"id": "button8", "style": "none", "content": "button8"}
+        {"id": "button8", "style": "none", "content": "button8"},
+        {"id": "button9", "style": "none", "content": "button9"},
+        {"id": "button10", "style": "none", "content": "button10"},
+        {"id": "button11", "style": "none", "content": "button11"}
 ]

@@ -133,6 +133,7 @@ import BlueprintLine from "../../common/BlueComponents/BlueprintLine"
 import DataPreviewTable from '../../common/DataPreviewer/DataPreviewTable'
 import mapData from "../../assets/us-10m.json";
 import DataPanel from "../../common/DataListBar/DataPanel";
+import carsData from "../../assets/cars.json"
 //import AutoPage from "../AutoBoard/AutoPage";
 
 export default {
@@ -356,7 +357,6 @@ export default {
 
       drawGrids(that);
     },
-
     //create a new component to canvas which need a component type and a unique name
     createNewComponent() {
       let that = this,
@@ -432,7 +432,9 @@ export default {
 
       //构造对应图类型的数据：如Map
       const constructproperty = function (that, property, name) {
+        console.log(property)
         let obj = JSON.parse(JSON.stringify(property))
+        console.log(obj)
         //according to this.blueComponentsTypeCount construct id and add 1
         //make inports outports full
         //make sure that the viewer name equal to button content
@@ -553,6 +555,7 @@ export default {
         //create function component
         //获取参数
         let _name = arguments[0]
+        console.log(that.modelConfig[_name])
         constructproperty(that, that.modelConfig[_name], _name)
       } else if (arguments.length == 2) {
         //create or add data component
@@ -579,7 +582,48 @@ export default {
           },
           "mark": "geoshape",
         }
-      } else {
+      } else if(meta.content.indexOf("Table") != -1){
+        result = {
+          "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+          "data": {"values": carsData},
+          "transform": [
+            {
+              "aggregate": [{"op": "count", "as": "num_cars"}],
+              "groupby": ["Origin", "Cylinders"]
+            }
+          ],
+          "encoding": {
+            "y": {"field": "Origin", "type": "ordinal"},
+            "x": {"field": "Cylinders", "type": "ordinal"}
+          },
+          "layer": [
+            {
+              "mark": "rect",
+              "encoding": {
+                "color": {
+                  // "field": "num_cars",
+                  // "type": "quantitative",
+                  // "title": "Count of Records",
+                  // "legend": {"direction": "horizontal", "gradientLength": 120}
+                }
+              }
+            },
+            {
+              "mark": "text",
+              "encoding": {
+                "text": {"field": "num_cars", "type": "quantitative"},
+                "color": {
+                  "condition": {"test": "datum['num_cars'] < 40", "value": "black"},
+                  "value": "white"
+                }
+              }
+            }
+          ],
+          // "config": {
+          //   "axis": {"grid": true, "tickBand": "extent"}
+          // }
+        }
+      }else {
         result = this.vegaObjectObj[meta["id"]].getOutputForced();
       }
       //Show the result in bottom canvas via vage compilier
