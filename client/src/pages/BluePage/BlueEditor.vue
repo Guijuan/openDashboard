@@ -134,6 +134,7 @@ import TemplateB from "../ViewLayouts/TemplateB"
 import NavBar from "../../common/NavBar/NavBar"
 import BlueprintLine from "../../common/BlueComponents/BlueprintLine"
 import DataPreviewTable from '../../common/DataPreviewer/DataPreviewTable'
+import mapData from "../../assets/us-10m.json";
 //import AutoPage from "../AutoBoard/AutoPage";
 
 export default {
@@ -560,8 +561,26 @@ export default {
 
     //generate chart
     generateChart(id, meta) {
-      let result = this.vegaObjectObj[meta["id"]].getOutputForced();
-      console.log(result)
+      let result = {}
+      if (meta.content.indexOf("Map") != -1) {
+        result = {
+          "width": 500,
+          "height": 300,
+          "data": {
+            "values": mapData,
+            "format": {
+              "type": "topojson",
+              "feature": "counties"
+            }
+          },
+          "projection": {
+            "type": "albersUsa"
+          },
+          "mark": "geoshape",
+        }
+      } else {
+        result = this.vegaObjectObj[meta["id"]].getOutputForced();
+      }
       //Show the result in bottom canvas via vage compilier
       vegaEmbed("#canvas", result, {theme: "default"});
       this.notifications({"title": result.title.text, "text": "Generate success~", "color": 'rgb(31,116,225)'})
