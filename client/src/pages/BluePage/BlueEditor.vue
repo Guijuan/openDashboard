@@ -2,12 +2,11 @@
 
   <div id="blue-editor">
     <NavBar></NavBar>
-
     <div class='toolbar' style='position:absolute;top:45px;right:2%'>
       <vs-button v-on:click="undoAction" class='tool_button' radius color="#1473e6" type="filled"
-                 icon="undo"></vs-button>
+                 icon="undo" :disabled="blueComponents.length==0"></vs-button>
       <vs-button v-on:click="redoAction" class='tool_button' radius color="#1473e6" type="filled"
-                 icon="redo"></vs-button>
+                 icon="redo" :disabled="stepLoction==0&&stepLoction==blueComponents.length"></vs-button>
       <vs-button v-on:click="graphPreview" class='tool_button' radius color="#1473e6" type="filled"
                  icon="view_quilt"></vs-button>
       <vs-button v-on:click="cleanPanel" class='tool_button' radius color="#1473e6" type="filled"
@@ -17,7 +16,6 @@
       <vs-button v-on:click="downloadSetting" class='tool_button' radius color="#1473e6" type="filled"
                  icon="cloud_download"></vs-button>
     </div>
-
     <vs-row style="height:1075px">
       <!--整个高度为10-->
       <vs-col id='data_list_container' vs-justify="left" vs-align="top" vs-w="2"
@@ -81,7 +79,6 @@
             </div>
           </vs-col>
         </vs-row>
-
         <vs-row v-if="!isTable" id="preview_container" vs-w="12"
                 style="display:flex; padding:20px 20px 20px 20px; height:38%">
           <!--该列放置生成图-->
@@ -135,6 +132,7 @@ import NavBar from "../../common/NavBar/NavBar"
 import BlueprintLine from "../../common/BlueComponents/BlueprintLine"
 import DataPreviewTable from '../../common/DataPreviewer/DataPreviewTable'
 import mapData from "../../assets/us-10m.json";
+import DataPanel from "../../common/DataListBar/DataPanel";
 //import AutoPage from "../AutoBoard/AutoPage";
 
 export default {
@@ -169,6 +167,8 @@ export default {
       popupActivo4: false,
       layoutIdName: {}, //{"layout-0": "Template A"}
       layoutlist: ["A", "B"],
+      stepLoction:0,
+      toDoList:[],
       A: false,
       B: false,
       tableData: null,
@@ -186,6 +186,7 @@ export default {
     }
   },
   components: {
+    DataPanel,
     TemplateA,
     TemplateB,
     DataPreviewTable,
@@ -1258,14 +1259,18 @@ export default {
     function:....
     */
     undoAction() {
-      alert("undo")
+      if(this.blueComponents.length != 0){
+        let com = this.blueComponents.pop()
+        this.stepLoction += 1
+        this.remove(com)
+      }
     },
     /*
     author:GH
     function:....
     */
     redoAction() {
-      alert("redo")
+      this.createNewComponent('Map')
     }
   },
   watch: {

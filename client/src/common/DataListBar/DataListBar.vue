@@ -17,7 +17,7 @@
             </vs-list>
         </vs-row>
         <vs-row vs-h="8">
-            
+
             <vs-row vs-h="8">
                 <div id="testdiv" style="position:absolute" :data="checkBoxesList"></div>
                 <div id="draggableMenu" style="font-size: 8px; position:absolute; left:1%; top:55%; width: 300px; height: 150px; background-color: rgba(200, 200, 200, 0.2); opacity:0;">
@@ -25,9 +25,9 @@
                         <p style="padding: 12px">Connect</p>
                     </div>
                     <div style="float: left; width:40px; height:20px;">
-                        <vs-button color="rgb(128,128,128)" type="flat" icon="clear" style="padding: auto" v-on:click="clickClosedraggableMenu()"></vs-button>
+                        <vs-button color="rgb(128,128,128)" type="flat" icon="clear" style="padding: auto;" v-on:click="clickClosedraggableMenu()"></vs-button>
                     </div>
-                    
+
                     <div :key="index" v-for = "(todo, index) in svgtodos">
                         <div style="float: left; width:75px; height:60px; padding-top: 10px">
                             <img :src = "getImgUrl(todo.route)"  style="float: left; width:75px; height:30px;">
@@ -35,21 +35,21 @@
                             or="rgb(128,128,128)" type="flat" style="float: left; width:75px; height:30px; padding-top: 5px;" v-on:click="generateData(todo.type)">{{ todo.type }}</vs-button>
                         </div>
                     </div>
-                    
+
                     <div style="float: left; width:300px; padding-top:10px">
                         <div style="float: left; width:150px;">
                             <vs-select color="rgb(128,128,128)" :label="state.labels.left" v-model="state.attrLeftSelect" style="float: left; width:150px;">
                                 <vs-select-item :key= "index" :value="item.value" :text="item.text" v-for= "(item,index) in state.attrList.left" />
                             </vs-select>
                         </div>
-                        
+
                         <div style="float: left; width:150px;">
                             <vs-select color="rgb(128,128,128)" :label="state.labels.right" v-model="state.attrRightSelect" style="float: left; width:150px;">
                                 <vs-select-item :key = "index" :value="item.value" :text="item.text" v-for= "(item,index) in state.attrList.right" />
                             </vs-select>
                         </div>
                     </div>
-                    
+
                 </div>
             </vs-row>
         </vs-row>
@@ -122,10 +122,10 @@ export default{
                     type: "full-join"
                 }
             ], //drag box svg icon
-        
+
         }
     },
-    created: function() { 
+    created: function() {
         this.initData()
     },
     watch: {
@@ -163,7 +163,7 @@ export default{
             this.$vs.notify({color:'success',title:'Upload Success',text:'Lorem ipsum dolor sit amet, consectetur'})
         },
         greet(){
-            
+
         },
         getRatio(){
             var ratio = 0,
@@ -284,7 +284,7 @@ export default{
                 divId = 'div_' + dataName,
                 randomColor = d3.scaleOrdinal(d3.schemeCategory10),
                 position = null
-            
+
             //通过tab位置字典获取tab left位置 并设置id
             for(let i=0; i<this.state.tabsPosition.length; i++){
                 let d = this.state.tabsPosition[i]
@@ -317,7 +317,7 @@ export default{
                 addtab.transition().duration(300).style('opacity', 1)
 
             if(this.dataTabs.datalist.indexOf(dataName) == -1){
-                this.dataTabs.count ++ 
+                this.dataTabs.count ++
                 this.dataTabs.datalist.push(dataName)
             }
 
@@ -337,7 +337,7 @@ export default{
             if(this.dataTabs.count <= 0) return;
             let dataIndex = this.dataTabs.datalist.indexOf(dataName),
                 divId = 'div_' + dataName
-            
+
             //删除位置字典内tab id
             this.state.tabsPosition.forEach(d => {
                 if(d.id == divId){
@@ -354,7 +354,7 @@ export default{
                 this.dataTabs.count --
                 this.dataTabs.datalist.splice(dataIndex, 1)
             }
-            
+
         },
         updateCheckBoxes: function(val) {
             //find diff(add, del) val
@@ -388,7 +388,7 @@ export default{
                 rightName = this.state.labels.right,
                 leftAttr = this.state.attrLeftSelect,
                 rightAttr = this.state.attrRightSelect
-            
+
             //post joinType {dataName_1: leftName, dataName_2: rightName, column: leftAttr}
             let val = [
                         {
