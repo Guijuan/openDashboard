@@ -113,6 +113,9 @@ const store = new Vuex.Store({
     getSelectChartId:state=>{
       return state.selectChartId
     },
+    getChartArray:state=>{
+      return state.chartArray
+    }
   },
   actions: {
     changeTableData(ctx,tableData){

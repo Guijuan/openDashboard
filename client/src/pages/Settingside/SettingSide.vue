@@ -237,6 +237,53 @@ export default {
     };
   },
   mounted(){
+    this.baseData = {
+      "MetaConfig": {
+        "title": "柱状图"
+      },
+      "style": {
+        "color": ["#f1d722"]
+      },
+      "id": "this.id",
+      "data": [
+        {
+          "name": "id",
+          "value": 1
+        },
+        {
+          "name": "time",
+          "value": "10"
+        },
+        {
+          "name": "lat",
+          "value": "40"
+        },
+        {
+          "name": "lng",
+          "value": "100.20"
+        },
+      ],
+      "datamappers": [
+        {
+          "Fieldname": "value",
+          "Fieldtype": "num",
+          "Mapfrom": null,
+          "Alias": null
+        },
+        {
+          "Fieldname": "name",
+          "Fieldtype": "string",
+          "Mapfrom": null,
+          "Alias": null
+        }
+      ],
+      "button": {
+        "method": "startanalyzedata",
+        "title": "Apply"
+      },
+      "mapperdatas": null
+    }
+    this.$store.state.chartArray.push({id:'1',baseData:this.baseData})
   },
   computed: {
     // ...mapGetters({ storeBaseData: "getPropsData" }),
@@ -244,12 +291,16 @@ export default {
     ...mapGetters({ selectChartId: "getSelectChartId"}),
   },
   watch: {
-    // baseData: {
-    //   handler(newVal) {
-    //     this.$store.commit("commitPropsData", newVal);
-    //   },
-    //   deep: true
-    // },
+    baseData: {
+      handler(newVal) {
+        console.log('basedata改变')
+        // this.$store.commit("commitPropsData", newVal);
+        console.log(this.baseData['style']['color'])
+        // this.$store.state.chartArray.push(1)
+        console.log(this.$store.state.chartArray)
+      },
+      deep: true
+    },
     // storeBaseData: {
     //   handler(newVal) {
     //     this.baseData = newVal;
@@ -264,54 +315,10 @@ export default {
         } else {
           console.log('图表配置')
           // this.baseData = this.$store.state.chartArray[newVal].baseData
-          this.baseData = {
-              "MetaConfig": {
-                "title": "降雨量"
-              },
-              "style": {
-                "color": ["#f1d722"]
-              },
-              "id": "this.id",
-              "data": [
-                {
-                  "name": "Mon",
-                  "value": "10"
-                },
-                {
-                  "name": "Tue",
-                  "value": "706"
-                },
-                {
-                  "name": "Wed",
-                  "value": "239"
-                },
-                {
-                  "name": "Thu",
-                  "value": 172
-                }
-              ],
-              "datamappers": [
-                {
-                  "Fieldname": "value",
-                  "Fieldtype": "num",
-                  "Mapfrom": null,
-                  "Alias": null
-                },
-                {
-                  "Fieldname": "name",
-                  "Fieldtype": "string",
-                  "Mapfrom": null,
-                  "Alias": null
-                }
-              ],
-              "button": {
-                "method": "startanalyzedata",
-                "title": "Apply"
-              },
-              "mapperdatas": null
-          }
+          this.baseData = this.$store.state.chartArray[0].baseData
         }
       }
+
     }
   },
   methods: {

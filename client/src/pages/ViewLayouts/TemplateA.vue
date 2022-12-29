@@ -92,6 +92,7 @@ import vegaEmbed from "vega-embed";
 import * as d3 from "d3";
 import VueGridLayout from 'vue-grid-layout';
 import SettingSide from '../Settingside/SettingSide'
+import { mapGetters } from "vuex";
 export default{
   data() {
     return {
@@ -148,6 +149,7 @@ export default{
   props:["layout"],
   computed:{
     // ...mapGetters(['layout'])
+    ...mapGetters({getChartArray: 'getChartArray'})
   },
   components: {
     //图表组件
@@ -168,13 +170,28 @@ export default{
     },
     selectChart:{
       handler(newVal) {
-        this.callReDraw(newVal.i,newVal.baseData)
+        console.log(newVal);
+        if(newVal.i=='template'){
+          this.callReDraw(newVal.i,newVal.baseData)
+        }
+        // else {
+        //   this.generateGraph();
+        // }
       },
       deep:true
+    },
+    getChartArray:{
+      handler(newVal){
+        console.log('数据改动')
+        console.log('颜色',this.$store.state.chartArray[0]['baseData']['style']['color'])
+        this.layoutObj["config"]["chartA"]["data"]['layer'][0]['mark']['fill'] = this.$store.state.chartArray[0]['baseData']['style']['color']
+        this.generateGraph(this.layoutObj["config"]["chartA"]["data"]['layer'][0]['mark']['fill'])
+      },
+      deep: true
     }
   },
   mounted(){
-    console.log('this.$store.state.layout',this.ttlayout);
+    console.log('this.$store.state.ttlayout',this.ttlayout);
     this.$store.commit("pushToTemplateData", {baseData: this.baseData, i: "template" });
     this.$store.commit("changeSelectId", "template");
   },
@@ -319,12 +336,13 @@ export default{
     setHeaderColor(){
 
     },
-    generateGraph(){
+    generateGraph(color='#1F9CC9'){
       let that = this
       let charts = Object.keys(that.layoutObj["config"])
-      console.log(charts);
+      console.log('generateGraph',charts);
       charts.forEach(function(d){
         console.log(that.layoutObj["config"][d]["data"]);
+        that.layoutObj["config"][d]["data"]['layer'][0]['mark']['fill'] = color
         vegaEmbed("#" + d, that.layoutObj["config"][d]["data"])
       })
     }
