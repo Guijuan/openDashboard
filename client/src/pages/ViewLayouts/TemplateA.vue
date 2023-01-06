@@ -54,8 +54,9 @@
                   :i="item.i"
                   :id="item.i"
                   @click.native.stop="getData(item.i)"
+                  @resized="resizeEvent"
                 >
-                  <div id="chartA"></div>
+                  <div :id="item.name"></div>
                 </grid-item>
               </grid-layout>
       </el-main>
@@ -97,17 +98,17 @@ export default{
   data() {
     return {
       ModularInfo:{},
-      chartStyle:{"chartA":{"width": 828,"height": 390},
-        "chartB":{"width": 828,"height": 390},
-        "chartC":{"width": 828,"height": 390},
-        "chartD":{"width": 828,"height": 390}
+      chartStyle:{"chartA":{"width": 197,"height": 70},
+        "chartB":{"width": 197,"height": 70},
+        "chartC":{"width": 197,"height": 70},
+        "chartD":{"width": 197,"height": 70}
       },
       layoutObj:{},
       ttlayout: [
-        {"x":0,"y":0,"w":2,"h":2,"i":"0", static: false},
-        // {"x":2,"y":0,"w":2,"h":4,"i":"1", static: true},
-        // {"x":4,"y":0,"w":2,"h":5,"i":"2", static: false},
-        // {"x":6,"y":0,"w":2,"h":3,"i":"3", static: false},
+        {"x":0,"y":0,"w":2,"h":2,"i":"0", static: false, name:'chartA'},
+        {"x":2,"y":0,"w":2,"h":4,"i":"1", static: true, name:'chartB'},
+        {"x":4,"y":0,"w":2,"h":5,"i":"2", static: false, name:'chartC'},
+        {"x":6,"y":0,"w":2,"h":3,"i":"3", static: false, name:'chartD'},
         // {"x":8,"y":0,"w":2,"h":3,"i":"4", static: false},
         // {"x":10,"y":0,"w":2,"h":3,"i":"5", static: false},
         // {"x":0,"y":5,"w":2,"h":5,"i":"6", static: false},
@@ -182,10 +183,12 @@ export default{
     },
     getChartArray:{
       handler(newVal){
-        console.log('数据改动')
-        console.log('颜色',this.$store.state.chartArray[0]['baseData']['style']['color'])
-        this.layoutObj["config"]["chartA"]["data"]['layer'][0]['mark']['fill'] = this.$store.state.chartArray[0]['baseData']['style']['color']
-        this.generateGraph(this.layoutObj["config"]["chartA"]["data"]['layer'][0]['mark']['fill'])
+        console.log(newVal);
+        console.log('数据改动',this.$store.state.chartArray)
+        // console.log('颜色',this.$store.state.chartArray[0]['baseData']['style']['color'])
+        // this.layoutObj["config"]["chartA"]["data"]['layer'][0]['mark']['fill'] = this.$store.state.chartArray[0]['baseData']['style']['color']
+        // this.generateGraph(this.layoutObj["config"]["chartA"]["data"]['layer'][0]['mark']['fill'])
+        this.reGenerateGraphByStyle(newVal)
       },
       deep: true
     }
@@ -196,6 +199,13 @@ export default{
     this.$store.commit("changeSelectId", "template");
   },
   methods:{
+    // grid大小调整，触发cavans大小调整
+    resizeEvent(i, newH, newW, newHPx, newWPx) {
+      console.log('resize');
+      console.log("RESIZE i=" + i + ", H=" + newH + ", W=" + newW + ", H(px)=" + newHPx + ", W(px)=" + newWPx);
+      console.log('layoutObj',this.layoutObj)
+      this.reGenerateGraphBySize(i,newWPx,newHPx)
+    },
     // 选中焦点时的触发事件，之后要改变setting状态栏
     getData(id){
       console.log('getData')
@@ -345,6 +355,37 @@ export default{
         that.layoutObj["config"][d]["data"]['layer'][0]['mark']['fill'] = color
         vegaEmbed("#" + d, that.layoutObj["config"][d]["data"])
       })
+    },
+    reGenerateGraphByStyle(newVal){
+      let that = this
+      let i = 0
+      let charts = Object.keys(that.layoutObj["config"])
+      console.log(newVal);
+      console.log('generateGraph',charts);
+      charts.forEach(function(d){
+        console.log(that.layoutObj["config"][d]["data"]);
+        console.log(newVal[i]['baseData']['style']['color'][0]);
+        that.layoutObj["config"][d]["data"]['layer'][0]['mark']['fill'] = newVal[i]['baseData']['style']['color'][0]
+        vegaEmbed("#" + d, that.layoutObj["config"][d]["data"])
+        i = i + 1
+      })
+    },
+    reGenerateGraphBySize(i,width,height){
+      let that = this
+      let charts = Object.keys(that.layoutObj["config"])
+      let name = ''
+      console.log(i);
+      for(let item of this.ttlayout){
+        if(item['i']==i){
+          name = item['name']
+        }
+      }
+      console.log(name);
+      that.layoutObj["config"][name]["data"]['layer'][0]['width'] =width
+      that.layoutObj["config"][name]["data"]['layer'][0]['height'] =height
+      console.log('reGenerateGraphBySize---重绘');
+      vegaEmbed(`#${name}`, that.layoutObj["config"][name]["data"])
+      console.log('generateGraph',that.layoutObj);
     }
   }
 

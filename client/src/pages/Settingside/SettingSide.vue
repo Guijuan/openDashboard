@@ -242,7 +242,7 @@ export default {
         "title": "柱状图"
       },
       "style": {
-        "color": ["#f1d722"]
+        "color": ["#1F9CC9"]
       },
       "id": "this.id",
       "data": [
@@ -283,7 +283,194 @@ export default {
       },
       "mapperdatas": null
     }
-    this.$store.state.chartArray.push({id:'1',baseData:this.baseData})
+    let baseData1 = {
+        "MetaConfig": {
+          "title": "柱状图"
+        },
+        "style": {
+          "color": ["#1F9CC9"]
+        },
+        "id": "this.id",
+        "data": [
+          {
+            "name": "id",
+            "value": 1
+          },
+          {
+            "name": "time",
+            "value": "10"
+          },
+          {
+            "name": "lat",
+            "value": "40"
+          },
+          {
+            "name": "lng",
+            "value": "100.20"
+          },
+        ],
+        "datamappers": [
+          {
+            "Fieldname": "value",
+            "Fieldtype": "num",
+            "Mapfrom": null,
+            "Alias": null
+          },
+          {
+            "Fieldname": "name",
+            "Fieldtype": "string",
+            "Mapfrom": null,
+            "Alias": null
+          }
+        ],
+        "button": {
+          "method": "startanalyzedata",
+          "title": "Apply"
+        },
+        "mapperdatas": null
+      }
+    let baseData2 = {
+      "MetaConfig": {
+        "title": "柱状图"
+      },
+      "style": {
+        "color": ["#1F9CC9"]
+      },
+      "id": "this.id",
+      "data": [
+        {
+          "name": "id",
+          "value": 1
+        },
+        {
+          "name": "time",
+          "value": "10"
+        },
+        {
+          "name": "lat",
+          "value": "40"
+        },
+        {
+          "name": "lng",
+          "value": "100.20"
+        },
+      ],
+      "datamappers": [
+        {
+          "Fieldname": "value",
+          "Fieldtype": "num",
+          "Mapfrom": null,
+          "Alias": null
+        },
+        {
+          "Fieldname": "name",
+          "Fieldtype": "string",
+          "Mapfrom": null,
+          "Alias": null
+        }
+      ],
+      "button": {
+        "method": "startanalyzedata",
+        "title": "Apply"
+      },
+      "mapperdatas": null
+    }
+    let baseData3 = {
+      "MetaConfig": {
+        "title": "柱状图"
+      },
+      "style": {
+        "color": ["#1F9CC9"]
+      },
+      "id": "this.id",
+      "data": [
+        {
+          "name": "id",
+          "value": 1
+        },
+        {
+          "name": "time",
+          "value": "10"
+        },
+        {
+          "name": "lat",
+          "value": "40"
+        },
+        {
+          "name": "lng",
+          "value": "100.20"
+        },
+      ],
+      "datamappers": [
+        {
+          "Fieldname": "value",
+          "Fieldtype": "num",
+          "Mapfrom": null,
+          "Alias": null
+        },
+        {
+          "Fieldname": "name",
+          "Fieldtype": "string",
+          "Mapfrom": null,
+          "Alias": null
+        }
+      ],
+      "button": {
+        "method": "startanalyzedata",
+        "title": "Apply"
+      },
+      "mapperdatas": null
+    }
+    let baseData4 = {
+      "MetaConfig": {
+        "title": "柱状图"
+      },
+      "style": {
+        "color": ["#1F9CC9"]
+      },
+      "id": "this.id",
+      "data": [
+        {
+          "name": "id",
+          "value": 1
+        },
+        {
+          "name": "time",
+          "value": "10"
+        },
+        {
+          "name": "lat",
+          "value": "40"
+        },
+        {
+          "name": "lng",
+          "value": "100.20"
+        },
+      ],
+      "datamappers": [
+        {
+          "Fieldname": "value",
+          "Fieldtype": "num",
+          "Mapfrom": null,
+          "Alias": null
+        },
+        {
+          "Fieldname": "name",
+          "Fieldtype": "string",
+          "Mapfrom": null,
+          "Alias": null
+        }
+      ],
+      "button": {
+        "method": "startanalyzedata",
+        "title": "Apply"
+      },
+      "mapperdatas": null
+    }
+    this.$store.state.chartArray.push({id:'0',baseData:baseData1})
+    this.$store.state.chartArray.push({id:'1',baseData:baseData2})
+    this.$store.state.chartArray.push({id:'2',baseData:baseData3})
+    this.$store.state.chartArray.push({id:'3',baseData:baseData4})
   },
   computed: {
     // ...mapGetters({ storeBaseData: "getPropsData" }),
@@ -315,7 +502,7 @@ export default {
         } else {
           console.log('图表配置')
           // this.baseData = this.$store.state.chartArray[newVal].baseData
-          this.baseData = this.$store.state.chartArray[0].baseData
+          this.baseData = this.$store.state.chartArray[newVal].baseData
         }
       }
 
