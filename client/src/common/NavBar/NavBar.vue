@@ -11,7 +11,7 @@
         <a href="http://localhost:8080/blue">Dashboard</a>
       </vs-navbar-item>
       <vs-navbar-item index="2" style="color:white; padding-left:5px">
-        <a href="http://localhost:8080/blue">Galley</a>
+        <a href="http://localhost:8080/gallery">Gallery</a>
       </vs-navbar-item>
     </div>
 

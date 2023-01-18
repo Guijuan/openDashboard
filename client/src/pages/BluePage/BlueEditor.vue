@@ -1,5 +1,4 @@
 <template>
-
   <div id="blue-editor">
     <NavBar></NavBar>
     <div class='toolbar' style='position:absolute;top:45px;right:2%'>
@@ -135,7 +134,7 @@ import mapData from "../../assets/us-10m.json";
 import DataPanel from "../../common/DataListBar/DataPanel";
 import carsData from "../../assets/cars.json"
 //import AutoPage from "../AutoBoard/AutoPage";
-
+import {mapState} from "vuex";
 export default {
   name: "blue-editor",
   data() {
@@ -183,7 +182,18 @@ export default {
         "Caculator": "#37BC9B",
         "Layout": "#37BC22",
         "Data": "#F6BB42"
-      }
+      },
+
+      //gallery
+      chartMap:{
+        "Line":'Linechart',
+        "Bar":'Barchart',
+        "Table":"CTable",
+        "Pie":"Piechart",
+        "Map":"Map"
+      },
+      chartTypes:[],
+      chartsColor:[]
     }
   },
   components: {
@@ -192,6 +202,15 @@ export default {
     TemplateB,
     DataPreviewTable,
     NavBar
+  },
+  computed:{
+    galleryChart:function (){
+      let type = this.$store.getters.getGalleryCharts
+      let color = this.$store.getters.getGalleryColor
+      let data = type.map((item, i)=>
+        ({type:item, color:color[i]}))
+      return data
+    }
   },
   created() {
     //
@@ -358,7 +377,7 @@ export default {
       drawGrids(that);
     },
     //create a new component to canvas which need a component type and a unique name
-    createNewComponent() {
+    createNewComponent(name,color) {
       let that = this,
         property = null,
         _com = null;
@@ -472,9 +491,11 @@ export default {
           that.viewerbuttonbox.every(function (d, i) {
             if (d['style'] == 'none') {
               d['style'] = 'block';
+              d['background'] = color
               d['content'] = propertiesname;
               obj["name"] = propertiesname;
               d["id"] = obj['id']
+              // d['background'] = color
               return false
             } else {
               return true
@@ -559,17 +580,23 @@ export default {
         constructproperty(that, that.modelConfig[_name], _name)
       } else if (arguments.length == 2) {
         //create or add data component
-        dimensionSelected(that, arguments[0], arguments[1])
+        if(typeof arguments[1] == "string"){
+          constructproperty(that, that.modelConfig[arguments[0]], arguments[0])
+        }else {
+          dimensionSelected(that, arguments[0], arguments[1])
+        }
       }
     },
 
     //generate chart
     generateChart(id, meta) {
+      console.log(meta)
       let result = {}
       if (meta.content.indexOf("Map") != -1) {
         result = {
           "width": 500,
           "height": 300,
+          "background":meta['background'],
           "data": {
             "values": mapData,
             "format": {
@@ -586,6 +613,7 @@ export default {
         result = {
           "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
           "data": {"values": carsData},
+          "background":meta['background'],
           "transform": [
             {
               "aggregate": [{"op": "count", "as": "num_cars"}],
@@ -625,6 +653,8 @@ export default {
         }
       }else {
         result = this.vegaObjectObj[meta["id"]].getOutputForced();
+        result.background = meta['background']==""?"#ffffff":meta['background']
+        console.log(result)
       }
       //Show the result in bottom canvas via vage compilier
       vegaEmbed("#canvas", result, {theme: "default"});
@@ -657,6 +687,15 @@ export default {
         else
           this.buttonName = 'Preview'
       })
+    },
+
+    initChartComponent(){
+      if(this.galleryChart.length > 0){
+        this.cleanPanel()
+        this.galleryChart.forEach(item=>{
+          this.createNewComponent(this.chartMap[item.type], item.color)
+        })
+      }
     },
 
     ///////////////////////////////
@@ -1392,10 +1431,11 @@ export default {
           })
         }
       }
-    }
+    },
   },
   mounted() {
     let that = this;
+    console.log(this.chartTypes)
     this.chartInit("#preview");
 
     //Set the init setting of textarea
@@ -1411,6 +1451,7 @@ export default {
     //   console.log(res)
     // })
     //Get the data candidates from server
+    this.initChartComponent()
     dataHelper.getDataList().then(response => {
       this.dataList = response.data;
 
@@ -1445,6 +1486,9 @@ export default {
         }
       }
     }, 1500)
+    // setTimeout(function (){
+    //   that.initChartComponent()
+    // }, 2000)
   }
 };
 </script>

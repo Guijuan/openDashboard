@@ -12,13 +12,14 @@ import 'iview/dist/styles/iview.css'
 import 'vuesax/dist/vuesax.css' //Vuesax styles
 import 'element-ui/lib/theme-chalk/index.css';
 import 'material-icons/iconfont/material-icons.css';
-import {VTable,VPagination} from 'vue-easytable'
+import { VTable, VPagination } from 'vue-easytable'
 //import store from './store'
 
 import Entrance from './pages/HomePage/Home'
 import BlueEditor from './pages/BluePage/BlueEditor'
 import AutoPage from './pages/AutoBoard/AutoPage'
 import DataManager from './common/DataManager'
+import Gallery from './pages/Gallery/Gallerypage'
 
 Vue.use(VueRouter)
 Vue.use(iView)
@@ -27,27 +28,28 @@ Vue.use(ElementUI)
 Vue.component(VTable.name, VTable)
 Vue.component(VPagination.name, VPagination)
 Vue.use(Vuesax, {
-  theme:{
-    colors:{
-      primary:'rgb(200, 200, 200)',
-      success:'rgb(23, 201, 100)',
-      danger:'rgb(242, 19, 93)',
-      warning:'rgb(255, 130, 0)',
-      dark:'rgb(200, 200, 200)',
+  theme: {
+    colors: {
+      primary: 'rgb(200, 200, 200)',
+      success: 'rgb(23, 201, 100)',
+      danger: 'rgb(242, 19, 93)',
+      warning: 'rgb(255, 130, 0)',
+      dark: 'rgb(200, 200, 200)',
     }
   }
 })
 
 const routes = [
-	{ path: '/', redirect: '/blue' },
-  { path: '/home', name: 'home', component: Entrance},
-  { path: '/blue', name: 'blue', component: BlueEditor},
-  { path: '/page', name: 'page', component: AutoPage}
+  { path: '/', redirect: '/blue' },
+  { path: '/home', name: 'home', component: Entrance },
+  { path: '/blue', name: 'blue', component: BlueEditor },
+  { path: '/page', name: 'page', component: AutoPage },
+  { path: '/gallery', name: 'gallery', component: Gallery }
 ]
 
 const router = new VueRouter({
   routes,
-  mode:'history'
+  mode: 'history'
 })
 
 
@@ -55,92 +57,129 @@ Vue.config.productionTip = false
 
 const store = new Vuex.Store({
   state: {
-    filesListData:[
-      {"title": ""}
+    filesListData: [
+      { "title": "" }
     ],
-    fileAttrList:[''],
-    checkboxes:[],
-    tableData : null,
+    fileAttrList: [''],
+    checkboxes: [],
+    tableData: null,
     filesData: {},
     currentTable: "barley",
     chartArray: [], //所有图的basedata
     selectChartId: "", //选中图表的ID
     isActive: false,
-    templateData:""
+    templateData: "",
+    covidkey: [],
+    imgkey: [],
+
+    //gallery
+    chartTypes:[],
+    chartsColor:[]
   },
   mutations: {
+    getimgkey(state, data) {
+      state.imgkey = data
+    },
+    getcovidkey(state,data){
+      state.covidkey = data
+    },
     changeSelectId(state, payload) {
       state.selectChartId = payload;
     },
-    getFilesList (state, payload) {
+    getFilesList(state, payload) {
       state.filesListData = payload.data
     },
     pushToTemplateData(state, payload) {
-      state.templateData= payload;
+      state.templateData = payload;
     },
-    getFilesData (state, payload){
-      if(!state.filesData[payload["title"]]){
+    getFilesData(state, payload) {
+      if (!state.filesData[payload["title"]]) {
         state.filesData[payload["title"]] = payload["data"]
       }
     },
-    addListdata (state, payload){
+    addListdata(state, payload) {
       state.checkboxes.push(payload)
     },
-    removeListdata (state, payload){
+    removeListdata(state, payload) {
       let arr = [...state.checkboxes],
         index = arr.indexOf(payload)
-      if(index > -1){
+      if (index > -1) {
         arr.splice(index, 1)
         state.checkboxes = arr
       }
     },
-    changeTableData(state,tableData){
+    changeTableData(state, tableData) {
       state.tableData = tableData
     },
-    updateTable(state, payload){
+    updateTable(state, payload) {
       state.currentTable = payload
+    },
+    //galleryApi
+    setImgKeyColorValue(state, data){
+      if(state.imgkey.length > 1)
+        state.imgkey[1][data.index] = data.value
+    },
+    galleryCharts(state, data){ //galleryApi
+      state.chartTypes = data
+    },
+    galleryColor(state, data){
+      state.chartsColor = data
+    },
+    setGallerySingleChartColor(state, colorObj){
+      state.chartsColor[colorObj.index] = colorObj.value
     }
   },
   getters: {
+    setcovidkey(state){
+      return state.covidkey
+    },
+    setimgkey(state){
+      return state.imgkey
+    },
     getFileData: (state, getters) => (dataName) => {
       console.log(1111, dataName, store.state.filesData.hasOwnProperty(dataName))
       //store.state.filesData.hasOwnProperty("")
       return store.state.filesData.hasOwnProperty(dataName) ? store.state.filesData["dataName"] : []
     },
-    getIsActive: state=>{
+    getIsActive: state => {
       return state.isActive
     },
-    getSelectChartId:state=>{
+    getSelectChartId: state => {
       return state.selectChartId
     },
-    getChartArray:state=>{
-      return state.chartArray
+
+    //galleryApi
+    getGalleryCharts:state => {
+      return state.chartTypes
+    },
+    getGalleryColor:state => {
+      return state.chartsColor
     }
   },
   actions: {
-    changeTableData(ctx,tableData){
-      ctx.commit('changeTableData',tableData)
+    changeTableData(ctx, tableData) {
+      ctx.commit('changeTableData', tableData)
     },
-    getFilesList (context) {
+    getFilesList(context) {
       //获取文件数据列表
       const that = this;
-      (async function(){
+      (async function () {
         const re = [];
         const response = await DataManager.getDataInfo()
         response.data.forEach((d, i) => {
-            let checkModel = d + '_' + i
-            let obj = {'title': d.name}
-              obj[checkModel] = false
-            re.push(obj)
+          let checkModel = d + '_' + i
+          let obj = { 'title': d.name }
+          obj[checkModel] = false
+          re.push(obj)
         });
-        context.commit('getFilesList', {data: re});
-        store.dispatch('getFilesData', {data: re});
+        context.commit('getFilesList', { data: re });
+        store.dispatch('getFilesData', { data: re });
       })();
     },
-    getFilesData(context, payload){
-      const req = async function(title){
+    getFilesData(context, payload) {
+      const req = async function (title) {
         const response = await DataManager.getData(title)
-        const obj = {"title": title, "data": response.data}
+        const obj = { "title": title, "data": response.data }
         context.commit('getFilesData', obj)
       }
 
@@ -148,7 +187,7 @@ const store = new Vuex.Store({
         const title = d.title
         req(title)
         DataManager.getData(title).then(response => {
-          const obj = {"title": title, "data": response.data}
+          const obj = { "title": title, "data": response.data }
           context.commit('getFilesData', obj)
         })
       })
@@ -163,7 +202,7 @@ new Vue({
   store,
   components: { App },
   template: '<App/>',
-  mounted(){
+  mounted() {
     this.$store.dispatch('getFilesList') // init listdata
   }
 }).$mount('#app')
