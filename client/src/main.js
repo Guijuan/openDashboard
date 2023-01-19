@@ -71,6 +71,7 @@ const store = new Vuex.Store({
     templateData: "",
     covidkey: [],
     imgkey: [],
+    model_config_text:"",
 
     //gallery
     chartTypes:[],
@@ -146,6 +147,9 @@ const store = new Vuex.Store({
     },
     getSelectChartId: state => {
       return state.selectChartId
+    },
+    getChartArray:state=>{
+      return state.chartArray
     },
 
     //galleryApi

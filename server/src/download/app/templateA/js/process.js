@@ -34,6 +34,13 @@ var app = new Vue({
 			let that = this
 			d3.json("config.json", function(err, data) {
 				const layoutName = Object.keys(data)[0]
+				for(let key in data['Layout-0']){
+					console.log(key);
+					console.log(data['Layout-0'][key]);
+					that.chartStyle[key]['width'] = data['Layout-0'][key]['data']['layer'][0]['width'];
+					that.chartStyle[key]['height'] = data['Layout-0'][key]['data']['layer'][0]['height'];
+					document.getElementById(key).style.transform = `translate3d(${data['Layout-0'][key]['data']['x']}px,${data['Layout-0'][key]['data']['y']}px,0px)`;
+				}
 				that.getModularInfo({
 					"config": data[layoutName],
 					"layoutname": layoutName

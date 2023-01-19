@@ -55,6 +55,7 @@
                   :id="item.i"
                   @click.native.stop="getData(item.i)"
                   @resized="resizeEvent"
+                  @move="moveEvent"
                 >
                   <div :id="item.name"></div>
                 </grid-item>
@@ -184,8 +185,11 @@ export default{
     getChartArray:{
       handler(newVal){
         console.log(newVal);
+        console.log('config',this.$store.state.model_config_text)
         console.log('数据改动',this.$store.state.chartArray)
         // console.log('颜色',this.$store.state.chartArray[0]['baseData']['style']['color'])
+        console.log('layoutObj',this.layoutObj)
+        console.log('chartArray',this.$store.state.chartArray)
         // this.layoutObj["config"]["chartA"]["data"]['layer'][0]['mark']['fill'] = this.$store.state.chartArray[0]['baseData']['style']['color']
         // this.generateGraph(this.layoutObj["config"]["chartA"]["data"]['layer'][0]['mark']['fill'])
         this.reGenerateGraphByStyle(newVal)
@@ -199,6 +203,37 @@ export default{
     this.$store.commit("changeSelectId", "template");
   },
   methods:{
+    //获取translate
+    getTranslate(node,sty){
+      var translates=document.defaultView.getComputedStyle(node,null).transform.substring(7);
+      var result = translates.match(/\(([^)]*)\)/);// 正则()内容
+      var matrix=result?result[1].split(','):translates.split(',');
+      if(sty=="x" || sty==undefined){
+        return matrix.length>6?parseFloat(matrix[12]):parseFloat(matrix[4]);
+      }else if(sty=="y"){
+        return matrix.length>6?parseFloat(matrix[13]):parseFloat(matrix[5]);
+      }else if(sty=="z"){
+        return matrix.length>6?parseFloat(matrix[14]):0;
+      }else if(sty=="rotate"){
+        return matrix.length>6?getRotate([parseFloat(matrix[0]),parseFloat(matrix[1]),parseFloat(matrix[4]),parseFloat(matrix[5])]):getRotate(matrix);
+      }
+    },
+    // 移动事件
+    moveEvent(i){
+      let name = ''
+      for(let item of this.ttlayout){
+        if(item['i']==i){
+          name = item['name']
+        }
+      }
+      console.log(name);
+      let x = this.getTranslate(document.getElementById(i),'x')
+      let y = this.getTranslate(document.getElementById(i),'y')
+      this.$store.state.model_config_text['Layout-0'][name]['data']['x'] = x
+      this.$store.state.model_config_text['Layout-0'][name]['data']['y'] = y
+      console.log('name-x-----------------------',name,x);
+      console.log(name,y);
+    },
     // grid大小调整，触发cavans大小调整
     resizeEvent(i, newH, newW, newHPx, newWPx) {
       console.log('resize');
@@ -360,19 +395,26 @@ export default{
       let that = this
       let i = 0
       let charts = Object.keys(that.layoutObj["config"])
+      //  Layout-0
+      let table = {0:'chartA',1:'chartB',2:'chartC',3:'chartD'}
       console.log(newVal);
       console.log('generateGraph',charts);
+      console.log('config',this.$store.state.model_config_text)
       charts.forEach(function(d){
         console.log(that.layoutObj["config"][d]["data"]);
         console.log(newVal[i]['baseData']['style']['color'][0]);
         that.layoutObj["config"][d]["data"]['layer'][0]['mark']['fill'] = newVal[i]['baseData']['style']['color'][0]
+        that.$store.state.model_config_text['Layout-0'][table[i]]['data']['layer'][0]['mark']['fill'] = newVal[i]['baseData']['style']['color'][0]
         vegaEmbed("#" + d, that.layoutObj["config"][d]["data"])
         i = i + 1
       })
+      console.log('config---------------1',this.$store.state.model_config_text)
+
     },
     reGenerateGraphBySize(i,width,height){
       let that = this
       let charts = Object.keys(that.layoutObj["config"])
+      let table = {0:'chartA',1:'chartB',2:'chartC',3:'chartD'}
       let name = ''
       console.log(i);
       for(let item of this.ttlayout){
@@ -383,6 +425,15 @@ export default{
       console.log(name);
       that.layoutObj["config"][name]["data"]['layer'][0]['width'] =width
       that.layoutObj["config"][name]["data"]['layer'][0]['height'] =height
+
+      that.$store.state.model_config_text['Layout-0'][name]['data']['width'] = width
+      that.$store.state.model_config_text['Layout-0'][name]['data']['height'] = height
+      that.$store.state.model_config_text['Layout-0'][name]['data']['layer'][0]['width'] = width
+      that.$store.state.model_config_text['Layout-0'][name]['data']['layer'][0]['height'] = height
+
+
+      console.log(that.$store.state.model_config_text['Layout-0'][name]['data']['layer'][0]['height']);
+      console.log('reSize---------------config---------------1',this.$store.state.model_config_text)
       console.log('reGenerateGraphBySize---重绘');
       vegaEmbed(`#${name}`, that.layoutObj["config"][name]["data"])
       console.log('generateGraph',that.layoutObj);

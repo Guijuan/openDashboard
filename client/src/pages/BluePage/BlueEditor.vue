@@ -1180,6 +1180,7 @@ export default {
             if (that.$refs[_ref] != undefined) {
               that.$refs[_ref].getModularInfo({"config": that.chartLayoutObj[key[0]], "layoutname": key[0]})
               that.model_config_text = JSON.parse(JSON.stringify(that.chartLayoutObj))
+              that.$store.state.model_config_text = that.model_config_text
               that.popupActivo4 = !that.popupActivo4
             }
           } else {
@@ -1327,9 +1328,10 @@ export default {
           }
 
           let config = {
-            "data": that.model_config_text,
+            "data": that.$store.state.model_config_text,
             "template": obj[template]
           }
+          console.log(config);
           //{"config": that.chartLayoutObj[key[0]], "layoutname": key[0]}
           const res = await dataManager.downloadSetting(config)
         }
