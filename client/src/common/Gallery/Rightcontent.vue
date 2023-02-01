@@ -24,8 +24,14 @@
     <div class="colorboard">
       <div style="display: flex;flex-direction: column;align-items: flex-start;margin: 2vw;">
         <h3>调色板</h3>
-        <div v-for="(item,i) in this.imgkey[0]" :key="`color${i}`">
+        <!-- 这是原先的，暂时注释掉了 -->
+        <!-- <div v-for="(item,i) in this.imgkey[0]" :key="`color${i}`">
           <span>{{item}}:<input :ref="`chartColor${i}`" type="color" @input="setChartColor(i)" style="height: 30px;margin-left: 1rem"></input></span>
+        </div> -->
+
+        <!-- 这个临时改的，直接让所有颜色显示出来 -->
+        <div v-for="(item,i) in this.imgkey[1]" :key="`color${i}`">
+          <span>{{item}}:<input :ref="`chartColor${i}`" :value="setColor(item)" type="color" @input="setChartColor(i)" style="height: 30px;margin-left: 1rem"></input></span>
         </div>
       </div>
     </div>
@@ -51,6 +57,10 @@ export default {
 
   },
   methods: {
+    setColor(item) {
+      //为每个input标签设置颜色
+      return item
+    },
     sendinfo(){
       // console.log(this.imgkey[0]);
       //调用发送图表类型的接口
@@ -64,7 +74,7 @@ export default {
 
     },
     selectchart(index){
-      console.log(index)
+      // console.log(index)
     //   if(this.mgeColor == true)
     //   {
     //     this.mgeColor = false
