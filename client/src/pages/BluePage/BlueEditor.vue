@@ -69,7 +69,8 @@
 
       </vs-col>
       <vs-col vs-w="10">
-
+        <!--        <data-panel :line1="[{title:'sss',color:'#fff0f0',data:'185624',desc:''},{title:'sss',color:'#1473e6',data:'185624', desc: ''}]"-->
+        <!--        :line2="[]"></data-panel>-->
         <vs-row>
           <!--该列放置蓝图-->
           <vs-col vs-align="center" vs-w="12" style="box-shadow:0 2px 12px 0 rgba(0,0,0, 0.1)">
@@ -91,8 +92,16 @@
               </div>
             </div>
             <div style="height:85%; border-right: 1px solid rgba(0,0,0,0.2)"></div>
-            <div id='canvas' style="display:flex; with:1420px; padding-left:20px;"></div>
+            <div v-if="!CompositeCom" id='canvas' style="display:flex; with:1420px; padding-left:20px;"></div>
+            <div style="height: 100%;width:90%;display: flex;justify-content: center;align-items: center" v-else>
+
+              <component
+                :is="component"
+                :line1="dataPanelData[0]"
+                :line2="dataPanelData[1]"></component>
+            </div>
           </vs-col>
+
         </vs-row>
 
         <vs-row v-if="isTable" vs-w="12">
@@ -102,6 +111,8 @@
         </vs-row>
       </vs-col>
     </vs-row>
+
+
     <vs-popup fullscreen title="Preview" :active.sync="popupActivo4">
       <TemplateA v-if="A" ref='msg-A'></TemplateA>
       <TemplateB v-if="B" ref='msg-B'></TemplateB>
@@ -135,6 +146,11 @@ import DataPanel from "../../common/DataListBar/DataPanel";
 import carsData from "../../assets/cars.json"
 //import AutoPage from "../AutoBoard/AutoPage";
 import {mapState} from "vuex";
+import hotMap from "../../assets/visualization.vg1.json"
+import dotMap from "../../assets/visualization.vg.json"
+import dataPanel from "../../common/DataListBar/DataPanel";
+import CompositeModel from "../../common/BlueComponents/ompositeModel";
+
 export default {
   name: "blue-editor",
   data() {
@@ -167,8 +183,8 @@ export default {
       popupActivo4: false,
       layoutIdName: {}, //{"layout-0": "Template A"}
       layoutlist: ["A", "B"],
-      stepLoction:0,
-      toDoList:[],
+      stepLoction: 0,
+      toDoList: [],
       A: false,
       B: false,
       tableData: null,
@@ -185,15 +201,23 @@ export default {
       },
 
       //gallery
-      chartMap:{
-        "Line":'Linechart',
-        "Bar":'Barchart',
-        "Table":"CTable",
-        "Pie":"Piechart",
-        "Map":"Map"
+      chartMap: {
+        "Line": 'Linechart',
+        "Bar": 'Barchart',
+        "Table": "CTable",
+        "Pie": "Piechart",
+        "Map": "Map"
       },
-      chartTypes:[],
-      chartsColor:[]
+      chartTypes: [],
+      chartsColor: [],
+
+      component: null,
+      CompositeCom: false,
+      dataPanelData: [[{title: '感染数', color: '#967adc', data: '526184', desc: ''},
+        {title: '治愈数', color: '#b5e7be', data: '14521', desc: ''}],
+        [{title: '治愈数', color: '#b5e7be', data: '14521', desc: ''},
+          {title: '治愈数', color: '#b5e7be', data: '14521', desc: ''},
+          {title: '治愈数', color: '#b5e7be', data: '14521', desc: ''}]]
     }
   },
   components: {
@@ -201,14 +225,15 @@ export default {
     TemplateA,
     TemplateB,
     DataPreviewTable,
-    NavBar
+    NavBar,
+    dataPanel
   },
-  computed:{
-    galleryChart:function (){
+  computed: {
+    galleryChart: function () {
       let type = this.$store.getters.getGalleryCharts
       let color = this.$store.getters.getGalleryColor
-      let data = type.map((item, i)=>
-        ({type:item, color:color[i]}))
+      let data = type.map((item, i) =>
+        ({type: item, color: color[i]}))
       return data
     }
   },
@@ -377,7 +402,7 @@ export default {
       drawGrids(that);
     },
     //create a new component to canvas which need a component type and a unique name
-    createNewComponent(name,color) {
+    createNewComponent(name, color) {
       let that = this,
         property = null,
         _com = null;
@@ -448,10 +473,8 @@ export default {
           addLineEvent(that, com)
         });
       }
-
       //构造对应图类型的数据：如Map
       const constructproperty = function (that, property, name) {
-        console.log(property)
         let obj = JSON.parse(JSON.stringify(property))
         console.log(obj)
         //according to this.blueComponentsTypeCount construct id and add 1
@@ -493,6 +516,7 @@ export default {
               d['style'] = 'block';
               d['background'] = color
               d['content'] = propertiesname;
+              d['type'] = obj.name
               obj["name"] = propertiesname;
               d["id"] = obj['id']
               // d['background'] = color
@@ -569,7 +593,6 @@ export default {
           }
         }
       }
-
       //logic
       //init generate property
       if (arguments.length == 1) {
@@ -577,12 +600,13 @@ export default {
         //获取参数
         let _name = arguments[0]
         console.log(that.modelConfig[_name])
+        //modelConfig是modelConfig.json中的数据
         constructproperty(that, that.modelConfig[_name], _name)
       } else if (arguments.length == 2) {
         //create or add data component
-        if(typeof arguments[1] == "string"){
+        if (typeof arguments[1] == "string") {
           constructproperty(that, that.modelConfig[arguments[0]], arguments[0])
-        }else {
+        } else {
           dimensionSelected(that, arguments[0], arguments[1])
         }
       }
@@ -591,74 +615,72 @@ export default {
     //generate chart
     generateChart(id, meta) {
       console.log(meta)
-      let result = {}
-      if (meta.content.indexOf("Map") != -1) {
-        result = {
-          "width": 500,
-          "height": 300,
-          "background":meta['background'],
-          "data": {
-            "values": mapData,
-            "format": {
-              "type": "topojson",
-              "feature": "counties"
-            }
-          },
-          "projection": {
-            "type": "albersUsa"
-          },
-          "mark": "geoshape",
-        }
-      } else if(meta.content.indexOf("Table") != -1){
-        result = {
-          "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-          "data": {"values": carsData},
-          "background":meta['background'],
-          "transform": [
-            {
-              "aggregate": [{"op": "count", "as": "num_cars"}],
-              "groupby": ["Origin", "Cylinders"]
-            }
-          ],
-          "encoding": {
-            "y": {"field": "Origin", "type": "ordinal"},
-            "x": {"field": "Cylinders", "type": "ordinal"}
-          },
-          "layer": [
-            {
-              "mark": "rect",
-              "encoding": {
-                "color": {
-                  // "field": "num_cars",
-                  // "type": "quantitative",
-                  // "title": "Count of Records",
-                  // "legend": {"direction": "horizontal", "gradientLength": 120}
-                }
-              }
-            },
-            {
-              "mark": "text",
-              "encoding": {
-                "text": {"field": "num_cars", "type": "quantitative"},
-                "color": {
-                  "condition": {"test": "datum['num_cars'] < 40", "value": "black"},
-                  "value": "white"
-                }
-              }
-            }
-          ],
-          // "config": {
-          //   "axis": {"grid": true, "tickBand": "extent"}
-          // }
-        }
-      }else {
-        result = this.vegaObjectObj[meta["id"]].getOutputForced();
-        result.background = meta['background']==""?"#ffffff":meta['background']
+      // let result = {}
+      // if (meta.content.indexOf("Table") != -1) {
+      //   result = {
+      //     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+      //     "data": {"values": carsData},
+      //     "background": meta['background'],
+      //     "transform": [
+      //       {
+      //         "aggregate": [{"op": "count", "as": "num_cars"}],
+      //         "groupby": ["Origin", "Cylinders"]
+      //       }
+      //     ],
+      //     "encoding": {
+      //       "y": {"field": "Origin", "type": "ordinal"},
+      //       "x": {"field": "Cylinders", "type": "ordinal"}
+      //     },
+      //     "layer": [
+      //       {
+      //         "mark": "rect",
+      //         "encoding": {
+      //           "color": {
+      //             // "field": "num_cars",
+      //             // "type": "quantitative",
+      //             // "title": "Count of Records",
+      //             // "legend": {"direction": "horizontal", "gradientLength": 120}
+      //           }
+      //         }
+      //       },
+      //       {
+      //         "mark": "text",
+      //         "encoding": {
+      //           "text": {"field": "num_cars", "type": "quantitative"},
+      //           "color": {
+      //             "condition": {"test": "datum['num_cars'] < 40", "value": "black"},
+      //             "value": "white"
+      //           }
+      //         }
+      //       }
+      //     ],
+      //     // "config": {
+      //     //   "axis": {"grid": true, "tickBand": "extent"}
+      //     // }
+      //   }
+      // } else {
+      //   //Show the result in bottom canvas via vage compilier
+      //   let _height = window.innerHeight * 0.29
+      //   let _width = window.innerWidth * 0.7
+      //   result = this.vegaObjectObj[meta["id"]].getOutputForced();
+      //   if (meta.content.indexOf("Map") != -1) {
+      //     let data = result.data.values
+      //     this.vegaObjectObj[meta["id"]].setData(data, 1)
+      //     this.vegaObjectObj[meta["id"]].setMarks(meta.content)
+      //     result = this.vegaObjectObj[meta["id"]].getOutputForced();
+      //     delete result.layer
+      //   }
+      // }
+      if (meta.type == "DataPanel") {
+        this.CompositeCom = true
+        this.component = () => import("../../common/DataListBar/DataPanel")
+        console.log(this.component)
+      } else {
+        let result = this.vegaObjectObj[meta["id"]].getOutputForced();
         console.log(result)
+        vegaEmbed("#canvas", result, {theme: "default"});
       }
-      //Show the result in bottom canvas via vage compilier
-      vegaEmbed("#canvas", result, {theme: "default"});
-      this.notifications({"title": result.title.text, "text": "Generate success~", "color": 'rgb(31,116,225)'})
+      this.notifications({"title": meta.type, "text": "Generate success~", "color": 'rgb(31,116,225)'})
     },
 
     //find the component by the component's name
@@ -689,10 +711,10 @@ export default {
       })
     },
 
-    initChartComponent(){
-      if(this.galleryChart.length > 0){
+    initChartComponent() {
+      if (this.galleryChart.length > 0) {
         this.cleanPanel()
-        this.galleryChart.forEach(item=>{
+        this.galleryChart.forEach(item => {
           this.createNewComponent(this.chartMap[item.type], item.color)
         })
       }
@@ -1344,7 +1366,7 @@ export default {
     function:....
     */
     undoAction() {
-      if(this.blueComponents.length != 0){
+      if (this.blueComponents.length != 0) {
         let com = this.blueComponents.pop()
         this.stepLoction += 1
         this.remove(com)

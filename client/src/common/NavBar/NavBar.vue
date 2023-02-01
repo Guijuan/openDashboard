@@ -17,9 +17,38 @@
 
 
     <vs-spacer></vs-spacer>
-    <input type="color" style="width: 30px;height: 30px;"></input>
+    <div class="color-panel-box" @click="colorPanelState=true">
+      <button class='color-btn'></button>
+    </div>
+    <vs-popup class="color-panel" title="color panel" :active.sync="colorPanelState">
+      <div class="panel-content">
+        <div>
+          <h3>预定义</h3>
+          <div style="display: flex;">
+            <div class="color-item" v-for="(item,index) in preDefineColor" :key="index" :style="{background:item}"></div>
+          </div>
+        </div>
+        <div>
+          <h3>自定义</h3>
+        </div>
+      </div>
+    </vs-popup>
+
     <vs-button class='tool_button' radius color="#1473e6" type="filled"
-               icon="view_quilt"></vs-button>
+               icon="view_quilt" @click="gridPanelState=true"></vs-button>
+    <vs-popup class="grid-panel" title="grid panel" :active.sync="gridPanelState">
+      <div class="panel-content">
+        <div>
+          <h3>预定义</h3>
+          <div style="display: flex;">
+            <div class="color-item" v-for="(item,index) in preDefineGrid" style="width: auto" :key="index">{{item}}</div>
+          </div>
+        </div>
+        <div>
+          <h3>自定义</h3>
+        </div>
+      </div>
+    </vs-popup>
     <vs-navbar-item index="2" style="color:white; padding-left:5px">
       <a href="http://localhost:8080/blue">about</a>
     </vs-navbar-item>
@@ -27,15 +56,46 @@
 </template>
 <script>
 export default {
-
   name: "NavBar",
   data: function () {
-    return {}
+    return {
+      colorPanelState:false,
+      gridPanelState:false,
+
+      preDefineColor:['red', 'green', 'blue','write'],
+      preDefineGrid:['templateA','templateB']
+    }
   }
 }
 </script>
 <style>
 li {
   margin: 0.1% !important
+}
+.color-panel-box{
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  background: #1473e6;
+  margin-right: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.color-btn{
+  width: 20px;
+  height: 20px;
+  background-color: #FA8BFF;
+  background-image: linear-gradient(180deg, #FA8BFF 0%, #2BD2FF 52%, #2BFF88 90%);
+}
+.color-item{
+  width: 25px;
+  height: 20px;
+  background: #1473e6;
+  color: white;
+  padding: 3px;
+  margin-right: 0.5rem;
+  box-shadow: 1px 1px;
+  border-radius: 3px;
 }
 </style>

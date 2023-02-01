@@ -194,7 +194,6 @@ const funcStore = {
     }
 }
 
-
 dataProcess = {
     storeData: function(dataName, dataType){
         if(dataType == 'csv'){

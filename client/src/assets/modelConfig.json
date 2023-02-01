@@ -139,7 +139,7 @@
         {"name":"out","text":"out","attr":"field","type":"out"}
       ],
       "type":"Chart",
-      "maker": "rect"
+      "maker": "symbol"
     },
   "DataPanel":{
     "inPorts": [
@@ -163,7 +163,7 @@
       {"name":"out","text":"out","attr":"field","type":"out"}
     ],
     "type":"Chart",
-    "maker": "rect"
+    "maker": "table"
   },
 
     "Color":{

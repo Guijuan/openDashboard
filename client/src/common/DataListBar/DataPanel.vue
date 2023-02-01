@@ -1,8 +1,10 @@
 <template>
   <div class="panel-box">
-    <div class="data-panel" v-if="line2.length > 0">
+    <div class="data-panel" v-if="line1.length > 0">
       <div style="display: flex;flex-direction: column;margin-right: 1rem;justify-content: center" v-for="item in line1">
-        <h3>{{item.title}}</h3>
+        <div style="display: flex;justify-content: center">
+          <h3>{{item.title}}</h3>
+        </div>
         <p class="panel-number" :style="{color:item.color}">{{item.data}}</p>
         <p>{{item.desc}}</p>
       </div>
