@@ -1,0 +1,190 @@
+[
+  {
+    "name": "Taxi",
+    "dimensions": [
+      {
+        "index": 0,
+        "name": "id",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      },
+      {
+        "index": 1,
+        "name": "time",
+        "type": "temporal",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      },
+      {
+        "index": 2,
+        "name": "lat",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      },
+      {
+        "index": 3,
+        "name": "lng",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      }
+    ],
+    "length": 24348
+  },
+  {
+    "name": "guanlian-latlng",
+    "dimensions": [
+      {
+        "index": 0,
+        "name": "id",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      },
+      {
+        "index": 1,
+        "name": "time",
+        "type": "temporal",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      },
+      {
+        "index": 2,
+        "name": "lng",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      },
+      {
+        "index": 3,
+        "name": "lat",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      },
+      {
+        "index": 4,
+        "name": "deslat",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      },
+      {
+        "index": 5,
+        "name": "deslng",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      }
+    ],
+    "length": 6069
+  },
+  {
+    "name": "guanlian-merge",
+    "dimensions": [
+      {
+        "index": 0,
+        "name": "id",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      },
+      {
+        "index": 1,
+        "name": "time",
+        "type": "temporal",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      },
+      {
+        "index": 2,
+        "name": "distance",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      }
+    ],
+    "length": 288
+  },
+  {
+    "name": "yichang-lat",
+    "dimensions": [
+      {
+        "index": 0,
+        "name": "probability",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      },
+      {
+        "index": 1,
+        "name": "lat",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      }
+    ],
+    "length": 100
+  },
+  {
+    "name": "yichang-lng",
+    "dimensions": [
+      {
+        "index": 0,
+        "name": "probability",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      },
+      {
+        "index": 1,
+        "name": "lng",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      }
+    ],
+    "length": 100
+  },
+  {
+    "name": "taxi-julei-distance-count",
+    "dimensions": [
+      {
+        "index": 0,
+        "name": "count",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      },
+      {
+        "index": 1,
+        "name": "time",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      }
+    ],
+    "length": 24
+  }
+]

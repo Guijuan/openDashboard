@@ -156,7 +156,7 @@ export default {
   data() {
     return {
       buttonName: "Preview",
-      dataList: [], //data candidates list
+        dataList: [], //data candidates list
       componentTypes: blueComponentTypes, // components' types of blueprint
       modelConfig: modelConfig, //configuration detail of each component model
       dataTypes: config.typesPrefab, //Store all the data type which supported by vega-lite
@@ -700,8 +700,8 @@ export default {
     },
     initTable(name) {
       dataHelper.getDataDetail(name).then(res => {
-        // console.log(res.data.data.values)
         this.tableData = res.data.data.values
+        let testData = res.data.data.all
         this.$store.state.tableData = res.data.data.values
         this.isTable = !this.isTable
         if (this.buttonName === 'Preview')
@@ -1478,7 +1478,6 @@ export default {
     this.initChartComponent()
     dataHelper.getDataList().then(response => {
       this.dataList = response.data;
-
       this.dataList.forEach(function (data) {
         data.dimensions.forEach(function (d) {
           d["checked"] = false;
