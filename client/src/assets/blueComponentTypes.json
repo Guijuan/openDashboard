@@ -2,7 +2,7 @@
 
     "Chart": {
         "name": "Chart",
-        "childrens": ["Barchart", "Linechart", "Scatterplot", "Boxplot", "Stripplot", "Areaplot", "Circle", "ErrorBar", "ErrorBand", "Reacplot","Map", "DataPanel", "CTable"],
+        "childrens": ["Barchart", "Linechart", "Scatterplot", "Boxplot", "Stripplot", "Areaplot", "Circle", "ErrorBar", "ErrorBand", "Reacplot","Map", "DataPanel", "CTable","WordHighlight"],
         "color": "#967ADC"
     },
     "Caculator": {

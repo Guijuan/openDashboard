@@ -615,65 +615,10 @@ export default {
     //generate chart
     generateChart(id, meta) {
       console.log(meta)
-      // let result = {}
-      // if (meta.content.indexOf("Table") != -1) {
-      //   result = {
-      //     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      //     "data": {"values": carsData},
-      //     "background": meta['background'],
-      //     "transform": [
-      //       {
-      //         "aggregate": [{"op": "count", "as": "num_cars"}],
-      //         "groupby": ["Origin", "Cylinders"]
-      //       }
-      //     ],
-      //     "encoding": {
-      //       "y": {"field": "Origin", "type": "ordinal"},
-      //       "x": {"field": "Cylinders", "type": "ordinal"}
-      //     },
-      //     "layer": [
-      //       {
-      //         "mark": "rect",
-      //         "encoding": {
-      //           "color": {
-      //             // "field": "num_cars",
-      //             // "type": "quantitative",
-      //             // "title": "Count of Records",
-      //             // "legend": {"direction": "horizontal", "gradientLength": 120}
-      //           }
-      //         }
-      //       },
-      //       {
-      //         "mark": "text",
-      //         "encoding": {
-      //           "text": {"field": "num_cars", "type": "quantitative"},
-      //           "color": {
-      //             "condition": {"test": "datum['num_cars'] < 40", "value": "black"},
-      //             "value": "white"
-      //           }
-      //         }
-      //       }
-      //     ],
-      //     // "config": {
-      //     //   "axis": {"grid": true, "tickBand": "extent"}
-      //     // }
-      //   }
-      // } else {
-      //   //Show the result in bottom canvas via vage compilier
-      //   let _height = window.innerHeight * 0.29
-      //   let _width = window.innerWidth * 0.7
-      //   result = this.vegaObjectObj[meta["id"]].getOutputForced();
-      //   if (meta.content.indexOf("Map") != -1) {
-      //     let data = result.data.values
-      //     this.vegaObjectObj[meta["id"]].setData(data, 1)
-      //     this.vegaObjectObj[meta["id"]].setMarks(meta.content)
-      //     result = this.vegaObjectObj[meta["id"]].getOutputForced();
-      //     delete result.layer
-      //   }
-      // }
-      if (meta.type == "DataPanel") {
+      let tempObj = {DataPanel:'DataPanel',WordHighlight:'WordHighlight',Map:'Map',CTable:'CTable'}
+      if (meta.type in tempObj) {
         this.CompositeCom = true
-        this.component = () => import("../../common/DataListBar/DataPanel")
+        this.component = () => import(`../../common/DataListBar/${meta.type}`)
         console.log(this.component)
       } else {
         let result = this.vegaObjectObj[meta["id"]].getOutputForced();
