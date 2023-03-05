@@ -9,7 +9,8 @@ export default new Vuex.Store({
       chartArray: [], //所有图的basedata
       selectChartId: "", //选中图表的ID
       isActive: false,
-      templateData:""
+      templateData:"",
+      mapData:[]
     },
     actions:{
         changeData(ctx,data){
@@ -20,9 +21,12 @@ export default new Vuex.Store({
         changeData(state,data){
             state.tabledata = data
         },
-      changeSelectId(state, payload) {
+        changeSelectId(state, payload) {
           state.selectChartId = payload;
         },
+        changeMapData(state, data){
+          state.mapData = data
+        }
     },
     getters:{
       getIsActive: state=>{
@@ -31,5 +35,8 @@ export default new Vuex.Store({
       getSelectChartId:state=>{
         return state.selectChartId
       },
+      getMapData: state=>{
+        return state.mapData
+      }
     }
 })

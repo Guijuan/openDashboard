@@ -98,7 +98,8 @@
               <component
                 :is="component"
                 :line1="dataPanelData[0]"
-                :line2="dataPanelData[1]"></component>
+                :line2="dataPanelData[1]"
+              ></component>
             </div>
           </vs-col>
 
@@ -618,6 +619,10 @@ export default {
       let tempObj = {DataPanel:'DataPanel',WordHighlight:'WordHighlight',Map:'Map',CTable:'CTable'}
       if (meta.type in tempObj) {
         this.CompositeCom = true
+        if(meta.type == 'Map'){
+          let data = this.vegaObjectObj[meta['id']].getMapData()
+          this.$store.commit("setMapData", data)
+        }
         this.component = () => import(`../../common/DataListBar/${meta.type}`)
         console.log(this.component)
       } else {

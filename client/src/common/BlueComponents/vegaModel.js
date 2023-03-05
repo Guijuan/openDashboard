@@ -152,6 +152,24 @@ export default class VegaModel {
     return this.data
   }
 
+  getMapData(){
+    console.log(this.data)
+    let mapData = []
+    this.data['data'].values.forEach(item=>{
+      mapData.push({
+        'type': 'Feature',
+        'properties': {
+          'id':item.id,
+          'time':item.time
+        },
+        'geometry': {
+        'type': 'Point',
+          'coordinates': [parseFloat(item.lng), parseFloat(item.lat)]
+      }
+      })
+    })
+    return mapData
+  }
   //Get the vega configuration without detail data
   getConfig() {
 

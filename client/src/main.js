@@ -39,6 +39,8 @@ Vue.use(Vuesax, {
   }
 })
 
+//将Token设置为全局变量
+Vue.prototype.mapToken = 'pk.eyJ1Ijoid2pzMjIyIiwiYSI6ImNreGVkYnBlbDBtMnoyb3BlM2Jib3dxcDAifQ.GKErleh4uNcXyGpxdQa-og'
 const routes = [
   { path: '/', redirect: '/blue' },
   { path: '/home', name: 'home', component: Entrance },
@@ -75,7 +77,9 @@ const store = new Vuex.Store({
 
     //gallery
     chartTypes:[],
-    chartsColor:[]
+    chartsColor:[],
+
+    mapData:[]
   },
   mutations: {
     getimgkey(state, data) {
@@ -128,6 +132,9 @@ const store = new Vuex.Store({
     },
     setGallerySingleChartColor(state, colorObj){
       state.chartsColor[colorObj.index] = colorObj.value
+    },
+    setMapData(state, data){
+      state.mapData = data
     }
   },
   getters: {
@@ -158,6 +165,9 @@ const store = new Vuex.Store({
     },
     getGalleryColor:state => {
       return state.chartsColor
+    },
+    getMapData:state =>{
+      return state.mapData
     }
   },
   actions: {
