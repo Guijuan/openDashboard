@@ -2,6 +2,7 @@ import {number} from "mathjs/lib/utils";
 import mapData from "../../assets/us-10m.json";
 import earthQuakes from "../../assets/earthquakes.json"
 import worldMap from "../../assets/world-110m.json"
+
 export default class VegaModel {
 
   constructor(height, width, name) {
@@ -40,10 +41,12 @@ export default class VegaModel {
       this.data['data']['values'] = values
     } else {
       this.data['data'] = []
-      this.data['data'].push({"name": "sphere",
+      this.data['data'].push({
+        "name": "sphere",
         "values": [
           {"type": "Sphere"}
-        ]})
+        ]
+      })
       this.data['data'].push({
         "name": "world",
         "values": worldMap,
@@ -55,35 +58,27 @@ export default class VegaModel {
         //   }
         // ]
       })
-      this.data['data'].push({"name":"earthquakes", "values":earthQuakes, "format": {
+      this.data['data'].push({
+        "name": "earthquakes", "values": earthQuakes, "format": {
           "type": "json",
           "property": "features"
-        }})
+        }
+      })
       // this.data['data'].push({'name': "mapdata", 'values': values})
     }
   }
 
   //Set the encoding rule, if there are one more layer, the encoding will add to corresponding with layer ID
   setEncoding(parent, rule) {
-
     if (parent in this.layers) {
-
       let meta = {'field': rule.name, 'type': rule.type}
-
       this.layers[parent].encoding[rule.key] = meta
-
     } else {
-
       this.layers[parent] = {'encoding': {}}
-
       let meta = {'field': rule.name, 'type': rule.type}
-
       this.layers[parent].encoding[rule.key] = meta
-
       this.layers[parent]['width'] = this.data["width"]
-
       this.layers[parent]['height'] = this.data["height"]
-
       this.data.layer.push(this.layers[parent])
 
     }
@@ -152,24 +147,25 @@ export default class VegaModel {
     return this.data
   }
 
-  getMapData(){
+  getMapData() {
     console.log(this.data)
     let mapData = []
-    this.data['data'].values.forEach(item=>{
+    this.data['data'].values.forEach(item => {
       mapData.push({
         'type': 'Feature',
         'properties': {
-          'id':item.id,
-          'time':item.time
+          'id': item.id,
+          'time': item.time
         },
         'geometry': {
-        'type': 'Point',
+          'type': 'Point',
           'coordinates': [parseFloat(item.lng), parseFloat(item.lat)]
-      }
+        }
       })
     })
     return mapData
   }
+
   //Get the vega configuration without detail data
   getConfig() {
 
@@ -207,7 +203,8 @@ export default class VegaModel {
       //     }
       //   }
       // })
-      this.data['marks'].push({"type": "shape",
+      this.data['marks'].push({
+        "type": "shape",
         "from": {"data": "sphere"},
         "encode": {
           "update": {
@@ -221,8 +218,10 @@ export default class VegaModel {
             "type": "geoshape",
             "projection": "projection"
           }
-        ]})
-      this.data['marks'].push({ "type": "shape",
+        ]
+      })
+      this.data['marks'].push({
+        "type": "shape",
         "from": {"data": "world"},
         "encode": {
           "update": {
@@ -236,8 +235,10 @@ export default class VegaModel {
             "type": "geoshape",
             "projection": "projection"
           }
-        ]})
-      this.data['marks'].push({ "type": "shape",
+        ]
+      })
+      this.data['marks'].push({
+        "type": "shape",
         "from": {"data": "earthquakes"},
         "encode": {
           "update": {
@@ -251,9 +252,12 @@ export default class VegaModel {
             "projection": "projection",
             "pointRadius": {"expr": "scale('size', exp(datum.properties.mag))"}
           }
-        ]})
-      this.data['projections'].push({"name": "projection", "type": "mercator","scale": {"signal": "scale"},
-        "translate": [{"signal": "translateX"}, {"signal": "translateY"}]})
+        ]
+      })
+      this.data['projections'].push({
+        "name": "projection", "type": "mercator", "scale": {"signal": "scale"},
+        "translate": [{"signal": "translateX"}, {"signal": "translateY"}]
+      })
       // this.data['projections'].push()
       this.data['signals'] = []
       this.data['signals'].push({
@@ -262,11 +266,13 @@ export default class VegaModel {
         "bind": {"input": "range", "min": -500, "max": 1200},
         "padding": {"top": 10, "left": 0, "right": 100, "bottom": 0},
       })
-      this.data['signals'].push({ "name": "translateY", "value": 260,
+      this.data['signals'].push({
+        "name": "translateY", "value": 260,
         "bind": {"input": "range", "min": -300, "max": 700},
         "padding": {"top": 10, "left": 0, "right": 30, "bottom": 0},
       })
-      this.data['signals'].push({"name": "scale", "value": 100,
+      this.data['signals'].push({
+        "name": "scale", "value": 100,
         "bind": {"input": "range", "min": 0, "max": 3000},
         "padding": {"top": 10, "left": 0, "right": 30, "bottom": 0},
       })
@@ -280,9 +286,9 @@ export default class VegaModel {
     }
   }
 }
-    // setMapBaseData(data){
-    //   this.data['data'].values = data
-    //   this.data['data'].format = {"type": "topojson","feature": "counties"}
-    //   this.data['data'].projection = {"type": "albersUsa"}
-    //   this.data['data'].mark = "geoshape"
-    // }
+// setMapBaseData(data){
+//   this.data['data'].values = data
+//   this.data['data'].format = {"type": "topojson","feature": "counties"}
+//   this.data['data'].projection = {"type": "albersUsa"}
+//   this.data['data'].mark = "geoshape"
+// }

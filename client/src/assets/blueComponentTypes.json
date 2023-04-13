@@ -1,18 +1,48 @@
 {
-
-    "Chart": {
-        "name": "Chart",
-        "childrens": ["Barchart", "Linechart", "Scatterplot", "Boxplot", "Stripplot", "Areaplot", "Circle", "ErrorBar", "ErrorBand", "Reacplot","Map", "DataPanel", "CTable","WordHighlight"],
-        "color": "#967ADC"
-    },
-    "Caculator": {
-        "name": "Caculator",
-        "childrens": ["Sum", "Reduce", "Multi","Division"],
-        "color": "#37BC9B"
-    },
-    "Layout":{
-        "name":"Layout",
-        "childrens":["Template A","Template B"],
-        "color":"#37BC22"
-    }
+  "Chart": {
+    "name": "Chart",
+    "childrens": [
+      "Barchart",
+      "Linechart",
+      "Scatterplot",
+      "Boxplot",
+      "Stripplot",
+      "Areaplot",
+      "Circle",
+      "ErrorBar",
+      "ErrorBand",
+      "Reacplot",
+      "Map",
+      "DataPanel",
+      "CTable",
+      "WordHighlight"
+    ],
+    "color": "#967ADC"
+  },
+  "Caculator": {
+    "name": "Caculator",
+    "childrens": [
+      "Sum",
+      "Reduce",
+      "Multi",
+      "Division"
+    ],
+    "color": "#37BC9B"
+  },
+  "Layout": {
+    "name": "Layout",
+    "childrens": [
+      "Template A",
+      "Template B"
+    ],
+    "color": "#37BC22"
+  },
+  "Filter": {
+    "name": "Filter",
+    "childrens": [
+      "AttributeF",
+      "ValueF"
+    ],
+    "color": "#37BC22"
+  }
 }

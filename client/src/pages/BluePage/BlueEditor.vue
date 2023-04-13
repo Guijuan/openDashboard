@@ -58,7 +58,10 @@
                 </div>
                 <vs-list :key="index" v-for="(meta, index) in item.childrens">
                   <vs-button style="width:80%; justify-content: left; margin-left:10%" color="rgb(167,189,255)"
-                             type="filled" v-on:click="createNewComponent(meta)" icon="add_circle">{{ meta }}
+                             type="filled"
+                             v-on:click="createNewComponent(meta)"
+                             icon="add_circle">
+                    {{ meta }}
                   </vs-button>
                   <vs-divider></vs-divider>
                 </vs-list>
@@ -157,7 +160,7 @@ export default {
   data() {
     return {
       buttonName: "Preview",
-        dataList: [], //data candidates list
+      dataList: [], //data candidates list
       componentTypes: blueComponentTypes, // components' types of blueprint
       modelConfig: modelConfig, //configuration detail of each component model
       dataTypes: config.typesPrefab, //Store all the data type which supported by vega-lite
@@ -495,6 +498,7 @@ export default {
         }
         if (obj.type != "Layout") {
           //layout do not have layout
+          if('outPorts' in obj)
           for (let i = 0; i < obj.outPorts.length; i++) {
             obj.outPorts[i]["parentX"] = obj['x'];
             obj.outPorts[i]["parentY"] = obj['y'];
@@ -528,6 +532,7 @@ export default {
           })
         }
         that.blueComponentsTypeCount[obj.type] = that.blueComponentsTypeCount[obj.type] + 1
+        //在container中添加svg元素
         _com = new BlueComponent(that.container, obj);
         that.blueComponents.push(_com);
         addClickEvent2Circle(that, _com);
@@ -600,7 +605,6 @@ export default {
         //create function component
         //获取参数
         let _name = arguments[0]
-        console.log(that.modelConfig[_name])
         //modelConfig是modelConfig.json中的数据
         constructproperty(that, that.modelConfig[_name], _name)
       } else if (arguments.length == 2) {
@@ -616,10 +620,10 @@ export default {
     //generate chart
     generateChart(id, meta) {
       console.log(meta)
-      let tempObj = {DataPanel:'DataPanel',WordHighlight:'WordHighlight',Map:'Map',CTable:'CTable'}
+      let tempObj = {DataPanel: 'DataPanel', WordHighlight: 'WordHighlight', Map: 'Map', CTable: 'CTable'}
       if (meta.type in tempObj) {
         this.CompositeCom = true
-        if(meta.type == 'Map'){
+        if (meta.type == 'Map') {
           let data = this.vegaObjectObj[meta['id']].getMapData()
           this.$store.commit("setMapData", data)
         }
