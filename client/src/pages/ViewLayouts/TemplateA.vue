@@ -3,33 +3,6 @@
     <div class="header">
       System Preview
     </div>
-<!--    <div class="container">-->
-<!--      <grid-layout class="gridLayout"-->
-<!--                   :layout.sync="ttlayout"-->
-<!--                   v-if="!(typeof ttlayout==='undefined')"-->
-<!--                   :col-num="15"-->
-<!--                   :row-height="30"-->
-<!--                   :is-draggable="true"-->
-<!--                   :is-resizable="true"-->
-<!--                   :vertical-compact="true"-->
-<!--                   :use-css-transforms="true"-->
-<!--                   :style="{height:'800px'}"-->
-<!--      >-->
-<!--        <grid-item-->
-<!--          v-for="item in ttlayout"-->
-<!--          :key="item.i"-->
-<!--          :static="item.static"-->
-<!--          :x="item.x"-->
-<!--          :y="item.y"-->
-<!--          :w="item.w"-->
-<!--          :h="item.h"-->
-<!--          :i="item.i"-->
-<!--          :id="item.i"-->
-<!--        >-->
-<!--          <div id="chartA"></div>-->
-<!--        </grid-item>-->
-<!--      </grid-layout>-->
-<!--    </div>-->
     <el-container v-on:click="getData">
       <el-main @click.native="getData">
               <grid-layout class="gridLayout"
@@ -57,7 +30,12 @@
                   @resized="resizeEvent"
                   @move="moveEvent"
                 >
-                  <div :id="item.name"></div>
+                  <component
+                    ref="MapChart"
+                    :is="item.component"
+                    :id="item.name"
+                    :container="item.name"
+                    ></component>
                 </grid-item>
               </grid-layout>
       </el-main>
@@ -66,31 +44,13 @@
         <SettingSide></SettingSide>
       </el-aside>
     </el-container>
-    <!--        <div class="mutiItem">-->
-    <!--            <div class="left">-->
-    <!--                <div id="t1">-->
-    <!--                    <div id="chartA"></div>-->
-    <!--                </div>-->
-    <!--                <div id="t2">-->
-    <!--                    <div id="chartC"></div>-->
-    <!--                </div>-->
-    <!--            </div>-->
-    <!--            <div class="right">-->
-    <!--                <div id="t3">-->
-    <!--                    <div id="chartB"></div>-->
-    <!--                </div>-->
-    <!--                <div id='t4'>-->
-    <!--                    <div id="chartD"></div>-->
-    <!--                </div>-->
-    <!--            </div>-->
-    <!--            &lt;!&ndash;图表 4&ndash;&gt;-->
-    <!--        </div>-->
   </div>
 </template>
 
 <script>
 
 import vegaEmbed from "vega-embed";
+import Map from '../../common/DataListBar/Map'
 import * as d3 from "d3";
 import VueGridLayout from 'vue-grid-layout';
 import SettingSide from '../Settingside/SettingSide'
@@ -98,6 +58,7 @@ import { mapGetters } from "vuex";
 export default{
   data() {
     return {
+      component:'null',
       ModularInfo:{},
       chartStyle:{"chartA":{"width": 197,"height": 70},
         "chartB":{"width": 197,"height": 70},
@@ -106,10 +67,10 @@ export default{
       },
       layoutObj:{},
       ttlayout: [
-        {"x":0,"y":0,"w":2,"h":2,"i":"0", static: false, name:'chartA'},
-        {"x":2,"y":0,"w":2,"h":4,"i":"1", static: true, name:'chartB'},
-        {"x":4,"y":0,"w":2,"h":5,"i":"2", static: false, name:'chartC'},
-        {"x":6,"y":0,"w":2,"h":3,"i":"3", static: false, name:'chartD'},
+        {"x":0,"y":0,"w":2,"h":2,"i":"0", static: false, name:'chartA',component:Map},
+        {"x":2,"y":0,"w":2,"h":4,"i":"1", static: true, name:'chartB',component:null},
+        {"x":4,"y":0,"w":2,"h":5,"i":"2", static: false, name:'chartC',component:null},
+        {"x":6,"y":0,"w":2,"h":3,"i":"3", static: false, name:'chartD',component:null},
         // {"x":8,"y":0,"w":2,"h":3,"i":"4", static: false},
         // {"x":10,"y":0,"w":2,"h":3,"i":"5", static: false},
         // {"x":0,"y":5,"w":2,"h":5,"i":"6", static: false},
@@ -161,7 +122,8 @@ export default{
     //chartD
     GridLayout:VueGridLayout.GridLayout,
     GridItem:VueGridLayout.GridItem,
-    SettingSide
+    SettingSide,
+    Map
   },
   watch:{
     layout:{
@@ -240,6 +202,9 @@ export default{
       console.log("RESIZE i=" + i + ", H=" + newH + ", W=" + newW + ", H(px)=" + newHPx + ", W(px)=" + newWPx);
       console.log('layoutObj',this.layoutObj)
       this.reGenerateGraphBySize(i,newWPx,newHPx)
+      console.log(this.$refs);
+      this.$refs['MapChart'][0].reSizeMap();
+      // console.log(document.getElementById(this.container).parentNode);
     },
     // 选中焦点时的触发事件，之后要改变setting状态栏
     getData(id){
@@ -387,10 +352,26 @@ export default{
       let charts = Object.keys(that.layoutObj["config"])
       console.log('generateGraph',charts);
       charts.forEach(function(d){
-        console.log(that.layoutObj["config"][d]["data"]);
-        that.layoutObj["config"][d]["data"]['layer'][0]['mark']['fill'] = color
-        vegaEmbed("#" + d, that.layoutObj["config"][d]["data"])
+        if(that.layoutObj['config'][d]['chartType']=='Map'){
+          console.log('这是一个地图，接下来进行地图在GraphView中的绘制');
+          for(let item in that.ttlayout){
+            console.log(that.ttlayout[item],d)
+            if(that.ttlayout[item].name == d){
+              console.log('地图的数据处理以及绘制',that.ttlayout[item])
+              // let data =that.layoutObj['config'][d].getMapData();
+              // that.$store.commit("setMapData", data)
+              // that.ttlayout[item].component = () => import(`../../common/DataListBar/Map`)
+              console.log(that.ttlayout[item].component);
+            }
+          }
+        }
+        else{
+          console.log(that.layoutObj["config"][d]["data"]);
+          that.layoutObj["config"][d]["data"]['layer'][0]['mark']['fill'] = color
+          vegaEmbed("#" + d, that.layoutObj["config"][d]["data"])
+        }
       })
+      // console.log(document.getElementById(this.container).parentNode);
     },
     reGenerateGraphByStyle(newVal){
       let that = this
