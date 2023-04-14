@@ -105,6 +105,7 @@
                 :is="component"
                 :line1="dataPanelData[0]"
                 :line2="dataPanelData[1]"
+                :container = "'Map'"
               ></component>
             </div>
           </vs-col>
@@ -636,7 +637,7 @@ export default {
           let data = this.vegaObjectObj[meta['id']].getMapData()
           this.$store.commit("setMapData", data)
         }
-        this.component = () => import(`../../common/DataListBar/${meta.type}`)
+        this.component = () => import(`../../common/DataListBar/Map`)
         console.log(this.component)
       } else {
         let result = this.vegaObjectObj[meta["id"]].getOutputForced();
@@ -722,6 +723,9 @@ export default {
     async setVegaConfig(source, target, vegaObjKey) {
       console.log(source, target, vegaObjKey )
       let that = this;
+      console.log('source',source);
+      console.log('target',target);
+      console.log('vegaObjKey',vegaObjKey);
       // The case of source attribution is 「FIELD」 and target is 「ENCODING」
       if (source.attr == "field" && target.attr == "encoding") {
         //console.log(source.dimension_type, source.name, target.name)
@@ -921,6 +925,10 @@ export default {
           this.vegaObjectObj[vegaObjKey].setEncoding(target.parent, meta);
           this.vegaObjectObj[vegaObjKey].setMark(target.parent, maker);
         }
+      }
+
+      if (target.parent=='Map'){
+        this.vegaObjectObj[vegaObjKey]['chartType'] = 'Map';
       }
     },
     catchConnect(option) {

@@ -1,5 +1,5 @@
 <template>
-  <div id="map"></div>
+  <div :id="container" style="width: 99%;height: 99%;padding: 0px"></div>
 </template>
 
 <script>
@@ -11,6 +11,9 @@ export default {
       mapObj: null
     }
   },
+  props:{
+    container:null
+  },
   mounted() {
     // console.log(this.getMapData)
     this.createMap()
@@ -21,9 +24,10 @@ export default {
   methods: {
     createMap() {
       console.log(this.getMapData)
+      console.log(this.container);
       mapboxgl.accessToken = this.mapToken
       this.map = new mapboxgl.Map({
-        container: 'map',
+        container: this.container,
         // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
         style: 'mapbox://styles/mapbox/light-v11',
         center: this.getMapData.length>0?this.getMapData[0].geometry.coordinates:[-90.96, -0.47],
@@ -97,14 +101,18 @@ export default {
           this.map.getCanvas().style.cursor = '';
         });
       });
+    },
+    reSizeMap(){
+      console.log(document.getElementById(this.container).parentNode);
+      this.map.resize();
     }
   }
 }
 </script>
 
 <style scoped>
-#map{
-  width: 80%;
-  height: 80%;
-}
+/*#map{*/
+/*  width: 80%;*/
+/*  height: 80%;*/
+/*}*/
 </style>

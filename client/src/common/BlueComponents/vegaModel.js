@@ -28,6 +28,7 @@ export default class VegaModel {
     }
 
     this.layers = {}
+    this.chartType = ''
   }
 
   getData() {
