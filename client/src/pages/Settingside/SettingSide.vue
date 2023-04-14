@@ -1,5 +1,5 @@
 <template>
-  <el-collapse v-model="activeNames">
+  <el-collapse v-model="activeNames" style="width:100%">
     <el-collapse-item
       v-for="(value, key) in baseData"
       :key="key"
@@ -233,56 +233,57 @@ export default {
           isEdit: true,
           isResize: true
         }
-      ]
+      ],
+      layoutObj:[]
     };
   },
   mounted(){
-    this.baseData = {
-      "MetaConfig": {
-        "title": "柱状图"
-      },
-      "style": {
-        "color": ["#1F9CC9"]
-      },
-      "id": "this.id",
-      "data": [
-        {
-          "name": "id",
-          "value": 1
-        },
-        {
-          "name": "time",
-          "value": "10"
-        },
-        {
-          "name": "lat",
-          "value": "40"
-        },
-        {
-          "name": "lng",
-          "value": "100.20"
-        },
-      ],
-      "datamappers": [
-        {
-          "Fieldname": "value",
-          "Fieldtype": "num",
-          "Mapfrom": null,
-          "Alias": null
-        },
-        {
-          "Fieldname": "name",
-          "Fieldtype": "string",
-          "Mapfrom": null,
-          "Alias": null
-        }
-      ],
-      "button": {
-        "method": "startanalyzedata",
-        "title": "Apply"
-      },
-      "mapperdatas": null
-    }
+    // this.baseData = {
+    //   "MetaConfig": {
+    //     "title": "柱状图"
+    //   },
+    //   "style": {
+    //     "color": ["#1F9CC9"]
+    //   },
+    //   "id": "this.id",
+    //   "data": [
+    //     {
+    //       "name": "id",
+    //       "value": 1
+    //     },
+    //     {
+    //       "name": "time",
+    //       "value": "10"
+    //     },
+    //     {
+    //       "name": "lat",
+    //       "value": "40"
+    //     },
+    //     {
+    //       "name": "lng",
+    //       "value": "100.20"
+    //     },
+    //   ],
+    //   "datamappers": [
+    //     {
+    //       "Fieldname": "value",
+    //       "Fieldtype": "num",
+    //       "Mapfrom": null,
+    //       "Alias": null
+    //     },
+    //     {
+    //       "Fieldname": "name",
+    //       "Fieldtype": "string",
+    //       "Mapfrom": null,
+    //       "Alias": null
+    //     }
+    //   ],
+    //   "button": {
+    //     "method": "startanalyzedata",
+    //     "title": "Apply"
+    //   },
+    //   "mapperdatas": null
+    // }
     let baseData1 = {
         "MetaConfig": {
           "title": "柱状图"
@@ -485,6 +486,7 @@ export default {
         console.log(this.baseData['style']['color'])
         // this.$store.state.chartArray.push(1)
         console.log(this.$store.state.chartArray)
+        this.$emit('reGenerateChart',this.baseData);
       },
       deep: true
     },
@@ -509,10 +511,51 @@ export default {
     }
   },
   methods: {
+    getModularInfo(m){
+      console.log(m);
+      let that = this
+      this.layoutObj = JSON.parse(JSON.stringify(m))
+      console.log(this.layoutObj)
+      //this.calculateChartWH()
+      //this.setBackgroundColor()
+      console.log(this.layoutObj['config']['data']['values'].slice(0, 5));
+      this.baseData={
+        "MetaConfig": {
+          "title": this.layoutObj['config']['layer'][0]['mark']['type']
+        },
+        "style": {
+          "color": [this.layoutObj['config']['layer'][0]['mark']['fill']],
+          "stroke":[this.layoutObj['config']['layer'][0]['mark']['stroke']]
+        },
+        "id": this.layoutObj['config']['title']['text'],
+        "data": this.layoutObj['config']['data']['values'].slice(0,5),
+        "datamappers": [
+          {
+            "Fieldname": "value",
+            "Fieldtype": "num",
+            "Mapfrom": null,
+            "Alias": null
+          },
+          {
+            "Fieldname": "name",
+            "Fieldtype": "string",
+            "Mapfrom": null,
+            "Alias": null
+          }
+        ],
+        "button": {
+          "method": "startanalyzedata",
+          "title": "Apply"
+        },
+        "mapperdatas": null
+      }
+      console.log('baseData',this.baseData);
+    },
     cellEditDone(newValue, oldValue, rowIndex, rowData, field) {
       this.baseData.data[rowIndex][field] = newValue;
     },
     sendIsActive(key) {
+      console.log(this.layoutObj);
       if (key == "template") {
         this.$store.commit("commitIsActive", !this.isClick);
       } else if (key == "startanalyzedata") {

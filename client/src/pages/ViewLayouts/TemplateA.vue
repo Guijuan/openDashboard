@@ -315,6 +315,7 @@ export default{
       }
     },
     getModularInfo(m){
+      console.log(m);
       let that = this
       this.layoutObj = JSON.parse(JSON.stringify(m))
       console.log(this.layoutObj)

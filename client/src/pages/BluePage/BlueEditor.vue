@@ -1,5 +1,5 @@
 <template>
-  <div id="blue-editor">
+  <div id="blue-editor" style="overflow: hidden">
     <NavBar></NavBar>
     <div class='toolbar' style='position:absolute;top:45px;right:2%'>
       <vs-button v-on:click="undoAction" class='tool_button' radius color="#1473e6" type="filled"
@@ -95,7 +95,10 @@
               </div>
             </div>
             <div style="height:85%; border-right: 1px solid rgba(0,0,0,0.2)"></div>
-            <div v-if="!CompositeCom" id='canvas' style="display:flex; with:1420px; padding-left:20px;"></div>
+            <div v-if="!CompositeCom" id='canvas' style="display:flex; width:1000px; padding-left:20px;"></div>
+            <div v-if="!CompositeCom" id="settings" style="width:420px; height:150px;padding-left:20px;overflow-y: scroll">
+              <SettingSide v-if="settingsView" ref="settings" style="" @reGenerateChart="reGenerateChart"></SettingSide>
+            </div>
             <div style="height: 100%;width:90%;display: flex;justify-content: center;align-items: center" v-else>
 
               <component
@@ -148,6 +151,7 @@ import DataPreviewTable from '../../common/DataPreviewer/DataPreviewTable'
 import mapData from "../../assets/us-10m.json";
 import DataPanel from "../../common/DataListBar/DataPanel";
 import carsData from "../../assets/cars.json"
+import SettingSide from '../Settingside/SettingSide'
 //import AutoPage from "../AutoBoard/AutoPage";
 import {mapState} from "vuex";
 import hotMap from "../../assets/visualization.vg1.json"
@@ -159,6 +163,9 @@ export default {
   name: "blue-editor",
   data() {
     return {
+      settingsView:false,
+      selectMetaId:null,
+      selectMeta:null,
       buttonName: "Preview",
       dataList: [], //data candidates list
       componentTypes: blueComponentTypes, // components' types of blueprint
@@ -230,7 +237,8 @@ export default {
     TemplateB,
     DataPreviewTable,
     NavBar,
-    dataPanel
+    dataPanel,
+    SettingSide
   },
   computed: {
     galleryChart: function () {
@@ -620,6 +628,13 @@ export default {
     //generate chart
     generateChart(id, meta) {
       console.log(meta)
+      console.log(this.vegaObjectObj);
+      console.log(this.getChartArray);
+      console.log(this.CompositeCom);
+      this.selectMetaId = id;
+      this.selectMeta = meta;
+      this.settingsView = true;
+      // 传输数据到settings中
       let tempObj = {DataPanel: 'DataPanel', WordHighlight: 'WordHighlight', Map: 'Map', CTable: 'CTable'}
       if (meta.type in tempObj) {
         this.CompositeCom = true
@@ -633,8 +648,35 @@ export default {
         let result = this.vegaObjectObj[meta["id"]].getOutputForced();
         console.log(result)
         vegaEmbed("#canvas", result, {theme: "default"});
+        this.$refs['settings'].getModularInfo({"config": result, "layoutname": meta["id"]});
       }
       this.notifications({"title": meta.type, "text": "Generate success~", "color": 'rgb(31,116,225)'})
+    },
+
+    reGenerateChart(baseData){
+      console.log('reGenerateChart样式更改');
+      console.log(baseData.style.color);
+      // 传输数据到settings中
+      let tempObj = {DataPanel: 'DataPanel', WordHighlight: 'WordHighlight', Map: 'Map', CTable: 'CTable'}
+      if (this.selectMeta.type in tempObj) {
+        this.CompositeCom = true
+        if (this.selectMeta.type == 'Map') {
+          let data = this.vegaObjectObj[this.selectMeta['id']].getMapData()
+          this.$store.commit("setMapData", data)
+        }
+        this.component = () => import(`../../common/DataListBar/${this.selectMeta.type}`)
+        console.log(this.component)
+      } else {
+        console.log(this.vegaObjectObj[this.selectMeta["id"]]['data']);
+        this.vegaObjectObj[this.selectMeta["id"]]['data']['layer'][0]['mark']['fill'] = baseData.style.color;
+        this.vegaObjectObj[this.selectMeta["id"]]['data']['layer'][0]['mark']['stroke'] = baseData.style.stroke;
+        let result = this.vegaObjectObj[this.selectMeta["id"]].getOutputForced();
+        console.log(result)
+        vegaEmbed("#canvas", result, {theme: "default"});
+        // this.$refs['settings'].getModularInfo({"config": result, "layoutname": this.meta["id"]});
+      }
+      this.notifications({"title": this.selectMeta.type, "text": "Generate success~", "color": 'rgb(31,116,225)'})
+
     },
 
     //find the component by the component's name
@@ -936,6 +978,8 @@ export default {
 
     },
     buildBlueGraph(con) {
+      console.log('buildBlueGraph');
+      document.getElementById('settings').style.height = `${window.innerHeight * 0.29}px`;
       let that = this
       let connect = con.getConnectInfo()
       let _source = connect.source
@@ -1020,6 +1064,7 @@ export default {
 
       //根据view组件建立vegaObjectObj 若有新view则增加 若没有则删除/ 先执行删除 再增加/ 遍历两遍
       Object.keys(that.vegaObjectObj).forEach(function (d) {
+        // document.getElementById('settings').style.height = window.innerHeight * 0.29;
         if (chartList.indexOf(d) == -1) {
           //如果在chartlist中没有该chart,则该chart已被删除,需从vegaObjectObj中去掉键值对
           delete that.vegaObjectObj[d]
@@ -1029,7 +1074,7 @@ export default {
         if (!(d in that.vegaObjectObj)) {
           //不存在则新建vegaobject
           let _height = window.innerHeight * 0.29
-          let _width = window.innerWidth * 0.7
+          let _width = window.innerWidth * 0.5
           //1300 300
 
           //1350 350
@@ -1150,7 +1195,8 @@ export default {
           if (d == that.layoutIdName[key[0]]["name"].split(" ")[1]) {
             that[d] = true
             let _ref = that.layoutIdName[key[0]]["ref"]
-
+            console.log(_ref);
+            console.log(that.$refs[_ref]);
             //owing to vue life circle, when the first click, the that.$refs[_ref] haven't loaded
             //when the second click, the that.$refs[_ref] have loaded
             if (that.$refs[_ref] != undefined) {
