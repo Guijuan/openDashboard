@@ -320,7 +320,7 @@ export default class BlueComponent {
       .attr('multiple', true)
       .attr('size', 1)
       .selectAll("option")
-      .data(options)
+      .data(d=>d.options)
       .enter()
       .append("xhtml:option")
       .text(d=>d)

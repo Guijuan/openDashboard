@@ -176,6 +176,7 @@ export default {
       selectedData: {}, //The dimensions in dataset which been selected by user
       dataComponent: {}, //The exsiting components in canvas (used to check the exsiting)
       blueComponents: [], //The exsiting components in canvas (used to store the exsiting)
+      filterComponent:[],
       blueLines: [], //Store the connections between component which connected by curve
       mouseAction: "", //mouse action label which used to change the mouse action state
       drawingLine: "", //The line which is being darwing by user
@@ -437,7 +438,6 @@ export default {
         //boundind the click event to the circles which represent the ports in component
         //after click the circle, there will new a line in canvas
         com.getAllCircles().on("click", function (d) {
-          console.log('dddddd:', d)
           let coverType = com.getType(),
             coverColor = that.lineColor[coverType],
             params = com.getParmas(),
@@ -489,9 +489,6 @@ export default {
       const constructproperty = function (that, property, name) {
         let obj = JSON.parse(JSON.stringify(property))
         console.log(obj)
-        //according to this.blueComponentsTypeCount construct id and add 1
-        //make inports outports full
-        //make sure that the viewer name equal to button content
         obj["fill"] = that.componentTypes[obj.type].color;
         obj["name"] = name;
         obj['id'] = obj.type + '-' + that.blueComponentsTypeCount[obj.type];
@@ -506,7 +503,6 @@ export default {
         }
         if (obj.type != "Layout") {
           //layout do not have layout
-          if('outPorts' in obj)
           for (let i = 0; i < obj.outPorts.length; i++) {
             obj.outPorts[i]["parentX"] = obj['x'];
             obj.outPorts[i]["parentY"] = obj['y'];
@@ -544,6 +540,7 @@ export default {
         _com = new BlueComponent(that.container, obj);
         that.blueComponents.push(_com);
         addClickEvent2Circle(that, _com);
+
       }
       const dimensionSelected = function (that, source, dim) {
         dim.checked = !dim.checked;
@@ -570,6 +567,7 @@ export default {
               type: "out",
               attr: "field"
             });
+            console.log(source)
             addClickEvent2Circle(that, that.dataComponent[source]);
           }
         } else {
@@ -627,10 +625,6 @@ export default {
 
     //generate chart
     generateChart(id, meta) {
-      console.log(meta)
-      console.log(this.vegaObjectObj);
-      console.log(this.getChartArray);
-      console.log(this.CompositeCom);
       this.selectMetaId = id;
       this.selectMeta = meta;
       this.settingsView = true;
@@ -726,6 +720,7 @@ export default {
 
     //The configurariton change rules
     async setVegaConfig(source, target, vegaObjKey) {
+      console.log(source, target, vegaObjKey )
       let that = this;
       // The case of source attribution is 「FIELD」 and target is 「ENCODING」
       if (source.attr == "field" && target.attr == "encoding") {
@@ -977,6 +972,7 @@ export default {
       }
 
     },
+
     buildBlueGraph(con) {
       console.log('buildBlueGraph');
       document.getElementById('settings').style.height = `${window.innerHeight * 0.29}px`;
@@ -984,6 +980,15 @@ export default {
       let connect = con.getConnectInfo()
       let _source = connect.source
       let _target = connect.target
+      //判断是否为过滤
+      if(_target.parent == 'AttributeF'){
+        that.blueComponents.forEach(item=>{
+          if(item.id == _target.id){
+            item.sletectPorts[0].options.push(_source.name)
+            item.drawSelector()
+          }
+        })
+      }
       let componentGraph = new Array()
       //two dimensional matrix of storage blueprint connection logic
 

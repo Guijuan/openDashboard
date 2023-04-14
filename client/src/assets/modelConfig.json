@@ -598,9 +598,9 @@
   "AttributeF": {
     "inPorts": [
       {
-        "name": "dimension",
-        "text": "attr",
-        "attr": "filter",
+        "name": "x",
+        "text": "X",
+        "attr": "encoding",
         "type": "in"
       }
     ],
@@ -609,7 +609,8 @@
         "name": "attr_select",
         "text": "select_attr",
         "attr": "filter",
-        "type": "out"
+        "type": "out",
+        "options": []
       }
     ],
     "outPorts": [
