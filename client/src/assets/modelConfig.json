@@ -612,6 +612,14 @@
         "type": "out"
       }
     ],
+    "outPorts": [
+      {
+        "name": "output",
+        "text": "Output",
+        "attr": "field",
+        "type": "out"
+      }
+    ],
     "type": "Filter"
   },
   "ValueF": {
@@ -628,6 +636,14 @@
         "name": "output",
         "text": "Output",
         "attr": "filter",
+        "type": "out"
+      }
+    ],
+    "outPorts": [
+      {
+        "name": "output",
+        "text": "Output",
+        "attr": "field",
         "type": "out"
       }
     ],
