@@ -305,22 +305,20 @@ export default class BlueComponent {
   drawSelector(){
     let that = this
     var options = ['option1', 'option2', 'option3']
-    console.log(this.sletectPorts)
-    // let g = this.container.selectAll("g")
-    //   .data(this.sletectPorts)
-    //   .append('g')
-    let select = this.container
-      // .selectAll('selector')
-      // .data()
-      // .enter()
+    this.container
+      .selectAll("selector")
+      .data(this.sletectPorts)
+      .enter()
       .append('foreignObject')
-      .append('xhtml:select')
-      .attr('width', 50)
+      .attr('x', this.width-130)
+      .attr('y', (d,i)=>{
+        return i*30+40
+      })
+      .attr('width', 60)
       .attr('height', 30)
-      .attr('fill', '#ffffff')
-      .style('z-index', 99)
-      .attr('x', 0)
-      .attr('y', 0)
+      .append('xhtml:select')
+      .attr('multiple', true)
+      .attr('size', 1)
       .selectAll("option")
       .data(options)
       .enter()
