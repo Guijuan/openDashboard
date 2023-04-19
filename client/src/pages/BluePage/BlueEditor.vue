@@ -721,12 +721,7 @@ export default {
 
     //The configurariton change rules
     async setVegaConfig(source, target, vegaObjKey) {
-      console.log(source, target, vegaObjKey )
       let that = this;
-      console.log('source',source);
-      console.log('target',target);
-      console.log('vegaObjKey',vegaObjKey);
-      // The case of source attribution is 「FIELD」 and target is 「ENCODING」
       if (source.attr == "field" && target.attr == "encoding") {
         //console.log(source.dimension_type, source.name, target.name)
         //that.calculator[source["id"]] -> sum_miles_per_gallon_cylinders
@@ -752,9 +747,9 @@ export default {
         };
 
         let maker = that.modelConfig[target.parent].maker;
-        //console.log("setEncoding", source, target, meta)
         that.vegaObjectObj[vegaObjKey].setEncoding(target.parent, meta);
         that.vegaObjectObj[vegaObjKey].setMark(target.parent, maker);
+        console.log(that.vegaObjectObj[vegaObjKey])
       }
 
       // The case of source attribution is 「FIELD」 and target is 「OPERATOR」
@@ -929,6 +924,10 @@ export default {
 
       if (target.parent=='Map'){
         this.vegaObjectObj[vegaObjKey]['chartType'] = 'Map';
+      }
+
+      if(source.attr == 'field' && target.attr == "filter"){
+
       }
     },
     catchConnect(option) {

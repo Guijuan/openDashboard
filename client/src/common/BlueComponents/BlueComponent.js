@@ -13,6 +13,7 @@ export default class BlueComponent {
     this.inPorts = [] //Inports of component
     this.outPorts = [] //Outports of component
     this.sletectPorts = [] //sletectports of component
+    this.slidePorts = []
     this.property = {}
     this.width = 180
     this.dx = 0 //Horizonal delta
@@ -30,7 +31,7 @@ export default class BlueComponent {
 
     for (let key in options) {
       //deep copy
-      if (key == "inPorts" || key == "outPorts" || key == 'sletectPorts') {
+      if (key == "inPorts" || key == "outPorts" || key == 'sletectPorts' || key == 'slidePorts') {
         let _ports = options[key]
         _ports.forEach(function (d) {
           that[key].push(JSON.parse(JSON.stringify(d)))
@@ -326,6 +327,58 @@ export default class BlueComponent {
       .text(d=>d)
   }
 
+  drawSlider(){
+    if(this.slidePorts.length == 0)return
+    let options = ['attr1', 'attr2', 'attr3']
+    let g = this.container
+      .selectAll('slider')
+      .data(this.inPorts)
+      .enter()
+      .append('g')
+      .attr("transform", (d, i)=>{
+        return `translate(${this.width-140}, ${(i+1)*40})`
+      });
+    let select = g.append('foreignObject')
+      .attr('x',0)
+      .attr('y',0)
+      .attr('width', 60)
+      .attr('height', 30)
+      .append('xhtml:select')
+      .selectAll("option")
+      .data(options)
+      .enter()
+      .append("xhtml:option")
+      .text(d=>d)
+    var track = g.append("rect")
+      .attr("x", 50)
+      .attr("y", 5)
+      .attr("width", 50)
+      .attr("height", 10)
+      .attr("rx", 5)
+      .attr("ry", 5)
+      .attr("fill", "#ddd");
+
+    var handle = g.append("circle")
+      .attr("cx", 55)
+      .attr("cy", 10)
+      .attr("r", 5)
+      .attr("fill", "#007bff");
+
+    var xScale = d3.scaleLinear()
+      .domain([0, 60])
+      .range([0, 180]);
+
+    var drag = d3.drag()
+      .on("drag", function(event) {
+        var x = Math.max(0, Math.min(180, event.x));
+        handle.attr("cx", x);
+        var value = xScale.invert(x);
+        console.log("Value: " + value);
+      });
+
+    handle.call(drag);
+  }
+
   drawTitle() {
 
     let that = this
@@ -503,6 +556,7 @@ export default class BlueComponent {
       this.drawInPorts()
       this.drawOutPorts()
       this.drawSelector()
+      this.drawSlider()
     }
   }
 

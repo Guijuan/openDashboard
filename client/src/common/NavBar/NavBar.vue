@@ -8,7 +8,7 @@
 <!--        <a href="http://localhost:8080/home">Home</a>-->
 <!--      </vs-navbar-item>-->
       <vs-navbar-item index="0" style="color:white; padding-left:5px">
-        <a href="http://localhost:8080/blue">Data</a>
+        <a href="http://localhost:8080/home">Data</a>
       </vs-navbar-item>
       <vs-navbar-item index="2" style="color:white; padding-left:5px">
         <a href="http://localhost:8080/gallery">Gallery</a>

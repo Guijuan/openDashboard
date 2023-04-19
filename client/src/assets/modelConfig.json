@@ -600,7 +600,7 @@
       {
         "name": "x",
         "text": "X",
-        "attr": "encoding",
+        "attr": "filter",
         "type": "in"
       }
     ],
@@ -627,12 +627,12 @@
     "inPorts": [
       {
         "name": "dimension",
-        "text": "Dim",
+        "text": "",
         "attr": "filter",
         "type": "in"
       }
     ],
-    "sletectPorts": [
+    "slidePorts": [
       {
         "name": "output",
         "text": "Output",
@@ -643,7 +643,7 @@
     "outPorts": [
       {
         "name": "output",
-        "text": "Output",
+        "text": "",
         "attr": "field",
         "type": "out"
       }
