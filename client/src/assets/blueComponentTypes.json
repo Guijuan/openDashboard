@@ -38,7 +38,7 @@
     "color": "#37BC22"
   },
   "Filter": {
-    "name": "Filter",
+    "name": "Interactions",
     "childrens": [
       "AttributeF",
       "ValueF"

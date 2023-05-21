@@ -3,7 +3,6 @@ import * as d3 from 'd3'
 export default class BlueComponent {
 
   constructor(canvas, options) {
-
     let that = this
     this.frame = 2
     this.fill = '#F6BB42'
@@ -318,8 +317,8 @@ export default class BlueComponent {
       .attr('width', 60)
       .attr('height', 30)
       .append('xhtml:select')
-      .attr('multiple', true)
       .attr('size', 1)
+      .attr('id', 'attributeFilter')
       .selectAll("option")
       .data(d=>d.options)
       .enter()
@@ -328,55 +327,72 @@ export default class BlueComponent {
   }
 
   drawSlider(){
-    if(this.slidePorts.length == 0)return
-    let options = ['attr1', 'attr2', 'attr3']
-    let g = this.container
-      .selectAll('slider')
-      .data(this.inPorts)
-      .enter()
-      .append('g')
-      .attr("transform", (d, i)=>{
-        return `translate(${this.width-140}, ${(i+1)*40})`
-      });
-    let select = g.append('foreignObject')
-      .attr('x',0)
-      .attr('y',0)
-      .attr('width', 60)
+    if(this.slidePorts.length === 0)return
+    let that = this
+    this.container
+      .append('rect')
+      .attr('width', 100)
       .attr('height', 30)
-      .append('xhtml:select')
-      .selectAll("option")
-      .data(options)
-      .enter()
-      .append("xhtml:option")
-      .text(d=>d)
-    var track = g.append("rect")
-      .attr("x", 50)
-      .attr("y", 5)
-      .attr("width", 50)
-      .attr("height", 10)
-      .attr("rx", 5)
-      .attr("ry", 5)
-      .attr("fill", "#ddd");
-
-    var handle = g.append("circle")
-      .attr("cx", 55)
-      .attr("cy", 10)
-      .attr("r", 5)
-      .attr("fill", "#007bff");
-
-    var xScale = d3.scaleLinear()
-      .domain([0, 60])
-      .range([0, 180]);
-
-    var drag = d3.drag()
-      .on("drag", function(event) {
-        var x = Math.max(0, Math.min(180, event.x));
-        handle.attr("cx", x);
-        var value = xScale.invert(x);
-        console.log("Value: " + value);
-      });
-
-    handle.call(drag);
+      .attr('x', this.width-140)
+      .attr('y', 40)
+      .attr('fill', '#f2f2f2')
+      .on('mouseenter', function (e, d){
+        let elem = d3.select(this)
+        elem.attr('stroke', '#828d96')
+          .attr('stroke-width',3)
+      })
+      .on('mouseleave', function (e){
+        let elem = d3.select(this)
+        elem.attr('stroke', 'none')
+      })
+      .on('click', function (e){ // 点击出现配置面板
+        that.drawSettingPanel()
+      })
+    this.container.append('text')
+      .attr('x', 60)
+      .attr('y', 60)
+      .text('设置属性')
+  }
+  drawSettingPanel(){
+    let html = `
+    <div style="display: flex;flex-direction:column;top: 100px;
+    width: 200px;position: absolute;right: 10px;height: auto;
+    padding: 10px;border-radius:5px;background: lightgrey">
+      <div style="display: flex;flex-direction: column">
+        <span>Column</span>
+        <span>log</span>
+      </div>
+      <div style="display: flex;flex-direction: column">
+        <span>Filter Type</span>
+        <select id="filterType">
+          <option value="range">range</option>
+          <option value="values">values</option>
+          <option value="in">in</option>
+          <option value="equalTo">equalTo</option>
+        </select>
+      </div>
+      <hr />
+      <div id="filterDom"></div>
+      <button style="margin-top: 10px" id="filterSubmit">确定</button>
+    </div>
+    `
+    d3.select('#preview').append('div')
+      .html(html)
+    d3.select('#filterType').on('change', function(e){
+      let select = d3.select(this)
+      let selected = select.property('value')
+      let opHtml = ""
+      switch (selected){
+        case 'range':opHtml = `<input placeholder="min" style="width: 50px"/><input placeholder="max" style="width: 50px"/>`;break;
+        case 'in':opHtml = `<input placeholder="min" style="width: 50px"/><input placeholder="max" style="width: 50px"/>`;break;
+        case 'values':opHtml = `<input placeholder="values:split by ','"/>`;break;
+        case 'equalTo':opHtml = `<input placeholder="equalTo"/>`;break;
+      }
+      d3.select('#filterDom')
+        .html(opHtml)
+        .style('display', 'flex')
+        .style('margin-top','10px')
+    })
   }
 
   drawTitle() {

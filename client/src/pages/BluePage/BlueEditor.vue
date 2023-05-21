@@ -21,6 +21,7 @@
               style="max-height:1080px;overflow-y:scroll;box-shadow:0 2px 12px 0 rgba(0,0,0, 0.1);">
         <!--该列放置数据和操作-->
         <!--数据列-->
+        <div style="height: 90vh;overflow: auto">
         <vs-divider border-style="solid" color="dark">DATALIST AREA</vs-divider>
         <vs-row vs-h="5" style="display:block">
           <div id='data_list'>
@@ -69,7 +70,7 @@
             </vs-collapse>
           </div>
         </vs-row>
-
+        </div>
       </vs-col>
       <vs-col vs-w="10">
         <!--        <data-panel :line1="[{title:'sss',color:'#fff0f0',data:'185624',desc:''},{title:'sss',color:'#1473e6',data:'185624', desc: ''}]"-->
@@ -637,9 +638,9 @@ export default {
           let data = this.vegaObjectObj[meta['id']].getMapData()
           this.$store.commit("setMapData", data)
         }
-        this.component = () => import(`../../common/DataListBar/Map`)
-        console.log(this.component)
+        this.component = () => import(`../../common/DataListBar/${meta.type}`)
       } else {
+        this.CompositeCom = false
         let result = this.vegaObjectObj[meta["id"]].getOutputForced();
         console.log(result)
         vegaEmbed("#canvas", result, {theme: "default"});
