@@ -25,6 +25,7 @@ export default {
     createMap() {
       console.log(this.getMapData)
       console.log(this.container);
+      console.log(this.getMapData);
       mapboxgl.accessToken = this.mapToken
       this.map = new mapboxgl.Map({
         container: this.container,
