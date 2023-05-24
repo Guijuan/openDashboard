@@ -191,19 +191,6 @@ export default class VegaModel {
 
   setMarks(type) {
     if (type.indexOf('Map') != -1) {
-      // this.data['marks'].push({
-      //   "type": "path",
-      //   "from": {"data": "states"},
-      //   "encode": {
-      //     "enter": {
-      //       "fill": {"value": "#dedede"},
-      //       "stroke": {"value": "white"}
-      //     },
-      //     "update": {
-      //       "path": {"field": "path"}
-      //     }
-      //   }
-      // })
       this.data['marks'].push({
         "type": "shape",
         "from": {"data": "sphere"},

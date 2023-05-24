@@ -28,6 +28,9 @@ export default class BlueComponent {
     this.isLoading = true
     this.id = ''
 
+    this.filterAttributeName='' //
+    this.filterAttributeData={}
+
     for (let key in options) {
       //deep copy
       if (key == "inPorts" || key == "outPorts" || key == 'sletectPorts' || key == 'slidePorts') {
@@ -318,7 +321,9 @@ export default class BlueComponent {
       .attr('height', 30)
       .append('xhtml:select')
       .attr('size', 1)
-      .attr('id', 'attributeFilter')
+      .on('change', function(){
+        that.filterAttributeName = d3.select(this).property('value')
+      })
       .selectAll("option")
       .data(d=>d.options)
       .enter()
@@ -328,6 +333,7 @@ export default class BlueComponent {
 
   drawSlider(){
     if(this.slidePorts.length === 0)return
+    console.log(this.filterAttributeData)
     let that = this
     this.container
       .append('rect')

@@ -101,7 +101,6 @@
               <SettingSide v-if="settingsView" ref="settings" style="" @reGenerateChart="reGenerateChart"></SettingSide>
             </div>
             <div style="height: 100%;width:90%;display: flex;justify-content: center;align-items: center" v-else>
-
               <component
                 :is="component"
                 :line1="dataPanelData[0]"
@@ -490,7 +489,6 @@ export default {
       //构造对应图类型的数据：如Map
       const constructproperty = function (that, property, name) {
         let obj = JSON.parse(JSON.stringify(property))
-        console.log(obj)
         obj["fill"] = that.componentTypes[obj.type].color;
         obj["name"] = name;
         obj['id'] = obj.type + '-' + that.blueComponentsTypeCount[obj.type];
@@ -642,7 +640,6 @@ export default {
       } else {
         this.CompositeCom = false
         let result = this.vegaObjectObj[meta["id"]].getOutputForced();
-        console.log(result)
         vegaEmbed("#canvas", result, {theme: "default"});
         this.$refs['settings'].getModularInfo({"config": result, "layoutname": meta["id"]});
       }
@@ -981,6 +978,7 @@ export default {
 
     },
 
+    ////******************这个位置传递连线的数据************************
     buildBlueGraph(con) {
       console.log('buildBlueGraph');
       document.getElementById('settings').style.height = `${window.innerHeight * 0.29}px`;
@@ -988,8 +986,9 @@ export default {
       let connect = con.getConnectInfo()
       let _source = connect.source
       let _target = connect.target
+      console.log(_target, _source)
       //判断是否为过滤
-      if(_target.parent == 'AttributeF'){
+      if(_target.parent === 'AttributeF'){
         that.blueComponents.forEach(item=>{
           if(item.id == _target.id){
             item.sletectPorts[0].options.push(_source.name)
@@ -1027,7 +1026,6 @@ export default {
           }
         }
       }
-
       //每增加一条边就更新
       //首先处理componentIndex
 
@@ -1185,6 +1183,16 @@ export default {
         })
       })
 
+      //属性过滤
+      if(_source.parentid.includes('Chart') && _target.parent==='ValueF'){
+        that.blueComponents.forEach(item=>{
+          if(item.id == _target.id){
+            console.log(that.vegaObjectObj[_source['parentid']])
+            item.filterAttributeData = that.vegaObjectObj[_source.parentid].data
+            item.drawSlider()
+          }
+        })
+      }
     },
     notifications(message) {
       this.$vs.notify({
