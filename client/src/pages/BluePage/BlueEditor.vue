@@ -1185,7 +1185,14 @@ export default {
           that.chartLayoutObj[_targetid][_targettext] = JSON.parse(JSON.stringify(that.vegaObjectObj[d]))
         })
       })
-
+      //设置属性到对应的chart中
+      console.log(_target, _source)
+      if(_target.parentid.includes('Chart') &&_source.parent == 'AttributeF'){
+        let attrF = that.blueComponents.filter(item=>{return item.id==_source.id})
+        console.log(attrF)
+        let vegaModel = that.vegaObjectObj[_target['parentid']]
+        console.log(vegaModel)
+      }
       //属性过滤
       if(_source.parentid.includes('Chart') && _target.parent==='ValueF'){
         that.blueComponents.forEach(item=>{
@@ -1196,6 +1203,7 @@ export default {
           }
         })
       }
+
     },
     notifications(message) {
       this.$vs.notify({

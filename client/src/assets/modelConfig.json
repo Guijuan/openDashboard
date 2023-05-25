@@ -24,6 +24,12 @@
         "text": "Row",
         "attr": "encoding",
         "type": "in"
+      },
+      {
+        "name": "filter",
+        "text": "filter",
+        "attr": "encoding",
+        "type": "in"
       }
     ],
     "outPorts": [
@@ -60,6 +66,12 @@
       {
         "name": "row",
         "text": "Row",
+        "attr": "encoding",
+        "type": "in"
+      },
+      {
+        "name": "filter",
+        "text": "filter",
         "attr": "encoding",
         "type": "in"
       }
@@ -106,6 +118,12 @@
         "text": "shape",
         "attr": "encoding",
         "type": "in"
+      },
+      {
+        "name": "filter",
+        "text": "filter",
+        "attr": "encoding",
+        "type": "in"
       }
     ],
     "outPorts": [
@@ -142,6 +160,12 @@
       {
         "name": "row",
         "text": "Row",
+        "attr": "encoding",
+        "type": "in"
+      },
+      {
+        "name": "filter",
+        "text": "filter",
         "attr": "encoding",
         "type": "in"
       }
@@ -182,6 +206,12 @@
         "text": "Row",
         "attr": "encoding",
         "type": "in"
+      },
+      {
+        "name": "filter",
+        "text": "filter",
+        "attr": "encoding",
+        "type": "in"
       }
     ],
     "outPorts": [
@@ -214,6 +244,12 @@
         "text": "Stroke",
         "attr": "encoding",
         "type": "in"
+      },
+      {
+        "name": "filter",
+        "text": "filter",
+        "attr": "encoding",
+        "type": "in"
       }
     ],
     "outPorts": [
@@ -244,6 +280,12 @@
       {
         "name": "color",
         "text": "Stroke",
+        "attr": "encoding",
+        "type": "in"
+      },
+      {
+        "name": "filter",
+        "text": "filter",
         "attr": "encoding",
         "type": "in"
       }
