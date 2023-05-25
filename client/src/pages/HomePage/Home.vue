@@ -60,7 +60,7 @@ export default{
             setTimeout(() => {
                 loading.close();
             }, 2000);
-        }
+        },
     }
 
 }

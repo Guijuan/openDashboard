@@ -602,6 +602,12 @@
         "text": "X",
         "attr": "filter",
         "type": "in"
+      },
+      {
+        "name": "data",
+        "text": "data",
+        "attr": "filter",
+        "type": "in"
       }
     ],
     "sletectPorts": [

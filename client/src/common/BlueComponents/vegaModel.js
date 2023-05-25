@@ -6,9 +6,7 @@ import worldMap from "../../assets/world-110m.json"
 export default class VegaModel {
 
   constructor(height, width, name) {
-
     this.data = {}
-
     this.data["width"] = width;
     this.data["height"] = height;
     this.data["layer"] = [];
@@ -29,10 +27,10 @@ export default class VegaModel {
 
     this.layers = {}
     this.chartType = ''
+    this.filterAttr=""
   }
 
   getData() {
-
     return this.data['data']['values']
   }
 
@@ -52,12 +50,6 @@ export default class VegaModel {
         "name": "world",
         "values": worldMap,
         "format": {"type": "topojson", "feature": "countries"},
-        // "transform": [
-        //   {
-        //     "type": "geopath",
-        //     "projection": "projection"
-        //   }
-        // ]
       })
       this.data['data'].push({
         "name": "earthquakes", "values": earthQuakes, "format": {
@@ -67,6 +59,7 @@ export default class VegaModel {
       })
       // this.data['data'].push({'name': "mapdata", 'values': values})
     }
+
   }
 
   //Set the encoding rule, if there are one more layer, the encoding will add to corresponding with layer ID
@@ -81,13 +74,11 @@ export default class VegaModel {
       this.layers[parent]['width'] = this.data["width"]
       this.layers[parent]['height'] = this.data["height"]
       this.data.layer.push(this.layers[parent])
-
     }
 
   }
 
   setDescription(text) {
-
     this['data'].description = text
   }
 
@@ -126,7 +117,6 @@ export default class VegaModel {
     }
 
   }
-
   getOutput() {
 
     if (this.data['data'] != undefined && this.data['data']['values'] != undefined) {
@@ -167,13 +157,9 @@ export default class VegaModel {
     return mapData
   }
 
-  //Get the vega configuration without detail data
   getConfig() {
-
     for (let key in this.data) {
-
       if (key !== 'data') {
-
         this.config[key] = this.data[key]
       }
     }
@@ -188,7 +174,6 @@ export default class VegaModel {
     //console.log("reset after", this.data.layer)
     this.layers = {}
   }
-
   setMarks(type) {
     if (type.indexOf('Map') != -1) {
       this.data['marks'].push({
@@ -274,9 +259,7 @@ export default class VegaModel {
     }
   }
 }
-// setMapBaseData(data){
-//   this.data['data'].values = data
-//   this.data['data'].format = {"type": "topojson","feature": "counties"}
-//   this.data['data'].projection = {"type": "albersUsa"}
-//   this.data['data'].mark = "geoshape"
-// }
+
+
+//vega lite根据下面的配置，增加点击高亮 显示的功能
+

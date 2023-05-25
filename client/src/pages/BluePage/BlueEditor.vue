@@ -640,6 +640,8 @@ export default {
       } else {
         this.CompositeCom = false
         let result = this.vegaObjectObj[meta["id"]].getOutputForced();
+        console.log(result);
+        result.layer[0]['params'] = [{'name':'select',"select": {"type": "point", "on": "click"}}]
         vegaEmbed("#canvas", result, {theme: "default"});
         this.$refs['settings'].getModularInfo({"config": result, "layoutname": meta["id"]});
       }
@@ -658,13 +660,11 @@ export default {
           this.$store.commit("setMapData", data)
         }
         this.component = () => import(`../../common/DataListBar/${this.selectMeta.type}`)
-        console.log(this.component)
       } else {
         console.log(this.vegaObjectObj[this.selectMeta["id"]]['data']);
         this.vegaObjectObj[this.selectMeta["id"]]['data']['layer'][0]['mark']['fill'] = baseData.style.color;
         this.vegaObjectObj[this.selectMeta["id"]]['data']['layer'][0]['mark']['stroke'] = baseData.style.stroke;
         let result = this.vegaObjectObj[this.selectMeta["id"]].getOutputForced();
-        console.log(result)
         vegaEmbed("#canvas", result, {theme: "default"});
         // this.$refs['settings'].getModularInfo({"config": result, "layoutname": this.meta["id"]});
       }

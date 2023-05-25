@@ -360,10 +360,13 @@ export default class BlueComponent {
       .text('设置属性')
   }
   drawSettingPanel(){
+    let that = this
     let html = `
-    <div style="display: flex;flex-direction:column;top: 100px;
+    <div id="filterSettingPanel" style="display: flex;flex-direction:column;top: 100px;
     width: 200px;position: absolute;right: 10px;height: auto;
     padding: 10px;border-radius:5px;background: lightgrey">
+      <svg onclick="document.getElementById('filterSettingPanel').remove()"
+      style="position: absolute;right: 5px;top: 5px" t="1685000663031" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2385" width="20" height="20"><path d="M312.13091 310.48787a46.545021 46.545021 0 0 1 65.814659 0l133.816935 133.933298 133.58421-133.351485a46.312296 46.312296 0 0 1 65.628479 0 45.381395 45.381395 0 0 1-0.9309 64.813942l-133.11876 133.77039 133.11876 133.118759a46.545021 46.545021 0 0 1 0 65.81466 45.497758 45.497758 0 0 1-64.930304-1.023991l-133.11876-132.653309-133.118759 133.910025a46.568293 46.568293 0 1 1-65.931022-65.81466L446.36675 509.677287l-134.23584-133.49112a46.545021 46.545021 0 0 1 0-65.698297zM511.995229 1023.999767a508.248355 508.248355 0 0 1-293.349994-93.299494 46.405386 46.405386 0 0 1-34.21059-44.68322l-0.418905-4.305414a46.405386 46.405386 0 0 1 80.592703-31.557525 420.534263 420.534263 0 1 0-132.653309-160.161416l-7.540293 7.540293a46.545021 46.545021 0 0 1 29.02082 43.077417l0.442178 4.328687a46.428658 46.428658 0 0 1-91.088606 12.776608A511.995229 511.995229 0 1 1 511.995229 1023.999767z" fill="#d81e06" p-id="2386"></path></svg>
       <div style="display: flex;flex-direction: column">
         <span>Column</span>
         <span>log</span>
@@ -389,15 +392,34 @@ export default class BlueComponent {
       let selected = select.property('value')
       let opHtml = ""
       switch (selected){
-        case 'range':opHtml = `<input placeholder="min" style="width: 50px"/><input placeholder="max" style="width: 50px"/>`;break;
-        case 'in':opHtml = `<input placeholder="min" style="width: 50px"/><input placeholder="max" style="width: 50px"/>`;break;
-        case 'values':opHtml = `<input placeholder="values:split by ','"/>`;break;
-        case 'equalTo':opHtml = `<input placeholder="equalTo"/>`;break;
+        case 'range':opHtml = `<input id="range1" placeholder="min" style="width: 50px"/>
+                                <input id="range2" placeholder="max" style="width: 50px"/>`;break;
+        case 'in':opHtml = `<input id="in1" placeholder="min" style="width: 50px"/>
+                            <input id="in2" placeholder="max" style="width: 50px"/>`;break;
+        case 'values':opHtml = `<input id="values" placeholder="values:split by ','"/>`;break;
+        case 'equalTo':opHtml = `<input id="equalTo" placeholder="equalTo"/>`;break;
       }
       d3.select('#filterDom')
         .html(opHtml)
         .style('display', 'flex')
         .style('margin-top','10px')
+      let filter = {}
+      d3.select('#filterSubmit')
+        .on('click', function(e) {
+          switch (selected){
+            case 'range':
+              let minInput = d3.selectAll('#range1').property('value')
+              let maxInput = d3.selectAll('#range2').property('value')
+              filter = {'field':that.filterAttributeName, 'range':[minInput, maxInput]};break;
+            case 'in':let min = d3.select('#in1').property('value')
+              let max = d3.select('#in2').property('value')
+              filter = {'field':that.filterAttributeName, 'range':[min, max]};break;
+            case 'values':filter = {'field':that.filterAttributeName, 'oneOf':d3.select('#values').property('value').split(',')};break;
+            case 'equalTo':filter = {'field':that.filterAttributeName, 'equal':d3.select('#equalTo').property('value')};break;
+          }
+          that.filterAttributeData['transform']=[{'filter':filter}]
+          d3.select('#filterSettingPanel').remove()
+        })
     })
   }
 
