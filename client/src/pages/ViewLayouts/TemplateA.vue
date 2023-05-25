@@ -350,6 +350,7 @@ export default{
     generateGraph(color='#1F9CC9'){
       let that = this
       let charts = Object.keys(that.layoutObj["config"])
+      debugger
       console.log('generateGraph',charts);
       charts.forEach(function(d){
         if(that.layoutObj['config'][d]['chartType']=='Map'){

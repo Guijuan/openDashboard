@@ -51,3 +51,7 @@ body {
 	width: 96%;
 	padding: 2%
 }
+
+.mapboxgl-control-container{
+	display: none;
+}

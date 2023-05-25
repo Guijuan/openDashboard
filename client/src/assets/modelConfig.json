@@ -417,6 +417,26 @@
     "type": "Chart",
     "maker": "symbol"
   },
+  "TextChart": {
+    "inPorts": [
+      {
+        "name": "x",
+        "text": "data",
+        "attr": "encoding",
+        "type": "in"
+      }
+    ],
+    "outPorts": [
+      {
+        "name": "out",
+        "text": "out",
+        "attr": "field",
+        "type": "out"
+      }
+    ],
+    "type": "Chart",
+    "maker": "text"
+  },
   "DataPanel": {
     "inPorts": [
       {

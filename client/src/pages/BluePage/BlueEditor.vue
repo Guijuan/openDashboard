@@ -641,7 +641,11 @@ export default {
         this.CompositeCom = false
         let result = this.vegaObjectObj[meta["id"]].getOutputForced();
         console.log(result);
-        result.layer[0]['params'] = [{'name':'select',"select": {"type": "point", "on": "click"}}]
+        if(result['chartType']!="textChart")
+        {
+          result.layer[0]['params'] = [{'name':'select',"select": {"type": "point", "on": "click"}}]
+        }
+       console.log(result);
         vegaEmbed("#canvas", result, {theme: "default"});
         this.$refs['settings'].getModularInfo({"config": result, "layoutname": meta["id"]});
       }

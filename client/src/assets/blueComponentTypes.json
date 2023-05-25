@@ -15,7 +15,8 @@
       "Map",
       "DataPanel",
       "CTable",
-      "WordHighlight"
+      "WordHighlight",
+      "TextChart"
     ],
     "color": "#967ADC"
   },
