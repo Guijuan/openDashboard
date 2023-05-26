@@ -350,7 +350,7 @@ export default{
     generateGraph(color='#1F9CC9'){
       let that = this
       let charts = Object.keys(that.layoutObj["config"])
-      debugger
+      // debugger
       console.log('generateGraph',charts);
       charts.forEach(function(d){
         if(that.layoutObj['config'][d]['chartType']=='Map'){
@@ -365,6 +365,8 @@ export default{
               console.log(that.ttlayout[item].component);
             }
           }
+        }else if(that.layoutObj['config'][d]['chartType']=="TextChart"){
+          vegaEmbed("#" + d, that.layoutObj["config"][d]["data"])
         }
         else{
           console.log(that.layoutObj["config"][d]["data"]);
@@ -406,8 +408,11 @@ export default{
         }
       }
       console.log(name);
+      debugger
       that.layoutObj["config"][name]["data"]['layer'][0]['width'] =width
       that.layoutObj["config"][name]["data"]['layer'][0]['height'] =height
+      that.layoutObj["config"][name]["data"]['width'] = width
+      that.layoutObj["config"][name]["data"]['height'] = height
 
       that.$store.state.model_config_text['Layout-0'][name]['data']['width'] = width
       that.$store.state.model_config_text['Layout-0'][name]['data']['height'] = height

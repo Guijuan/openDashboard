@@ -932,6 +932,12 @@ export default {
         this.$store.commit("setMapData", data)
 
       }
+      if (target.parent=='TextChart'){
+        this.vegaObjectObj[vegaObjKey]['chartType'] = 'TextChart';
+        let data = this.vegaObjectObj[vegaObjKey].getMapData();
+        this.$store.commit("setMapData", data)
+
+      }
 
       if(source.attr == 'field' && target.attr == "filter"){
 
