@@ -640,10 +640,12 @@ export default {
       } else {
         this.CompositeCom = false
         let result = this.vegaObjectObj[meta["id"]].getOutputForced();
-        console.log(result);
         if(result['chartType']!="textChart")
         {
-          result.layer[0]['params'] = [{'name':'select',"select": {"type": "point", "on": "click"}}]
+          result['$schema'] = "https://vega.github.io/schema/vega-lite/v4.json"
+          result['config'] = {}
+          result.layer[0]['params'] = [{"name": "highlight", "select": { "type": "point", "on": "click", "encodings": ["x", "y"]}}]
+          result.layer[0]['encoding']['fillOpacity'] = {"condition": {"param": "highlight", "value": 1}, "value": 0.3}
         }
        console.log(result);
         vegaEmbed("#canvas", result, {theme: "default"});
@@ -1190,11 +1192,10 @@ export default {
         })
       })
       //设置属性到对应的chart中
-      console.log(_target, _source)
       if(_target.parentid.includes('Chart') &&_source.parent == 'AttributeF'){
-        let attrF = that.blueComponents.filter(item=>{return item.id==_source.id})
-        console.log(attrF)
+        let attrF = that.blueComponents.filter(item=>{return item.id === _source.parentid})[0]||[]
         let vegaModel = that.vegaObjectObj[_target['parentid']]
+        vegaModel.filterAttr = attrF.filterAttributeName
         console.log(vegaModel)
       }
       //属性过滤
@@ -1202,12 +1203,19 @@ export default {
         that.blueComponents.forEach(item=>{
           if(item.id == _target.id){
             console.log(that.vegaObjectObj[_source['parentid']])
+            item.filterAttributeName = that.vegaObjectObj[_source.parentid].filterAttr
             item.filterAttributeData = that.vegaObjectObj[_source.parentid].data
             item.drawSlider()
           }
         })
       }
-
+      //数据转移
+      if(_source.parent==='ValueF' &&_target.parentid.includes('Chart')){
+        let attrF = that.blueComponents.filter(item=>{return item.id === _source.parentid})[0]||[]
+        let vegaModel = that.vegaObjectObj[_target['parentid']]
+        vegaModel.data = attrF.filterAttributeData
+        console.log(vegaModel)
+      }
     },
     notifications(message) {
       this.$vs.notify({

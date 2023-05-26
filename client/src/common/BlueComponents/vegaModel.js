@@ -11,6 +11,7 @@ export default class VegaModel {
     this.data["height"] = height;
     this.data["layer"] = [];
     this.data['background'] = '#ffffff'
+    // this.data['$schema'] = "https://vega.github.io/schema/vega-lite/v5.json"
     this.data["autosize"] = {
       "type": "fit",
       "contains": "padding"
