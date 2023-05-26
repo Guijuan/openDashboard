@@ -117,7 +117,7 @@ export default class VegaModel {
     }else if(mark == 'text'){
       this.data["$schema"] = "https://vega.github.io/schema/vega/v5.json"
       // this.data['data'] = []
-      this.data['layer'] = []
+      // this.data['layer'] = []
       let width = this.data['width']
       let height = this.data['height']
       // this.data['signals'] = [{
