@@ -31,11 +31,15 @@
                   @move="moveEvent"
                 >
                   <component
+                    v-if="item.component=='Map'"
                     ref="MapChart"
                     :is="item.component"
                     :id="item.name"
                     :container="item.name"
                     ></component>
+                  <div
+                    v-if="item.component==null"
+                    :id="item.name"></div>
                 </grid-item>
               </grid-layout>
       </el-main>
@@ -67,8 +71,8 @@ export default{
       },
       layoutObj:{},
       ttlayout: [
-        {"x":0,"y":0,"w":2,"h":2,"i":"0", static: false, name:'chartA',component:Map},
-        {"x":2,"y":0,"w":2,"h":4,"i":"1", static: true, name:'chartB',component:null},
+        {"x":0,"y":0,"w":2,"h":2,"i":"0", static: false, name:'chartA',component:null},
+        {"x":2,"y":0,"w":2,"h":4,"i":"1", static: false, name:'chartB',component:null},
         {"x":4,"y":0,"w":2,"h":5,"i":"2", static: false, name:'chartC',component:null},
         {"x":6,"y":0,"w":2,"h":3,"i":"3", static: false, name:'chartD',component:null},
         // {"x":8,"y":0,"w":2,"h":3,"i":"4", static: false},
@@ -352,6 +356,9 @@ export default{
       let charts = Object.keys(that.layoutObj["config"])
       // debugger
       console.log('generateGraph',charts);
+      // for(let i=0;i<charts.length;i++){
+      //   that.ttlayout[i]["component"] = "DA"
+      // }
       charts.forEach(function(d){
         if(that.layoutObj['config'][d]['chartType']=='Map'){
           console.log('这是一个地图，接下来进行地图在GraphView中的绘制');
@@ -359,13 +366,15 @@ export default{
             console.log(that.ttlayout[item],d)
             if(that.ttlayout[item].name == d){
               console.log('地图的数据处理以及绘制',that.ttlayout[item])
+              that.ttlayout[item].component = 'Map'
               // let data =that.layoutObj['config'][d].getMapData();
               // that.$store.commit("setMapData", data)
               // that.ttlayout[item].component = () => import(`../../common/DataListBar/Map`)
               console.log(that.ttlayout[item].component);
             }
           }
-        }else if(that.layoutObj['config'][d]['chartType']=="TextChart"){
+        }
+        else if(that.layoutObj['config'][d]['chartType']=="TextChart"){
           vegaEmbed("#" + d, that.layoutObj["config"][d]["data"])
         }
         else{
@@ -408,7 +417,7 @@ export default{
         }
       }
       console.log(name);
-      debugger
+      // debugger
       that.layoutObj["config"][name]["data"]['layer'][0]['width'] =width
       that.layoutObj["config"][name]["data"]['layer'][0]['height'] =height
       that.layoutObj["config"][name]["data"]['width'] = width

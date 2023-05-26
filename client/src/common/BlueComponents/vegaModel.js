@@ -125,18 +125,22 @@ export default class VegaModel {
       //   "name": "myText",
       //   "value": "Hello, World!"
       // }]
+      this.data["title"] = {}
       this.data['chartType'] = "textChart"
+      let fontSize = 18
       this.data['marks'] = [
         {
           "type": "text",
           "encode": {
             "enter": {
               "text": {"value": "Globally, as of 6:06pm CET, 21 March 2023, there have been 761,071,826 confirmed cases of COVID-19, includng 6,879,677 deaths. reported to WHO. As of"},
-              "x": {"value": 200},
+              "x": {"value": width/2},
               "y": {"value": 80},
               "baseline": {"value": "middle"},
               "align": {"value": "center"},
-              "fontSize": {"value": 14}
+              "fontSize": {"value": fontSize},
+              "fill":{'value':"blue"},
+              "fontWeight":{"value":"bold"}
             }
           }
         },
@@ -145,11 +149,13 @@ export default class VegaModel {
           "encode": {
             "enter": {
               "text": {"value": "20 Marrh 2021 a total nf 13 760 401 200 varrina rinuae have hoen administered"},
-              "x": {"value": 200},
+              "x": {"value": width/2},
               "y": {"value": 100},
               "baseline": {"value": "middle"},
               "align": {"value": "center"},
-              "fontSize": {"value": 14}
+              "fontSize": {"value": fontSize},
+              "fill":{'value':"blue"},
+              "fontWeight":{"value":"bold"}
             }
           }
         }]
