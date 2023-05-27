@@ -642,13 +642,13 @@ export default {
         let result = this.vegaObjectObj[meta["id"]].getOutputForced();
         if(result['chartType']!="textChart")
         {
-          result['$schema'] = "https://vega.github.io/schema/vega-lite/v4.json"
-          result['config'] = {}
           result.layer[0]['params'] = [{"name": "highlight", "select": { "type": "point", "on": "click", "encodings": ["x", "y"]}}]
-          result.layer[0]['encoding']['fillOpacity'] = {"condition": {"param": "highlight", "value": 1}, "value": 0.3}
+          result.layer[0]['encoding']['fillOpacity'] = {"condition": [{"param": "highlight", "value": 1}], "value": 0}
+          // result.layer[0]['encoding']['select'] = {"type": "single", "on": "mouseover"}
+          // result.layer[0]['encoding']['fillOpacity']={"condition": {"test": "datum.selected", "value": 1}, "value": 0.5}
         }
-       console.log(result);
-        vegaEmbed("#canvas", result, {theme: "default"});
+        console.log(result);
+        vegaEmbed("#canvas", result, {theme: "default", mode:'vega-lite'});
         this.$refs['settings'].getModularInfo({"config": result, "layoutname": meta["id"]});
       }
       this.notifications({"title": meta.type, "text": "Generate success~", "color": 'rgb(31,116,225)'})
