@@ -375,6 +375,12 @@ export default class BlueComponent {
         <span>${this.filterAttributeName}</span>
       </div>
       <div style="display: flex;flex-direction: column">
+        <span>Color</span>
+        <input type="color" id="attr-color"></input>
+        <span>Opacity</span>
+        <input id="attr-opacity"></input>
+      </div>
+      <div style="display: flex;flex-direction: column">
         <span>Filter Type</span>
         <select id="filterType">
           <option value="range">range</option>
