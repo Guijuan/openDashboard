@@ -128,16 +128,19 @@ export default class VegaModel {
       this.data["title"] = {}
       this.data['chartType'] = "textChart"
       let fontSize = 18
+      let len = 10
+      let text1 = "Globally"
+      let text2 = "6:06pm CET, 21 March 2023"
+      let text3 = "761,071,826"
+      let text4 = "6,879,677"
       this.data['marks'] = [
         {
           "type": "text",
           "encode": {
             "enter": {
-              "text": {"value": "Globally, as of 6:06pm CET, 21 March 2023, there have been 761,071,826 confirmed cases of COVID-19, includng 6,879,677 deaths. reported to WHO. As of"},
-              "x": {"value": width/2},
+              "text": {"value": text1},
+              "x": {"value": 10},
               "y": {"value": 80},
-              "baseline": {"value": "middle"},
-              "align": {"value": "center"},
               "fontSize": {"value": fontSize},
               "fill":{'value':"blue"},
               "fontWeight":{"value":"bold"}
@@ -148,17 +151,132 @@ export default class VegaModel {
           "type": "text",
           "encode": {
             "enter": {
-              "text": {"value": "20 Marrh 2021 a total nf 13 760 401 200 varrina rinuae have hoen administered"},
-              "x": {"value": width/2},
-              "y": {"value": 100},
-              "baseline": {"value": "middle"},
-              "align": {"value": "center"},
+              "text": {"value": ",as of "},
+              "x": {"value": 10+len*text1.length},
+              "y": {"value": 80},
+              "fontSize": {"value": fontSize},
+            }
+          }
+        },
+        {
+          "type": "text",
+          "encode": {
+            "enter": {
+              "text": {"value": "6:06pm CET, 21 March 2023"},
+              "x": {"value": 10+len*(text1.length+7)},
+              "y": {"value": 80},
               "fontSize": {"value": fontSize},
               "fill":{'value':"blue"},
               "fontWeight":{"value":"bold"}
             }
           }
-        }]
+        },
+        {
+          "type": "text",
+          "encode": {
+            "enter": {
+              "text": {"value": ", there have been "},
+              "x": {"value": 10+len*(text1.length+7+text2.length)},
+              "y": {"value": 80},
+              "fontSize": {"value": fontSize},
+            }
+          }
+        },
+        {
+          "type": "text",
+          "encode": {
+            "enter": {
+              "text": {"value": "761,071,826"},
+              "x": {"value": 10+len*(text1.length+7+text2.length + (", there have been ").length)},
+              "y": {"value": 80},
+              "fontSize": {"value": fontSize},
+              "fill":{'value':"blue"},
+              "fontWeight":{"value":"bold"}
+            }
+          }
+        },
+        {
+          "type": "text",
+          "encode": {
+            "enter": {
+              "text": {"value": "confirmed cases of COVID-19, includng"},
+              "x": {"value": 10+len*(text1.length+7+text2.length + (", there have been ").length + text3.length)},
+              "y": {"value": 80},
+              "fontSize": {"value": fontSize},
+            }
+          }
+        },
+        {
+          "type": "text",
+          "encode": {
+            "enter": {
+              "text": {"value": "6,879,677"},
+              "x": {"value": 10+len*(text1.length+7+text2.length + (", there have been ").length + text3.length + ("confirmed cases of COVID-19, includng").length)},
+              "y": {"value": 80},
+              "fontSize": {"value": fontSize},
+              "fill":{'value':"orange"},
+              "fontWeight":{"value":"bold"}
+            }
+          }
+        },
+        {
+          "type": "text",
+          "encode": {
+            "enter": {
+              "text": {"value": " deaths. reported to WHO. As of"},
+              "x": {"value": 10+len*(text1.length+7+text2.length + (", there have been ").length + text3.length + ("confirmed cases of COVID-19, includng").length + text4.length)},
+              "y": {"value": 80},
+              "fontSize": {"value": fontSize},
+            }
+          }
+        },
+        {
+          "type": "text",
+          "encode": {
+            "enter": {
+              "text": {"value": "20 Marrh 2021"},
+              "x": {"value": 200},
+              "y": {"value": 100},
+              "fontSize": {"value": fontSize},
+            }
+          }
+        },
+        {
+          "type": "text",
+          "encode": {
+            "enter": {
+              "text": {"value": " a total nf"},
+              "x": {"value": 200 + len*(("20 Marrh 2021").length)},
+              "y": {"value": 100},
+              "fontSize": {"value": fontSize},
+            }
+          }
+        },
+        {
+          "type": "text",
+          "encode": {
+            "enter": {
+              "text": {"value": "13 760 401 200"},
+              "x": {"value": 200 + len*(("20 Marrh 2021").length + " a total nf".length)},
+              "y": {"value": 100},
+              "fontSize": {"value": fontSize},
+              "fill":{'value':"green"},
+              "fontWeight":{"value":"bold"}
+            }
+          }
+        },
+        {
+          "type": "text",
+          "encode": {
+            "enter": {
+              "text": {"value": "varrina rinuae have hoen administered"},
+              "x": {"value": 200 + len*(("20 Marrh 2021").length + " a total nf".length + "13 760 401 200".length)},
+              "y": {"value": 100},
+              "fontSize": {"value": fontSize},
+            }
+          }
+        },
+        ]
     }
 
 

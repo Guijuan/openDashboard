@@ -642,9 +642,9 @@ export default {
         let result = this.vegaObjectObj[meta["id"]].getOutputForced();
         if(result['chartType']!="textChart")
         {
-          result.layer[0]['params'] = [{"name": "highlight", "select": { "type": "point", "on": "click", "encodings": ["x", "y"]}}]
-          result.layer[0]['encoding']['fillOpacity'] = {"condition": [{"param": "highlight", "value": 1}], "value": 0}
-          // result.layer[0]['encoding']['select'] = {"type": "single", "on": "mouseover"}
+          // result.layer[0]['params'] = [{"name": "highlight", "select": { "type": "point", "on": "click", "encodings": ["x", "y"]}}]
+          // result.layer[0]['encoding']['fillOpacity'] = {"condition": [{"param": "highlight", "value": 1}], "value": 0}
+          // // result.layer[0]['encoding']['select'] = {"type": "single", "on": "mouseover"}
           // result.layer[0]['encoding']['fillOpacity']={"condition": {"test": "datum.selected", "value": 1}, "value": 0.5}
         }
         console.log(result);
@@ -1236,36 +1236,88 @@ export default {
       //only allowed to exist one layout in blueEditor
       let that = this
       let key = Object.keys(that.chartLayoutObj)
-
-      if (key.length == 0) {
-        //alert notice that user should choose one layout
-        that.notifications({'title': 'Notice', 'text': 'Please select a layout', 'color': 'danger'})
-      } else if (key.length == 1) {
-        that.layoutlist.forEach(function (d) {
-          if (d == that.layoutIdName[key[0]]["name"].split(" ")[1]) {
-            that[d] = true
-            let _ref = that.layoutIdName[key[0]]["ref"]
-            console.log(_ref);
-            console.log(that.$refs[_ref]);
-            //owing to vue life circle, when the first click, the that.$refs[_ref] haven't loaded
-            //when the second click, the that.$refs[_ref] have loaded
-            if (that.$refs[_ref] != undefined) {
-              that.$refs[_ref].getModularInfo({"config": that.chartLayoutObj[key[0]], "layoutname": key[0]})
-              that.model_config_text = JSON.parse(JSON.stringify(that.chartLayoutObj))
-              that.$store.state.model_config_text = that.model_config_text
-              that.popupActivo4 = !that.popupActivo4
-            }
-          } else {
-            that[d] = false
-          }
-        })
-      } else if (key.length == 2) {
-        that.notifications({
-          'title': 'Notice',
-          'text': 'Please choose one layout. You have now chosen two layouts.',
-          'color': 'danger'
-        })
+      console.log(this.vegaObjectObj);
+      let _ref = "msg-A";
+      that['A'] = true;
+      console.log(that.$refs[_ref]);
+      if (that.$refs[_ref] != undefined) {
+        // that.$refs[_ref].getModularInfo({"config": that.chartLayoutObj[key[0]], "layoutname": key[0]})
+        // config:chartA:{},layoutname:Layout-0
+        that.$refs[_ref].getModularInfo({"config": this.vegaObjectObj,"layoutname":'Layout-0'})
+        that.model_config_text = JSON.parse(JSON.stringify(that.vegaObjectObj))
+        that.$store.state.model_config_text = that.model_config_text
+        that.popupActivo4 = !that.popupActivo4
+        console.log(that.$refs[_ref],"getModularInfo")
       }
+      // 废弃
+      // that.layoutlist.forEach(function (d) {
+      //   that[d] = true
+      //   // let _ref = that.layoutIdName[key[0]]["ref"]
+      //   let _ref = "msg-A";
+      //   console.log(_ref);
+      //   console.log(that.$refs[_ref]);
+      //   //owing to vue life circle, when the first click, the that.$refs[_ref] haven't loaded
+      //   //when the second click, the that.$refs[_ref] have loaded
+      //   if (that.$refs[_ref] != undefined) {
+      //     that.$refs[_ref].getModularInfo({"config": that.chartLayoutObj[key[0]], "layoutname": key[0]})
+      //     that.model_config_text = JSON.parse(JSON.stringify(that.chartLayoutObj))
+      //     that.$store.state.model_config_text = that.model_config_text
+      //     that.popupActivo4 = !that.popupActivo4
+      //   }
+      //   // 废弃
+      //   // if (d == that.layoutIdName[key[0]]["name"].split(" ")[1]) {
+      //   //   that[d] = true
+      //   //   // let _ref = that.layoutIdName[key[0]]["ref"]
+      //   //   let _ref = "msg-A";
+      //   //   console.log(_ref);
+      //   //   console.log(that.$refs[_ref]);
+      //   //   //owing to vue life circle, when the first click, the that.$refs[_ref] haven't loaded
+      //   //   //when the second click, the that.$refs[_ref] have loaded
+      //   //   if (that.$refs[_ref] != undefined) {
+      //   //     that.$refs[_ref].getModularInfo({"config": that.chartLayoutObj[key[0]], "layoutname": key[0]})
+      //   //     that.model_config_text = JSON.parse(JSON.stringify(that.chartLayoutObj))
+      //   //     that.$store.state.model_config_text = that.model_config_text
+      //   //     that.popupActivo4 = !that.popupActivo4
+      //   //   }
+      //   // } else {
+      //   //   that[d] = false
+      //   // }
+      // })
+
+      // 废弃
+      // if (key.length == 0) {
+      //   //alert notice that user should choose one layout
+      //   that.notifications({'title': 'Notice', 'text': 'Please select a layout', 'color': 'danger'})
+      // } else if (key.length == 1) {
+      //   that.layoutlist.forEach(function (d) {
+      //     if (d == that.layoutIdName[key[0]]["name"].split(" ")[1]) {
+      //       that[d] = true
+      //       debugger;
+      //       let _ref = that.layoutIdName[key[0]]["ref"]
+      //       console.log(_ref);
+      //       console.log(that.$refs[_ref]);
+      //       //owing to vue life circle, when the first click, the that.$refs[_ref] haven't loaded
+      //       //when the second click, the that.$refs[_ref] have loaded
+      //       if (that.$refs[_ref] != undefined) {
+      //         // debugger
+      //         console.log(that.chartLayoutObj[key[0]]);
+      //         // config:chartA:{},layoutname:Layout-0
+      //         that.$refs[_ref].getModularInfo({"config": that.chartLayoutObj[key[0]], "layoutname": key[0]})
+      //         that.model_config_text = JSON.parse(JSON.stringify(that.chartLayoutObj))
+      //         that.$store.state.model_config_text = that.model_config_text
+      //         that.popupActivo4 = !that.popupActivo4
+      //       }
+      //     } else {
+      //       that[d] = false
+      //     }
+      //   })
+      // } else if (key.length == 2) {
+      //   that.notifications({
+      //     'title': 'Notice',
+      //     'text': 'Please choose one layout. You have now chosen two layouts.',
+      //     'color': 'danger'
+      //   })
+      // }
     },
     remove(com) {
       //find line connected with removedComponent
