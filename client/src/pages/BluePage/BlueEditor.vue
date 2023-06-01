@@ -1282,6 +1282,18 @@ export default {
       that['A'] = true;
       console.log(that.$refs[_ref]);
       if (that.$refs[_ref] != undefined) {
+        let select =null
+        this.blueComponents.forEach(item=>{
+          if(item.filterAttributeName!=""){
+            select = item.filterAttributeName
+          }
+        })
+        if(select!=null){
+          if(that.$store.state.mapData_2!=null){
+            that.$store.state.mapData_2["select"] = select
+          }
+          console.log(that.$store.state.mapData_2)
+        }
         // that.$refs[_ref].getModularInfo({"config": that.chartLayoutObj[key[0]], "layoutname": key[0]})
         // config:chartA:{},layoutname:Layout-0
         that.$refs[_ref].getModularInfo({"config": this.vegaObjectObj,"layoutname":'Layout-0'})
