@@ -204,6 +204,7 @@ export default {
       });
     },
     reCreate(){
+      console.log("remove")
       this.map.remove();
       this.createMap2();
     },
