@@ -714,6 +714,15 @@
         "type": "out"
       }
     ],
+    "sletectPorts": [
+      {
+        "name": "attr_select",
+        "text": "select_attr",
+        "attr": "filter",
+        "type": "out",
+        "options": []
+      }
+    ],
     "outPorts": [
       {
         "name": "output",

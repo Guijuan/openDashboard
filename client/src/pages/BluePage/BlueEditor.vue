@@ -1028,6 +1028,15 @@ export default {
           }
         })
       }
+      if(_target.parent === 'ValueF'){
+        that.blueComponents.forEach(item=>{
+          if(item.id == _target.id){
+            item.filterAttrs.push(_source.name)
+            let panel = document.querySelector('#filterSettingPanel')
+            if(panel) item.drawSettingPanel()
+          }
+        })
+      }
       let componentGraph = new Array()
       //two dimensional matrix of storage blueprint connection logic
 
