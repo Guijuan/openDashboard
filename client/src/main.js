@@ -79,7 +79,8 @@ const store = new Vuex.Store({
     chartTypes:[],
     chartsColor:[],
 
-    mapData:[]
+    mapData:[],
+    mapData_2:{}
   },
   mutations: {
     getimgkey(state, data) {
@@ -168,6 +169,9 @@ const store = new Vuex.Store({
     },
     getMapData:state =>{
       return state.mapData
+    },
+    getMapData_2:state=>{
+      return state.mapData_2;
     }
   },
   actions: {

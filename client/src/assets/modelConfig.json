@@ -400,6 +400,12 @@
         "type": "in"
       },
       {
+        "name": "data",
+        "text": "data",
+        "attr": "encoding",
+        "type": "in"
+      },
+      {
         "name": "color",
         "text": "Stroke",
         "attr": "encoding",
@@ -706,6 +712,34 @@
         "text": "Output",
         "attr": "filter",
         "type": "out"
+      }
+    ],
+    "outPorts": [
+      {
+        "name": "output",
+        "text": "",
+        "attr": "field",
+        "type": "out"
+      }
+    ],
+    "type": "Filter"
+  },
+  "Select": {
+    "inPorts": [
+      {
+        "name": "select_1",
+        "text": "select_1",
+        "attr": "filter",
+        "type": "in"
+      }
+    ],
+    "sletectPorts": [
+      {
+        "name": "attr_select",
+        "text": "select_attr",
+        "attr": "filter",
+        "type": "out",
+        "options": []
       }
     ],
     "outPorts": [

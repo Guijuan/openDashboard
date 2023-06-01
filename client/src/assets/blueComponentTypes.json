@@ -42,7 +42,8 @@
     "name": "Interactions",
     "childrens": [
       "AttributeF",
-      "ValueF"
+      "ValueF",
+      "Select"
     ],
     "color": "#37BC22"
   }

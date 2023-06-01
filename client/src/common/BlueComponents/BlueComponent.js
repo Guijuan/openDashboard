@@ -325,6 +325,11 @@ export default class BlueComponent {
       .attr('size', 1)
       .on('change', function(){
         that.filterAttributeName = d3.select(this).property('value')
+        // return d3.select(this).property('value')
+        // if(that.$store.state.mapData_2!=null){
+        //   that.$store.state.mapData_2["select"] = d3.select(this).property('value')
+        // }
+        // console.log(that.$store.state.mapData_2)
       })
       .selectAll("option")
       .data(d=>d.options)

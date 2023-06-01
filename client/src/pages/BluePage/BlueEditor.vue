@@ -164,6 +164,8 @@ export default {
   name: "blue-editor",
   data() {
     return {
+      select_1:null,
+      select_2:null,
       settingsView:false,
       selectMetaId:null,
       selectMeta:null,
@@ -628,12 +630,25 @@ export default {
       this.selectMetaId = id;
       this.selectMeta = meta;
       this.settingsView = true;
+      let that = this;
       // 传输数据到settings中
       let tempObj = {DataPanel: 'DataPanel', WordHighlight: 'WordHighlight', Map: 'Map', CTable: 'CTable'}
       if (meta.type in tempObj) {
         this.CompositeCom = true
         if (meta.type == 'Map') {
           let data = this.vegaObjectObj[meta['id']].getMapData()
+          let select =null
+          this.blueComponents.forEach(item=>{
+            if(item.filterAttributeName!=""){
+              select = item.filterAttributeName
+            }
+          })
+          if(select!=null){
+            if(that.$store.state.mapData_2!=null){
+              that.$store.state.mapData_2["select"] = select
+            }
+            console.log(that.$store.state.mapData_2)
+          }
           this.$store.commit("setMapData", data)
         }
         this.component = () => import(`../../common/DataListBar/${meta.type}`)
@@ -726,6 +741,7 @@ export default {
     //The configurariton change rules
     async setVegaConfig(source, target, vegaObjKey) {
       let that = this;
+      console.log(source, target, vegaObjKey);
       if (source.attr == "field" && target.attr == "encoding") {
         //console.log(source.dimension_type, source.name, target.name)
         //that.calculator[source["id"]] -> sum_miles_per_gallon_cylinders
@@ -1003,11 +1019,12 @@ export default {
       let _target = connect.target
       console.log(_target, _source)
       //判断是否为过滤
-      if(_target.parent === 'AttributeF'){
+      if(_target.parent === 'AttributeF'||_target.parent === 'Select'){
         that.blueComponents.forEach(item=>{
           if(item.id == _target.id){
             item.sletectPorts[0].options.push(_source.name)
             item.drawSelector()
+            console.log(item);
           }
         })
       }
@@ -1205,15 +1222,39 @@ export default {
         console.log(vegaModel)
       }
       //属性过滤
-      if(_source.parentid.includes('Chart') && _target.parent==='ValueF'){
-        that.blueComponents.forEach(item=>{
-          if(item.id == _target.id){
-            console.log(that.vegaObjectObj[_source['parentid']])
-            item.filterAttributeName = that.vegaObjectObj[_source.parentid].filterAttr
-            item.filterAttributeData = that.vegaObjectObj[_source.parentid].data
-            item.drawSlider()
-          }
-        })
+      if("parentid" in _source){
+        if(_source.parentid.includes('Chart') && _target.parent==='ValueF'){
+          that.blueComponents.forEach(item=>{
+            if(item.id == _target.id){
+              console.log(that.vegaObjectObj[_source['parentid']])
+              item.filterAttributeName = that.vegaObjectObj[_source.parentid].filterAttr
+              item.filterAttributeData = that.vegaObjectObj[_source.parentid].data
+              item.drawSlider()
+            }
+          })
+        }
+      }
+
+      // 设置select组件
+      if(_target.name=="select_1"){
+        that.select_1 = _source.name
+      }
+      if(_target.name=="select_2"){
+        that.select_2 = _source.name
+      }
+      //数据转移
+      if(_source.parent==='Select' &&_target.parentid.includes('Chart')){
+        console.log(that.select_1,that.select_2)
+        that.vegaObjectObj[_target['parentid']].select_1 = that.select_1
+        that.vegaObjectObj[_target['parentid']].select_2 = that.select_2
+        let attrF = that.blueComponents.filter(item=>{return item.id === _source.parentid})
+        let attrF_name = attrF[0]["filterAttributeName"]
+        console.log(attrF[0]["filterAttributeName"]);
+        console.log(attrF_name);
+        debugger;
+        that.$store.state.mapData_2 = {"select":attrF_name,"data":that.vegaObjectObj[_target['parentid']].data.data}
+        // let vegaModel = that.vegaObjectObj[_target['parentid']]
+        // console.log(vegaModel)
       }
       //数据转移
       if(_source.parent==='ValueF' &&_target.parentid.includes('Chart')){
