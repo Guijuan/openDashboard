@@ -28,8 +28,7 @@ export default {
     getMapData_2:{
       handler(newVal) {
         console.log(newVal);
-        this.map.clear();
-        this.createMap2();
+        this.reCreate()
       },
       deep:true
     },
@@ -203,6 +202,10 @@ export default {
           'admin-1-boundary-bg'
         );
       });
+    },
+    reCreate(){
+      this.map.remove();
+      this.createMap2();
     },
     reSizeMap(){
       console.log(document.getElementById(this.container).parentNode);

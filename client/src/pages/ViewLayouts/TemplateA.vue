@@ -116,7 +116,8 @@ export default{
   props:["layout"],
   computed:{
     // ...mapGetters(['layout'])
-    ...mapGetters({getChartArray: 'getChartArray'})
+    ...mapGetters({getChartArray: 'getChartArray'}),
+    ...mapGetters({getChartArray: 'getMapData_2'})
   },
   components: {
     //图表组件
@@ -161,9 +162,16 @@ export default{
         this.reGenerateGraphByStyle(newVal)
       },
       deep: true
+    },
+    getMapData_2:{
+      handler(newVal){
+        this.generateGraph();
+        console.log("重绘---：",newVal)
+      }
     }
   },
   mounted(){
+    console.log("template开始渲染")
     console.log('this.$store.state.ttlayout',this.ttlayout);
     this.$store.commit("pushToTemplateData", {baseData: this.baseData, i: "template" });
     this.$store.commit("changeSelectId", "template");
@@ -384,7 +392,6 @@ export default{
       that.ttlayout=[]
       charts.forEach(function(d){
         // 构造ttlayout
-
         if(that.layoutObj['config'][d]['chartType']=='Map'){
           that.ttlayout.push({"x":charts.indexOf(d)*2+2,"y":0,"w":2,"h":2,"i":charts.indexOf(d).toString(), static: false, name:`A-${d}`,component:'Map'})
           // console.log('这是一个地图，接下来进行地图在GraphView中的绘制');
@@ -437,14 +444,22 @@ export default{
       let charts = Object.keys(that.layoutObj["config"])
       let table = {0:'chartA',1:'chartB',2:'chartC',3:'chartD'}
       let name = ''
+      let _ref = "MapChart"
       console.log(i);
       for(let item of this.ttlayout){
         if(item['i']==i){
           name = item['name']
         }
       }
-      console.log(name);
+      debugger
       name = name.slice(2,);
+      if(that.layoutObj['config'][name]['chartType']=='Map'){
+        console.log("map重绘");
+        // that.$refs[_ref].clearMap();
+        this.$refs.MapChart[0].reCreate();
+        // this.generateGraph();
+      }
+      console.log(name);
       // debugger
       that.layoutObj["config"][name]["data"]['layer'][0]['width'] =width
       that.layoutObj["config"][name]["data"]['layer'][0]['height'] =height

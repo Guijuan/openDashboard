@@ -1251,7 +1251,6 @@ export default {
         let attrF_name = attrF[0]["filterAttributeName"]
         console.log(attrF[0]["filterAttributeName"]);
         console.log(attrF_name);
-        debugger;
         that.$store.state.mapData_2 = {"select":attrF_name,"data":that.vegaObjectObj[_target['parentid']].data.data}
         // let vegaModel = that.vegaObjectObj[_target['parentid']]
         // console.log(vegaModel)
