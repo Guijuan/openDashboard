@@ -14,6 +14,12 @@
         "type": "in"
       },
       {
+        "name": "stacked",
+        "text": "Stacked",
+        "attr": "encoding",
+        "type": "in"
+      },
+      {
         "name": "color",
         "text": "Fill",
         "attr": "encoding",
@@ -704,6 +710,12 @@
         "text": "",
         "attr": "filter",
         "type": "in"
+      },
+      {
+        "name": "filter_in",
+        "text": "",
+        "attr": "field",
+        "type": "in"
       }
     ],
     "slidePorts": [
@@ -725,8 +737,8 @@
     ],
     "outPorts": [
       {
-        "name": "output",
-        "text": "",
+        "name":"filter_out",
+        "text": "filter_out",
         "attr": "field",
         "type": "out"
       }

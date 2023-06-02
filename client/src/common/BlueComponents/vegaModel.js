@@ -29,6 +29,7 @@ export default class VegaModel {
     this.layers = {}
     this.chartType = ''
     this.filterAttr=""
+    this.isFilterSource = false
   }
 
   getData() {
@@ -75,14 +76,23 @@ export default class VegaModel {
       this.layers[parent]['width'] = this.data["width"]
       this.layers[parent]['height'] = this.data["height"]
       this.data.layer.push(this.layers[parent])
+      if(this.layers[parent].encoding.stacked){
+        this.layers[parent].encoding.sacles = {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {"field": this.layers[parent].encoding.stacked.field, "sort": true},
+            "range": "category"
+          }
+        this.layers[parent].encoding.color = {"scale": "color", "field": this.layers[parent].encoding.stacked.field}
+      }
     }
-
   }
-
   setDescription(text) {
     this['data'].description = text
   }
-
+  setTransform(data){
+    this.data.layer.transform = [data]
+  }
   setMark(parent, mark) {
 
     this.layers[parent].mark = mark
