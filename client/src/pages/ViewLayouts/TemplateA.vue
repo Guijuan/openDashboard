@@ -622,19 +622,19 @@ export default{
       line1.appendChild(getSpan(" of COVID-19 with "));
       line1.appendChild(getSpan("121,144","orange"));
 
-      const line2 = document.createElement('p');
-      line2.appendChild(getSpan("deaths","orange"));
-      line2.appendChild(getSpan(", reported to WHO. As of "));
-      line2.appendChild(getSpan("22 March 2023","blue"));
-      line2.appendChild(getSpan(", a total of "));
-      line2.appendChild(getSpan("3,515,872,818 vaccine doses","blue"));
-      line2.appendChild(getSpan(" have been administered."));
+      // const line2 = document.createElement('p');
+      line1.appendChild(getSpan("deaths","orange"));
+      line1.appendChild(getSpan(", reported to WHO. As of "));
+      line1.appendChild(getSpan("22 March 2023","blue"));
+      line1.appendChild(getSpan(", a total of "));
+      line1.appendChild(getSpan("3,515,872,818 vaccine doses","blue"));
+      line1.appendChild(getSpan(" have been administered."));
 
       const line2Continuation = document.createTextNode(' vaccine doses have been administered.');
 
       // 将文本节点添加到容器中
       textContainer.appendChild(line1);
-      textContainer.appendChild(line2);
+      // textContainer.appendChild(line2);
       function getSpan(str,className = "WHO-Text"){
         let cases = document.createElement("span");
         cases.classList.add(className);
