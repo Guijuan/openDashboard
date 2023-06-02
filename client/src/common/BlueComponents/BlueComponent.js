@@ -32,7 +32,10 @@ export default class BlueComponent {
 
     this.filterAttrs = []
     this.filterAttributeName='' //
-    this.filterAttributeData={}
+    this.filterString = ""
+    this.filterType='=='
+    this.filterSource = null
+    this.filterTarget = null
 
     for (let key in options) {
       //deep copy
@@ -398,6 +401,7 @@ export default class BlueComponent {
       <button style="margin-top: 10px" id="filterSubmit">确定</button>
     </div>
     `
+    that.filterType = 'range'
     d3.select('#preview').append('div')
       .html(html)
     d3.select('#filterType').on('change', function(e){
@@ -405,12 +409,10 @@ export default class BlueComponent {
       let selected = select.property('value')
       let opHtml = ""
       switch (selected){
-        case 'range':opHtml = `<input id="range1" placeholder="min" style="width: 50px"/>
-                                <input id="range2" placeholder="max" style="width: 50px"/>`;break;
-        case 'in':opHtml = `<input id="in1" placeholder="min" style="width: 50px"/>
-                            <input id="in2" placeholder="max" style="width: 50px"/>`;break;
-        case 'values':opHtml = `<input id="values" placeholder="values:split by ','"/>`;break;
-        case 'equalTo':opHtml = `<input id="equalTo" placeholder="equalTo"/>`;break;
+        case 'range':that.filterType = 'range';break;
+        case 'in':that.filterType = "in";break;
+        case 'values':that.filterType = 'oneOf';break;
+        case 'equalTo':that.filterType = 'equal';break;
       }
       d3.select('#filterDom')
         .html(opHtml)
@@ -419,24 +421,18 @@ export default class BlueComponent {
       let filter = {}
       d3.select('#filterSubmit')
         .on('click', function(e) {
-          switch (selected){
-            case 'range':
-              let minInput = d3.selectAll('#range1').property('value')
-              let maxInput = d3.selectAll('#range2').property('value')
-              filter = {'field':that.filterAttributeName, 'range':[minInput, maxInput]};
-              d3.select('#filterText').text(`${minInput}<${that.filterAttributeName}<${maxInput}`);break;
-            case 'in':let min = d3.select('#in1').property('value')
-              let max = d3.select('#in2').property('value')
-              filter = {'field':that.filterAttributeName, 'range':[min, max]};
-              d3.select('#filterText').text(`${min}<${that.filterAttributeName}<${max}`);break;
-            case 'values':filter = {'field':that.filterAttributeName, 'oneOf':d3.select('#values').property('value').split(',')};
-              d3.select('#filterText').text(`${that.filterAttributeName} in ${stringify(filter)}`);break;
-            case 'equalTo':filter = {'field':that.filterAttributeName, 'equal':d3.select('#equalTo').property('value')};
-              d3.select('#filterText').text(`${that.filterAttributeName} == ${d3.select('#equalTo').property('value')}`);break;
-          }
-          that.filterAttributeData['transform']=[{'filter':filter}]
-
-          console.log(that.filterAttributeData)
+          // switch (selected){
+          //   case 'range':that.filterType = 'range';break;
+          //     // let minInput = d3.selectAll('#range1').property('value')
+          //     // let maxInput = d3.selectAll('#range2').property('value')
+          //     // filter = {'field':that.filterAttributeName, 'range':[minInput, maxInput]};
+          //   case 'in':that.filterType = "in";break;
+          //   case 'values':that.filterType = 'oneOf';break;
+          //   case 'equalTo':that.filterType = 'equal';break;
+          // }
+          // that.filterAttributeData['transform']=[{'filter':filter}]
+          //
+          // console.log(that.filterAttributeData)
           d3.select('#filterSettingPanel').remove()
         })
     })

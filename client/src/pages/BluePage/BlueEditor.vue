@@ -655,15 +655,46 @@ export default {
       } else {
         this.CompositeCom = false
         let result = this.vegaObjectObj[meta["id"]].getOutputForced();
-        if(result['chartType']!="textChart")
-        {
-          // result.layer[0]['params'] = [{"name": "highlight", "select": { "type": "point", "on": "click", "encodings": ["x", "y"]}}]
-          // result.layer[0]['encoding']['fillOpacity'] = {"condition": [{"param": "highlight", "value": 1}], "value": 0}
-          // // result.layer[0]['encoding']['select'] = {"type": "single", "on": "mouseover"}
-          // result.layer[0]['encoding']['fillOpacity']={"condition": {"test": "datum.selected", "value": 1}, "value": 0.5}
+        if(result['chartType']!="textChart") {
+          // result.data.values = [{"x": 0, "y": 28, "c": 0}, {"x": 0, "y": 55, "c": 1},
+          //   {"x": 1, "y": 43, "c": 0}, {"x": 1, "y": 91, "c": 1},
+          //   {"x": 2, "y": 81, "c": 0}, {"x": 2, "y": 53, "c": 1},
+          //   {"x": 3, "y": 19, "c": 0}, {"x": 3, "y": 87, "c": 1},
+          //   {"x": 4, "y": 52, "c": 0}, {"x": 4, "y": 48, "c": 1},
+          //   {"x": 5, "y": 24, "c": 0}, {"x": 5, "y": 49, "c": 1},
+          //   {"x": 6, "y": 87, "c": 0}, {"x": 6, "y": 66, "c": 1},
+          //   {"x": 7, "y": 17, "c": 0}, {"x": 7, "y": 27, "c": 1},
+          //   {"x": 8, "y": 68, "c": 0}, {"x": 8, "y": 16, "c": 1},
+          //   {"x": 9, "y": 49, "c": 0}, {"x": 9, "y": 15, "c": 1}]
+          result.layer[0]['selection'] = {"pts": {"type": "single", "encodings": ["y"]}}
+          result.layer[0]['encoding']["opacity"] = {"condition": {"selection": "pts", "value": 1}, "value": "0.3"}
+          // result.layer[0]['encoding']["x"]['field'] = "x"
+          // result.layer[0]['encoding']["y"]['field'] = "y"
+          // result.layer[0]['encoding']['scales'] = {
+          //   "name": "color",
+          //   "type": "ordinal",
+          //   "domain": {"field": "c", "sort": true},
+          //   "range": "category"
+          // }
+          // result.layer[0]['encoding']['color'] = {"scale": "color", "field": "c"}
         }
         console.log(result);
-        vegaEmbed("#canvas", result, {theme: "default", mode:'vega-lite'});
+        vegaEmbed("#canvas", result, {theme: "default", mode:'vega-lite'}).then(res=>{
+            res.view.addSignalListener('pts', function (e, value){
+            let vegaModel = that.vegaObjectObj[meta["id"]]
+            console.log(vegaModel)
+            if(vegaModel.isFilterSource){
+              let blueComponent = that.blueComponents.filter(item=>{return item.id === vegaModel.filterAttr})[0]
+              console.log(blueComponent)
+              let targetModel = that.vegaObjectObj[blueComponent.filterTarget]
+              console.log(targetModel)
+              let filterName = blueComponent.filterAttributeName
+              let filter = {'filter':{'field':filterName,'equal':value}}
+              targetModel.setTransform(filter)
+              console.log(targetModel)
+            }
+          })
+        })
         this.$refs['settings'].getModularInfo({"config": result, "layoutname": meta["id"]});
       }
       this.notifications({"title": meta.type, "text": "Generate success~", "color": 'rgb(31,116,225)'})
@@ -1011,13 +1042,11 @@ export default {
 
     ////******************这个位置传递连线的数据************************
     buildBlueGraph(con) {
-      console.log('buildBlueGraph');
       document.getElementById('settings').style.height = `${window.innerHeight * 0.29}px`;
       let that = this
       let connect = con.getConnectInfo()
       let _source = connect.source
       let _target = connect.target
-      console.log(_target, _source)
       //判断是否为过滤
       if(_target.parent === 'AttributeF'||_target.parent === 'Select'){
         that.blueComponents.forEach(item=>{
@@ -1029,11 +1058,27 @@ export default {
         })
       }
       if(_target.parent === 'ValueF'){
+        console.log(_target)
         that.blueComponents.forEach(item=>{
-          if(item.id == _target.id){
+          if(item.id === _target.id){
+            console.log("进来了")
             item.filterAttrs.push(_source.name)
+            item.filterSource = _source.parentid
+            let vegaModel = that.vegaObjectObj[_source.parentid]
+            if (vegaModel){
+              vegaModel.isFilterSource = true
+              vegaModel.filterAttr = item.id
+            }
             let panel = document.querySelector('#filterSettingPanel')
             if(panel) item.drawSettingPanel()
+          }
+        })
+      }
+      if(_source.parent === "ValueF"){
+        that.blueComponents.forEach(item=>{
+          if(item.id === _source.parentid){
+            item.filterTarget = _target.parentid
+            console.log(item)
           }
         })
       }
