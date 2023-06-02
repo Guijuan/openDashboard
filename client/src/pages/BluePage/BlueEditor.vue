@@ -651,10 +651,12 @@ export default {
           }
           this.$store.commit("setMapData", data)
         }
+
         this.component = () => import(`../../common/DataListBar/${meta.type}`)
       } else {
         this.CompositeCom = false
         let result = this.vegaObjectObj[meta["id"]].getOutputForced();
+
         if(result['chartType']!="textChart") {
           // result.data.values = [{"x": 0, "y": 28, "c": 0}, {"x": 0, "y": 55, "c": 1},
           //   {"x": 1, "y": 43, "c": 0}, {"x": 1, "y": 91, "c": 1},
@@ -1308,6 +1310,11 @@ export default {
         that.$store.state.mapData_2 = {"select":attrF_name,"data":that.vegaObjectObj[_target['parentid']].data.data}
         // let vegaModel = that.vegaObjectObj[_target['parentid']]
         // console.log(vegaModel)
+      }
+      if(_source.dimension_type && _target.parentid.includes("Chart")){
+        let model = that.vegaObjectObj[_target.parentid]
+        model.data.layer[0].encoding.y = {"field":"WHO Region", "type":"quantitative"}
+        model.data.layer[0].encoding.x = {"field":"Cases - cumulative total", "type":"o"}
       }
       //数据转移
       if(_source.parent==='ValueF' &&_target.parentid.includes('Chart')){
