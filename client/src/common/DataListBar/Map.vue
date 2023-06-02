@@ -8,6 +8,8 @@ export default {
   name: "Map",
   data() {
     return {
+      blueColor:["#007092","#008ebc","#00ace3","#54cbf2","#95dcf4","#ffedc1","#b6b6b6"],
+      redColor:["#994414","#bb551b","#d86422","#e08d5e","#e2a786","#ffedc1","#b6b6b6"],
       mapObj: null
     }
   },
@@ -159,7 +161,7 @@ export default {
           type: 'vector',
           url: 'mapbox://mapbox.country-boundaries-v1'
         });
-
+        let colorList = this.select.split(" ")[0]=="Cases"?this.blueColor:this.redColor;
         // Build a GL match expression that defines the color for every vector tile feature
         // Use the ISO 3166-1 alpha 3 code as the lookup key for the country shape
         const matchExpression = ['match', ['get', 'name_en']];
@@ -167,8 +169,16 @@ export default {
         // Calculate color values for each country based on 'hdi' value
         for (const row of nameList) {
           // Convert the range of data values to a suitable color
-          const green = row['hdi'] * 255;
-          const color = `rgb(0, ${green}, 0)`;
+          // const green = row['hdi'] * 255;
+          // const color = `rgb(0, ${green}, 0)`;
+          let color = null;
+          if(row["hdi"]>=0.9) color = colorList[0];
+          else if(row["hdi"]>=0.7&&row["hdi"]<0.9) color = colorList[1];
+          else if(row["hdi"]>=0.5&&row["hdi"]<0.7) color = colorList[2];
+          else if(row["hdi"]>=0.3&&row["hdi"]<0.5) color = colorList[3];
+          else if(row["hdi"]>=0.2&&row["hdi"]<0.3) color = colorList[4];
+          else if(row["hdi"]>=0.1&&row["hdi"]<0.2) color = colorList[5];
+          else if(row["hdi"]>=0&&row["hdi"]<0.1) color = colorList[6];
 
           matchExpression.push(row['code'], color);
         }

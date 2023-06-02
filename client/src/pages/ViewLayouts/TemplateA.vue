@@ -394,12 +394,14 @@ export default{
       <option value="Cases">Cases</option>
       <option value="Deaths">Deaths</option>
     `;
+      select1.setAttribute("class","WHO-text");
       const select2 = document.createElement('select');
       select2.innerHTML = `
       <option value="cumulative total">total</option>
       <option value="cumulative total per 100000 population">total per 100000 population</option>
       <option value="newly reported in last 7 days">newly reported in last 7 days</option>
     `;
+      select2.setAttribute("class","WHO-text");
       //加入change事件
       let that = this;
       select1.addEventListener('change',function (event) {
@@ -507,7 +509,6 @@ export default{
       })
       let len = that.ttlayout.length
       if(Object.keys(that.$store.state.mapData_2).length!=null){
-        debugger
         if(document.getElementById("select")==null){
           that.ttlayout.push({"x":(len)*2+2,"y":0,"w":2,"h":2,"i":100, static: false, name:`select`,component:null})
           that.ttlayout.push({"x":(len+1)*2+2,"y":0,"w":2,"h":2,"i":200, static: false, name:`WHOText`,component:null})
@@ -556,48 +557,52 @@ export default{
         }
       }
       if(i==200){
-        // document.getElementById("WHOText").style.width = width;
-        // document.getElementById('WHOText').style.height = height;
+        debugger
+        document.getElementById("WHOText").style.width = `${width}px`;
+        document.getElementById('WHOText').style.height = `${height}px`;
+        console.log("width:",width,"height:",height)
         if(this.selectText == false){
           this.setWHOText(width,height);
           this.selectText = true;
         }
       }
-      for(let item of this.ttlayout){
-        if(item['i']==i){
-          name = item['name']
+      else {
+        for(let item of this.ttlayout){
+          if(item['i']==i){
+            name = item['name']
+          }
         }
+        name = name.slice(2,);
+        if(that.layoutObj['config'][name]['chartType']=='Map'){
+          console.log("map重绘");
+          // that.$refs[_ref].clearMap();
+          this.$refs.MapChart[0].reCreate();
+          // this.generateGraph();
+        }
+        console.log(name);
+        // debugger
+        that.layoutObj["config"][name]["data"]['layer'][0]['width'] =width
+        that.layoutObj["config"][name]["data"]['layer'][0]['height'] =height
+        that.layoutObj["config"][name]["data"]['width'] = width
+        that.layoutObj["config"][name]["data"]['height'] = height
+
+        console.log(that.$store.state.model_config_text)
+        that.$store.state.model_config_text[name]['data']['width'] = width
+        that.$store.state.model_config_text[name]['data']['height'] = height
+        that.$store.state.model_config_text[name]['data']['layer'][0]['width'] = width
+        that.$store.state.model_config_text[name]['data']['layer'][0]['height'] = width
+        // that.$store.state.model_config_text['Layout-0'][name]['data']['width'] = width
+        // that.$store.state.model_config_text['Layout-0'][name]['data']['height'] = height
+        // that.$store.state.model_config_text['Layout-0'][name]['data']['layer'][0]['width'] = width
+        // that.$store.state.model_config_text['Layout-0'][name]['data']['layer'][0]['height'] = height
+
+
+        // console.log(that.$store.state.model_config_text['Layout-0'][name]['data']['layer'][0]['height']);
+        // console.log('reSize---------------config---------------1',this.$store.state.model_config_text)
+        console.log('reGenerateGraphBySize---重绘');
+        vegaEmbed(`#A-${name}`, that.layoutObj["config"][name]["data"])
+        console.log('generateGraph',that.layoutObj);
       }
-      name = name.slice(2,);
-      if(that.layoutObj['config'][name]['chartType']=='Map'){
-        console.log("map重绘");
-        // that.$refs[_ref].clearMap();
-        this.$refs.MapChart[0].reCreate();
-        // this.generateGraph();
-      }
-      console.log(name);
-      // debugger
-      that.layoutObj["config"][name]["data"]['layer'][0]['width'] =width
-      that.layoutObj["config"][name]["data"]['layer'][0]['height'] =height
-      that.layoutObj["config"][name]["data"]['width'] = width
-      that.layoutObj["config"][name]["data"]['height'] = height
-
-      console.log(that.$store.state.model_config_text)
-      that.$store.state.model_config_text[name]['data']['width'] = width
-      that.$store.state.model_config_text[name]['data']['height'] = height
-      that.$store.state.model_config_text[name]['data']['layer'][0]['width'] = width
-      that.$store.state.model_config_text[name]['data']['layer'][0]['height'] = width
-      // that.$store.state.model_config_text['Layout-0'][name]['data']['width'] = width
-      // that.$store.state.model_config_text['Layout-0'][name]['data']['height'] = height
-      // that.$store.state.model_config_text['Layout-0'][name]['data']['layer'][0]['width'] = width
-      // that.$store.state.model_config_text['Layout-0'][name]['data']['layer'][0]['height'] = height
-
-
-      // console.log(that.$store.state.model_config_text['Layout-0'][name]['data']['layer'][0]['height']);
-      // console.log('reSize---------------config---------------1',this.$store.state.model_config_text)
-      console.log('reGenerateGraphBySize---重绘');
-      vegaEmbed(`#A-${name}`, that.layoutObj["config"][name]["data"])
-      console.log('generateGraph',that.layoutObj);
     },
     setWHOText(width,height){
       const textContainer = document.getElementById('WHOText');
@@ -772,21 +777,42 @@ export default{
 }
 #div1{
   flex:1;
+  text-align: right;
+  font-size:2.5em;
+  font-weight:bold;
+  margin-right: 10px;
 }
 #div2{
   flex:1;
+  text-align: right;
+  margin-right: 10px;
+  font-size:1.5em;
 }
 #div3{
   flex:1;
+  text-align: right;
+  font-size:2.5em;
+  font-weight:bold;
+  margin-right: 10px;
 }
 #div4{
   flex:1;
+  text-align: right;
+  margin-right: 10px;
+  font-size:1.5em;
 }
 #div5{
   flex:1;
+  font-size:2.5em;
+  font-weight:bold;
+  text-align: right;
+  margin-right: 10px;
 }
 #div6{
   flex:1;
+  text-align: right;
+  margin-right: 10px;
+  font-size:1.5em;
 }
 p{
   text-align:center
@@ -805,9 +831,13 @@ p{
   font-size:20px;
 }
 #WHOText{
-  width: 90%;
-  heigth:90%;
   background-color:#FFFFFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.WHO-text{
+  font-size: 2em;
 }
 </style>
 
