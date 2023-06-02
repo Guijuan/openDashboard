@@ -62,6 +62,12 @@ import { mapGetters } from "vuex";
 export default{
   data() {
     return {
+      targetSelect:[],
+      sourceSelect:[],
+      select1Option:null,
+      select2Option:null,
+      selectCard:false,
+      selectText:false,
       component:'null',
       ModularInfo:{},
       chartStyle:{"chartA":{"width": 197,"height": 70},
@@ -175,6 +181,7 @@ export default{
     console.log('this.$store.state.ttlayout',this.ttlayout);
     this.$store.commit("pushToTemplateData", {baseData: this.baseData, i: "template" });
     this.$store.commit("changeSelectId", "template");
+    this.targetSelect = this.$store.state.mapData_2.select.split(' ')
     // 设置setting值
     // console.log(this.layoutObj);
     // for(let item in this.ttlayout){
@@ -378,6 +385,89 @@ export default{
     setHeaderColor(){
 
     },
+    createSelect(width=200,height=400,select,data){
+      let selectName = select.split(' ')[0]
+      // 创建下拉框元素
+      const select1 = document.createElement('select');
+
+      select1.innerHTML = `
+      <option value="Cases">Cases</option>
+      <option value="Deaths">Deaths</option>
+    `;
+      select1.setAttribute("class","WHO-text");
+      const select2 = document.createElement('select');
+      select2.innerHTML = `
+      <option value="cumulative total">total</option>
+      <option value="cumulative total per 100000 population">total per 100000 population</option>
+      <option value="newly reported in last 7 days">newly reported in last 7 days</option>
+    `;
+      select2.setAttribute("class","WHO-text");
+      //加入change事件
+      let that = this;
+      select1.addEventListener('change',function (event) {
+        debugger;
+        that.select1Option = event.target.value;
+        console.log(that.select1Option);
+        let div1 = document.getElementById("div1");
+        let div3 = document.getElementById("div3");
+        let div5 = document.getElementById("div5");
+        div1.textContent = `${data[0][`${that.select1Option} - cumulative total`]}`;
+        div3.textContent = `${data[0][`${that.select1Option} - cumulative total per 100000 population`]}`;
+        div5.textContent = `${data[0][`${that.select1Option} - newly reported in last 7 days`]}`;
+        that.targetSelect[0] = that.select1Option;
+        that.$store.state.mapData_2['select'] = `${that.targetSelect[0]} - ${that.targetSelect[2]}`
+        that.$refs.MapChart[0].reCreate();
+        console.log(that.$store.state.mapData_2['select']);
+
+      })
+      select2.addEventListener('change',function (event) {
+        that.select2Option = event.target.value;
+        that.targetSelect[2] = that.select2Option;
+        that.$store.state.mapData_2['select'] = `${that.targetSelect[0]} - ${that.targetSelect[2]}`
+        that.$refs.MapChart[0].reCreate();
+        console.log(that.$store.state.mapData_2['select']);
+
+
+      })
+      console.log(this.select1Option,this.select2Option)
+      select1.setAttribute('id', 'select1');
+      select2.setAttribute('id', 'select2');
+      // 创建文本
+      const div1 = document.createElement('div');
+      const div2 = document.createElement('div');
+      const div3 = document.createElement('div');
+      const div4 = document.createElement('div');
+      const div5 = document.createElement('div');
+      const div6 = document.createElement('div');
+
+      div1.textContent = `${data[0][`${selectName} - cumulative total`]}`;
+      div2.textContent = `cumulative total`;
+      div3.textContent = `${data[0][`${selectName} - cumulative total per 100000 population`]}`;
+      div4.textContent = `cumulative total`;
+      div5.textContent = `${data[0][`${selectName} - newly reported in last 7 days`]}`;
+      div6.textContent = `newly reported in last 7 days`;
+
+      div1.setAttribute('id', 'div1');
+      div2.setAttribute('id', 'div2');
+      div3.setAttribute('id', 'div3');
+      div4.setAttribute('id', 'div4');
+      div5.setAttribute('id', 'div5');
+      div6.setAttribute('id', 'div6');
+      // 获取目标容器
+      const formContainer = document.getElementById('select');
+
+      // 添加下拉框和多行文本框到目标容器
+      formContainer.appendChild(select1);
+      formContainer.appendChild(select2);
+      formContainer.appendChild(div1);
+      formContainer.appendChild(div2);
+      formContainer.appendChild(div3);
+      formContainer.appendChild(div4);
+      formContainer.appendChild(div5);
+      formContainer.appendChild(div6);
+      formContainer.style.width=`${width}px`;
+      formContainer.style.height=`${height}px`;
+    },
     generateGraph(color='#1F9CC9'){
       let that = this
       // debugger;
@@ -417,6 +507,15 @@ export default{
           vegaEmbed("#" + `A-${d}`, that.layoutObj["config"][d]["data"])
         }
       })
+      let len = that.ttlayout.length
+      if(Object.keys(that.$store.state.mapData_2).length!=null){
+        if(document.getElementById("select")==null){
+          that.ttlayout.push({"x":(len)*2+2,"y":0,"w":2,"h":2,"i":100, static: false, name:`select`,component:null})
+          that.ttlayout.push({"x":(len+1)*2+2,"y":0,"w":2,"h":2,"i":200, static: false, name:`WHOText`,component:null})
+          // this.createSelect();
+        }
+      }
+      console.log(that.ttlayout)
       // console.log(document.getElementById(this.container).parentNode);
     },
     reGenerateGraphByStyle(newVal){
@@ -446,42 +545,103 @@ export default{
       let name = ''
       let _ref = "MapChart"
       console.log(i);
-      for(let item of this.ttlayout){
-        if(item['i']==i){
-          name = item['name']
+      if(i==100){
+        if(this.selectCard==false){
+          this.createSelect(width,height,that.$store.state.mapData_2.select,that.$store.state.mapData_2.data.values);
+          this.selectCard=true;
+        }
+        else {
+          let select_div = document.getElementById("select")
+          select_div.style.width = `${width}px`;
+          select_div.style.height = `${height}px`
         }
       }
-      debugger
-      name = name.slice(2,);
-      if(that.layoutObj['config'][name]['chartType']=='Map'){
-        console.log("map重绘");
-        // that.$refs[_ref].clearMap();
-        this.$refs.MapChart[0].reCreate();
-        // this.generateGraph();
+      if(i==200){
+        debugger
+        document.getElementById("WHOText").style.width = `${width}px`;
+        document.getElementById('WHOText').style.height = `${height}px`;
+        console.log("width:",width,"height:",height)
+        if(this.selectText == false){
+          this.setWHOText(width,height);
+          this.selectText = true;
+        }
       }
-      console.log(name);
-      // debugger
-      that.layoutObj["config"][name]["data"]['layer'][0]['width'] =width
-      that.layoutObj["config"][name]["data"]['layer'][0]['height'] =height
-      that.layoutObj["config"][name]["data"]['width'] = width
-      that.layoutObj["config"][name]["data"]['height'] = height
+      else {
+        for(let item of this.ttlayout){
+          if(item['i']==i){
+            name = item['name']
+          }
+        }
+        name = name.slice(2,);
+        if(that.layoutObj['config'][name]['chartType']=='Map'){
+          console.log("map重绘");
+          // that.$refs[_ref].clearMap();
+          this.$refs.MapChart[0].reCreate();
+          // this.generateGraph();
+        }
+        console.log(name);
+        // debugger
+        that.layoutObj["config"][name]["data"]['layer'][0]['width'] =width
+        that.layoutObj["config"][name]["data"]['layer'][0]['height'] =height
+        that.layoutObj["config"][name]["data"]['width'] = width
+        that.layoutObj["config"][name]["data"]['height'] = height
 
-      console.log(that.$store.state.model_config_text)
-      that.$store.state.model_config_text[name]['data']['width'] = width
-      that.$store.state.model_config_text[name]['data']['height'] = height
-      that.$store.state.model_config_text[name]['data']['layer'][0]['width'] = width
-      that.$store.state.model_config_text[name]['data']['layer'][0]['height'] = width
-      // that.$store.state.model_config_text['Layout-0'][name]['data']['width'] = width
-      // that.$store.state.model_config_text['Layout-0'][name]['data']['height'] = height
-      // that.$store.state.model_config_text['Layout-0'][name]['data']['layer'][0]['width'] = width
-      // that.$store.state.model_config_text['Layout-0'][name]['data']['layer'][0]['height'] = height
+        console.log(that.$store.state.model_config_text)
+        that.$store.state.model_config_text[name]['data']['width'] = width
+        that.$store.state.model_config_text[name]['data']['height'] = height
+        that.$store.state.model_config_text[name]['data']['layer'][0]['width'] = width
+        that.$store.state.model_config_text[name]['data']['layer'][0]['height'] = width
+        // that.$store.state.model_config_text['Layout-0'][name]['data']['width'] = width
+        // that.$store.state.model_config_text['Layout-0'][name]['data']['height'] = height
+        // that.$store.state.model_config_text['Layout-0'][name]['data']['layer'][0]['width'] = width
+        // that.$store.state.model_config_text['Layout-0'][name]['data']['layer'][0]['height'] = height
 
 
-      // console.log(that.$store.state.model_config_text['Layout-0'][name]['data']['layer'][0]['height']);
-      // console.log('reSize---------------config---------------1',this.$store.state.model_config_text)
-      console.log('reGenerateGraphBySize---重绘');
-      vegaEmbed(`#A-${name}`, that.layoutObj["config"][name]["data"])
-      console.log('generateGraph',that.layoutObj);
+        // console.log(that.$store.state.model_config_text['Layout-0'][name]['data']['layer'][0]['height']);
+        // console.log('reSize---------------config---------------1',this.$store.state.model_config_text)
+        console.log('reGenerateGraphBySize---重绘');
+        vegaEmbed(`#A-${name}`, that.layoutObj["config"][name]["data"])
+        console.log('generateGraph',that.layoutObj);
+      }
+    },
+    setWHOText(width,height){
+      const textContainer = document.getElementById('WHOText');
+
+      const line1 = document.createElement('p');
+      //const line1Text = document.createTextNode('In China, from 3 January 2020 to 6:03am CEST, 24 May 2023, there have been ');
+      //line1.appendChild(line1Text);
+
+      line1.appendChild(getSpan("In "));
+      line1.appendChild(getSpan("China","blue"));
+      line1.appendChild(getSpan(", from "));
+      line1.appendChild(getSpan("3 January 2020","blue"));
+      line1.appendChild(getSpan(" to "));
+      line1.appendChild(getSpan("6:03am CEST, 24 May 2023","blue"));
+      line1.appendChild(getSpan(", there have been "));
+      line1.appendChild(getSpan("99,261,812 confirmed cases","blue"));
+      line1.appendChild(getSpan(" of COVID-19 with "));
+      line1.appendChild(getSpan("121,144","orange"));
+
+      const line2 = document.createElement('p');
+      line2.appendChild(getSpan("deaths","orange"));
+      line2.appendChild(getSpan(", reported to WHO. As of "));
+      line2.appendChild(getSpan("22 March 2023","blue"));
+      line2.appendChild(getSpan(", a total of "));
+      line2.appendChild(getSpan("3,515,872,818 vaccine doses","blue"));
+      line2.appendChild(getSpan(" have been administered."));
+
+      const line2Continuation = document.createTextNode(' vaccine doses have been administered.');
+
+      // 将文本节点添加到容器中
+      textContainer.appendChild(line1);
+      textContainer.appendChild(line2);
+      function getSpan(str,className = "WHO-Text"){
+        let cases = document.createElement("span");
+        cases.classList.add(className);
+        let casesText = document.createTextNode(str);
+        cases.appendChild(casesText);
+        return cases;
+      }
     }
   }
 
@@ -604,6 +764,80 @@ export default{
   background-origin: content-box;
   box-sizing: border-box;
   cursor: pointer;
+}
+#select{
+  display:flex;
+  flex-direction:column;
+}
+#select1{
+  flex:1;
+}
+#select2{
+  flex:1;
+}
+#div1{
+  flex:1;
+  text-align: right;
+  font-size:2.5em;
+  font-weight:bold;
+  margin-right: 10px;
+}
+#div2{
+  flex:1;
+  text-align: right;
+  margin-right: 10px;
+  font-size:1.5em;
+}
+#div3{
+  flex:1;
+  text-align: right;
+  font-size:2.5em;
+  font-weight:bold;
+  margin-right: 10px;
+}
+#div4{
+  flex:1;
+  text-align: right;
+  margin-right: 10px;
+  font-size:1.5em;
+}
+#div5{
+  flex:1;
+  font-size:2.5em;
+  font-weight:bold;
+  text-align: right;
+  margin-right: 10px;
+}
+#div6{
+  flex:1;
+  text-align: right;
+  margin-right: 10px;
+  font-size:1.5em;
+}
+p{
+  text-align:center
+}
+.blue {
+  color: blue;
+  font-size:20px;
+  font-weight: bold;
+}
+.orange{
+  color: orange;
+  font-size:20px;
+  font-weight: bold;
+}
+.WHO-Text{
+  font-size:20px;
+}
+#WHOText{
+  background-color:#FFFFFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.WHO-text{
+  font-size: 2em;
 }
 </style>
 
