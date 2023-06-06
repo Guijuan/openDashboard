@@ -37,6 +37,7 @@ export default class BlueComponent {
     this.filterSource = null
     this.filterTarget = null
 
+
     for (let key in options) {
       //deep copy
       if (key == "inPorts" || key == "outPorts" || key == 'sletectPorts' || key == 'slidePorts') {
@@ -421,18 +422,6 @@ export default class BlueComponent {
       let filter = {}
       d3.select('#filterSubmit')
         .on('click', function(e) {
-          // switch (selected){
-          //   case 'range':that.filterType = 'range';break;
-          //     // let minInput = d3.selectAll('#range1').property('value')
-          //     // let maxInput = d3.selectAll('#range2').property('value')
-          //     // filter = {'field':that.filterAttributeName, 'range':[minInput, maxInput]};
-          //   case 'in':that.filterType = "in";break;
-          //   case 'values':that.filterType = 'oneOf';break;
-          //   case 'equalTo':that.filterType = 'equal';break;
-          // }
-          // that.filterAttributeData['transform']=[{'filter':filter}]
-          //
-          // console.log(that.filterAttributeData)
           d3.select('#filterSettingPanel').remove()
         })
     })

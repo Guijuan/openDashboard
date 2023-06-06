@@ -22,54 +22,56 @@
         <!--该列放置数据和操作-->
         <!--数据列-->
         <div style="height: 90vh;overflow: auto">
-        <vs-divider border-style="solid" color="dark">DATALIST AREA</vs-divider>
-        <vs-row vs-h="5" style="display:block">
-          <div id='data_list'>
-            <vs-collapse accordion :key="index" v-for="(data, index) in dataList">
-              <vs-collapse-item style="background:rgb(142,170,255); border-radius:10px">
-                <div slot="header" style="color:white; border-left:white solid 2px; padding-left:10px; font-size:15px">
-                  {{ data.name }}
-                </div>
-                <vs-button type="line" @click="initTable(data.name)">{{ buttonName }}</vs-button>
-                <span style="color:white;padding:5px;float:right;font-size:15px">Length: {{ data.length }}</span>
-                <vs-divider style="margin:3px"></vs-divider>
-                <div :key="index" v-for="(dim, index) in data.dimensions">
-                  <vs-list-item>
-                    <h3 style="float:left;color:white">{{ dim.name }}</h3>
-                    <vs-select style="float:left;width:80%" v-model="dim.type">
-                      <vs-select-item :key="index" :value="item.value" :text="item.text"
-                                      v-for="(item,index) in dataTypes"/>
-                    </vs-select>
-                    <vs-avatar style="float:right;margin:0px;margin-left:10px; background:rgb(167,189,255)"
-                               :color="dim.color" text="+" v-on:click="createNewComponent(data.name, dim)"/>
-                  </vs-list-item>
-                </div>
-              </vs-collapse-item>
-            </vs-collapse>
-          </div>
-        </vs-row>
-        <!--功能列-->
-        <vs-divider border-style="solid" color="dark">FUNCTION AREA</vs-divider>
-        <vs-row vs-h="5">
-          <div id='editor'>
-            <vs-collapse accordion :key="item.name" v-for="item in componentTypes">
-              <vs-collapse-item style="background:rgb(142,170,255); border-radius:10px">
-                <div slot="header" style="color:white; border-left:white solid 2px; padding-left:10px; font-size:15px">
-                  {{ item.name }}
-                </div>
-                <vs-list :key="index" v-for="(meta, index) in item.childrens">
-                  <vs-button style="width:80%; justify-content: left; margin-left:10%" color="rgb(167,189,255)"
-                             type="filled"
-                             v-on:click="createNewComponent(meta)"
-                             icon="add_circle">
-                    {{ meta }}
-                  </vs-button>
-                  <vs-divider></vs-divider>
-                </vs-list>
-              </vs-collapse-item>
-            </vs-collapse>
-          </div>
-        </vs-row>
+          <vs-divider border-style="solid" color="dark">DATALIST AREA</vs-divider>
+          <vs-row vs-h="5" style="display:block">
+            <div id='data_list'>
+              <vs-collapse accordion :key="index" v-for="(data, index) in dataList">
+                <vs-collapse-item style="background:rgb(142,170,255); border-radius:10px">
+                  <div slot="header"
+                       style="color:white; border-left:white solid 2px; padding-left:10px; font-size:15px">
+                    {{ data.name }}
+                  </div>
+                  <vs-button type="line" @click="initTable(data.name)">{{ buttonName }}</vs-button>
+                  <span style="color:white;padding:5px;float:right;font-size:15px">Length: {{ data.length }}</span>
+                  <vs-divider style="margin:3px"></vs-divider>
+                  <div :key="index" v-for="(dim, index) in data.dimensions">
+                    <vs-list-item>
+                      <h3 style="float:left;color:white">{{ dim.name }}</h3>
+                      <vs-select style="float:left;width:80%" v-model="dim.type">
+                        <vs-select-item :key="index" :value="item.value" :text="item.text"
+                                        v-for="(item,index) in dataTypes"/>
+                      </vs-select>
+                      <vs-avatar style="float:right;margin:0px;margin-left:10px; background:rgb(167,189,255)"
+                                 :color="dim.color" text="+" v-on:click="createNewComponent(data.name, dim)"/>
+                    </vs-list-item>
+                  </div>
+                </vs-collapse-item>
+              </vs-collapse>
+            </div>
+          </vs-row>
+          <!--功能列-->
+          <vs-divider border-style="solid" color="dark">FUNCTION AREA</vs-divider>
+          <vs-row vs-h="5">
+            <div id='editor'>
+              <vs-collapse accordion :key="item.name" v-for="item in componentTypes">
+                <vs-collapse-item style="background:rgb(142,170,255); border-radius:10px">
+                  <div slot="header"
+                       style="color:white; border-left:white solid 2px; padding-left:10px; font-size:15px">
+                    {{ item.name }}
+                  </div>
+                  <vs-list :key="index" v-for="(meta, index) in item.childrens">
+                    <vs-button style="width:80%; justify-content: left; margin-left:10%" color="rgb(167,189,255)"
+                               type="filled"
+                               v-on:click="createNewComponent(meta)"
+                               icon="add_circle">
+                      {{ meta }}
+                    </vs-button>
+                    <vs-divider></vs-divider>
+                  </vs-list>
+                </vs-collapse-item>
+              </vs-collapse>
+            </div>
+          </vs-row>
         </div>
       </vs-col>
       <vs-col vs-w="10">
@@ -97,7 +99,8 @@
             </div>
             <div style="height:85%; border-right: 1px solid rgba(0,0,0,0.2)"></div>
             <div v-if="!CompositeCom" id='canvas' style="display:flex; width:1000px; padding-left:20px;"></div>
-            <div v-if="!CompositeCom" id="settings" style="width:420px; height:150px;padding-left:20px;overflow-y: scroll">
+            <div v-if="!CompositeCom" id="settings"
+                 style="width:420px; height:150px;padding-left:20px;overflow-y: scroll">
               <SettingSide v-if="settingsView" ref="settings" style="" @reGenerateChart="reGenerateChart"></SettingSide>
             </div>
             <div style="height: 100%;width:90%;display: flex;justify-content: center;align-items: center" v-else>
@@ -105,7 +108,7 @@
                 :is="component"
                 :line1="dataPanelData[0]"
                 :line2="dataPanelData[1]"
-                :container = "'Map'"
+                :container="'Map'"
               ></component>
             </div>
           </vs-col>
@@ -164,11 +167,11 @@ export default {
   name: "blue-editor",
   data() {
     return {
-      select_1:null,
-      select_2:null,
-      settingsView:false,
-      selectMetaId:null,
-      selectMeta:null,
+      select_1: null,
+      select_2: null,
+      settingsView: false,
+      selectMetaId: null,
+      selectMeta: null,
       buttonName: "Preview",
       dataList: [], //data candidates list
       componentTypes: blueComponentTypes, // components' types of blueprint
@@ -179,7 +182,7 @@ export default {
       selectedData: {}, //The dimensions in dataset which been selected by user
       dataComponent: {}, //The exsiting components in canvas (used to check the exsiting)
       blueComponents: [], //The exsiting components in canvas (used to store the exsiting)
-      filterComponent:[],
+      filterComponent: [],
       blueLines: [], //Store the connections between component which connected by curve
       mouseAction: "", //mouse action label which used to change the mouse action state
       drawingLine: "", //The line which is being darwing by user
@@ -637,14 +640,14 @@ export default {
         this.CompositeCom = true
         if (meta.type == 'Map') {
           let data = this.vegaObjectObj[meta['id']].getMapData()
-          let select =null
-          this.blueComponents.forEach(item=>{
-            if(item.filterAttributeName!=""){
+          let select = null
+          this.blueComponents.forEach(item => {
+            if (item.filterAttributeName != "") {
               select = item.filterAttributeName
             }
           })
-          if(select!=null){
-            if(that.$store.state.mapData_2!=null){
+          if (select != null) {
+            if (that.$store.state.mapData_2 != null) {
               that.$store.state.mapData_2["select"] = select
             }
             console.log(that.$store.state.mapData_2)
@@ -657,7 +660,7 @@ export default {
         this.CompositeCom = false
         let result = this.vegaObjectObj[meta["id"]].getOutputForced();
         console.log(result)
-        if(result.layer[0].encoding.stacked){
+        if (result.layer[0].encoding.stacked) {
           result.layer[0].encoding.sacles = {
             "name": "color",
             "type": "ordinal",
@@ -666,34 +669,19 @@ export default {
           }
           result.layer[0].encoding.fill = {"scale": "color", "field": result.layer[0].encoding.stacked.field}
         }
-        if(result['chartType']!="textChart") {
+        if (result['chartType'] != "textChart") {
           result.layer[0]['selection'] = {"pts": {"type": "single", "encodings": ["y"]}}
           result.layer[0]['encoding']["opacity"] = {"condition": {"selection": "pts", "value": 1}, "value": "0.3"}
         }
         console.log(result);
         console.log(this.vegaObjectObj)
-        vegaEmbed("#canvas", result, {theme: "default", mode:'vega-lite'}).then(res=>{
-            res.view.addSignalListener('pts', function (e, value){
-              let vegaModel = that.vegaObjectObj[meta["id"]]
-            console.log(that.vegaObjectObj)
-            if(vegaModel.isFilterSource){
-              let blueComponent = that.blueComponents.filter(item=>{return item.id === vegaModel.filterAttr})[0]
-              console.log(blueComponent)
-              let targetModel = that.vegaObjectObj[blueComponent.filterTarget];
-              console.log(targetModel)
-              let filterName = blueComponent.filterAttributeName
-              let filter = {'filter':{'field':filterName,'equal':value}}
-              targetModel.setTransform(filter)
-              console.log(targetModel)
-            }
-          })
-        })
+        vegaEmbed("#canvas", result, {theme: "default", mode: 'vega-lite'})
         this.$refs['settings'].getModularInfo({"config": result, "layoutname": meta["id"]});
       }
       this.notifications({"title": meta.type, "text": "Generate success~", "color": 'rgb(31,116,225)'})
     },
 
-    reGenerateChart(baseData){
+    reGenerateChart(baseData) {
       console.log('reGenerateChart样式更改');
       console.log(baseData.style.color);
       // 传输数据到settings中
@@ -713,7 +701,7 @@ export default {
         let result = this.vegaObjectObj[this.selectMeta["id"]].getOutputForced();
         result.layer[0]['selection'] = {"pts": {"type": "single", "encodings": ["y"]}}
         result.layer[0]['encoding']["opacity"] = {"condition": {"selection": "pts", "value": 1}, "value": "0.3"}
-        if(result.layer[0].encoding.stacked){
+        if (result.layer[0].encoding.stacked) {
           result.layer[0].encoding.sacles = {
             "name": "color",
             "type": "ordinal",
@@ -722,22 +710,7 @@ export default {
           }
           result.layer[0].encoding.fill = {"scale": "color", "field": result.layer[0].encoding.stacked.field}
         }
-        vegaEmbed("#canvas", result, {theme: "default",  mode:'vega-lite'}).then(res=>{
-          res.view.addSignalListener('pts', function (e, value){
-            let vegaModel = that.vegaObjectObj[meta["id"]]
-            console.log(that.vegaObjectObj)
-            if(vegaModel.isFilterSource){
-              let blueComponent = that.blueComponents.filter(item=>{return item.id === vegaModel.filterAttr})[0]
-              console.log(blueComponent)
-              let targetModel = that.vegaObjectObj[blueComponent.filterTarget];
-              console.log(targetModel)
-              let filterName = blueComponent.filterAttributeName
-              let filter = {'filter':{'field':filterName,'equal':value}}
-              targetModel.setTransform(filter)
-              console.log(targetModel)
-            }
-          })
-        });
+        vegaEmbed("#canvas", result, {theme: "default", mode: 'vega-lite'})
         // this.$refs['settings'].getModularInfo({"config": result, "layoutname": this.meta["id"]});
       }
       this.notifications({"title": this.selectMeta.type, "text": "Generate success~", "color": 'rgb(31,116,225)'})
@@ -993,20 +966,20 @@ export default {
         }
       }
 
-      if (target.parent=='Map'){
+      if (target.parent == 'Map') {
         this.vegaObjectObj[vegaObjKey]['chartType'] = 'Map';
         let data = this.vegaObjectObj[vegaObjKey].getMapData();
         this.$store.commit("setMapData", data)
 
       }
-      if (target.parent=='TextChart'){
+      if (target.parent == 'TextChart') {
         this.vegaObjectObj[vegaObjKey]['chartType'] = 'TextChart';
         let data = this.vegaObjectObj[vegaObjKey].getMapData();
         this.$store.commit("setMapData", data)
 
       }
 
-      if(source.attr == 'field' && target.attr == "filter"){
+      if (source.attr == 'field' && target.attr == "filter") {
 
       }
     },
@@ -1067,13 +1040,47 @@ export default {
       let connect = con.getConnectInfo()
       let _source = connect.source
       let _target = connect.target
+
       //判断是否为过滤
-      if(_target.parent === 'AttributeF'||_target.parent === 'Select'){
-        that.blueComponents.forEach(item=>{
-          if(item.id == _target.id){
+      if (_target.parent === 'AttributeF' || _target.parent === 'Select') {
+        that.blueComponents.forEach(item => {
+          if (item.id == _target.id) {
             item.sletectPorts[0].options.push(_source.name)
             item.drawSelector()
             console.log(item);
+          }
+        })
+      }
+      console.log("连接对象:", _target)
+      console.log("连接源:", _source)
+      if (_target.parent === 'ValueF') {
+        that.blueComponents.forEach(item => {
+          if (item.id === _target.id) {
+            item.filterAttrs.push(_source.name)
+            item.filterSource = _source.parentid
+            let vegaModel = that.vegaObjectObj[_source.parentid]
+
+            //定制设置
+
+            if (vegaModel) {
+              vegaModel.isFilterSource = true
+            }
+            let panel = document.querySelector('#filterSettingPanel')
+            if (panel) item.drawSettingPanel()
+          }
+        })
+      }
+      if (_source.parent === "ValueF") {
+        that.blueComponents.forEach(item => {
+          if (item.id === _source.parentid) {
+            let source  = item.filterSource
+            let sourceTarget = that.vegaObjectObj[source]
+            sourceTarget.filterTarget = _target.parentid
+            sourceTarget.filterType = item.filterType
+            sourceTarget.filterAttr = item.filterAttributeName
+            let teagetChart = that.vegaObjectObj[ _target.parentid]
+            teagetChart = JSON.parse(JSON.stringify(teagetChart))
+            sourceTarget.filterTargetData = teagetChart
           }
         })
       }
@@ -1264,67 +1271,49 @@ export default {
         })
       })
       //设置属性到对应的chart中
-      if(_target.parentid.includes('Chart') &&_source.parent == 'AttributeF'){
-        let attrF = that.blueComponents.filter(item=>{return item.id === _source.parentid})[0]||[]
+      if (_target.parentid.includes('Chart') && _source.parent == 'AttributeF') {
+        let attrF = that.blueComponents.filter(item => {
+          return item.id === _source.parentid
+        })[0] || []
         let vegaModel = that.vegaObjectObj[_target['parentid']]
         vegaModel.filterAttr = attrF.filterAttributeName
       }
       //属性过滤
-      if("parentid" in _source){
-        if(_source.parentid.includes('Chart') && _target.parent==='ValueF'){
-          that.blueComponents.forEach(item=>{
-            if(item.id == _target.id){
-              item.filterAttributeName = that.vegaObjectObj[_source.parentid].filterAttr
-              item.filterAttributeData = that.vegaObjectObj[_source.parentid].data
-              item.drawSlider()
-            }
-          })
-        }
-      }
-      //
-      if(_target.parent === 'ValueF' && !_source.parentid){
-        that.blueComponents.forEach(item=>{
-          if(item.id === _target.id){
-            item.filterAttrs.push(_source.name)
-            item.filterSource = _source.parentid
-            let vegaModel = that.vegaObjectObj[_source.parentid]
-            if (vegaModel){
-              vegaModel.isFilterSource = true
-              vegaModel.filterAttr = item.id
-            }
-            let panel = document.querySelector('#filterSettingPanel')
-            if(panel) item.drawSettingPanel()
-          }
-        })
-      }
-      if(_source.parent === "ValueF"){
-        that.blueComponents.forEach(item=>{
-          if(item.id === _source.parentid){
-            console.log("parentid")
-            item.filterTarget = _target.parentid
-          }
-        })
-      }
+      // if ("parentid" in _source) {
+      //   if (_source.parentid.includes('Chart') && _target.parent === 'ValueF') {
+      //     that.blueComponents.forEach(item => {
+      //       if (item.id == _target.id) {
+      //         item.filterAttributeName = that.vegaObjectObj[_source.parentid].filterAttr
+      //         item.filterAttributeData = that.vegaObjectObj[_source.parentid].data
+      //         item.drawSlider()
+      //       }
+      //     })
+      //   }
+      // }
+
       // 设置select组件
-      if(_target.name=="select_1"){
+      if (_target.name == "select_1") {
         that.select_1 = _source.name
       }
-      if(_target.name=="select_2"){
+      if (_target.name == "select_2") {
         that.select_2 = _source.name
       }
       //数据转移
-      if(_source.parent==='Select' &&_target.parentid.includes('Chart')){
-        console.log(that.select_1,that.select_2)
+      if (_source.parent === 'Select' && _target.parentid.includes('Chart')) {
+        console.log(that.select_1, that.select_2)
         that.vegaObjectObj[_target['parentid']].select_1 = that.select_1
         that.vegaObjectObj[_target['parentid']].select_2 = that.select_2
-        let attrF = that.blueComponents.filter(item=>{return item.id === _source.parentid})
+        let attrF = that.blueComponents.filter(item => {
+          return item.id === _source.parentid
+        })
         let attrF_name = attrF[0]["filterAttributeName"]
         console.log(attrF[0]["filterAttributeName"]);
         console.log(attrF_name);
-        that.$store.state.mapData_2 = {"select":attrF_name,"data":that.vegaObjectObj[_target['parentid']].data.data}
+        that.$store.state.mapData_2 = {"select": attrF_name, "data": that.vegaObjectObj[_target['parentid']].data.data}
         // let vegaModel = that.vegaObjectObj[_target['parentid']]
         // console.log(vegaModel)
       }
+      console.log(this.vegaObjectObj)
     },
     notifications(message) {
       this.$vs.notify({
@@ -1342,20 +1331,26 @@ export default {
       let _ref = "msg-A";
       that['A'] = true;
       if (that.$refs[_ref] != undefined) {
-        let select =null
-        this.blueComponents.forEach(item=>{
-          if(item.filterAttributeName!=""){
+        let select = null
+        this.blueComponents.forEach(item => {
+          if (item.filterAttributeName != "") {
             select = item.filterAttributeName
           }
         })
-        if(select!=null){
-          if(that.$store.state.mapData_2!=null){
+        if (select != null) {
+          if (that.$store.state.mapData_2 != null) {
             that.$store.state.mapData_2["select"] = select
           }
         }
         // that.$refs[_ref].getModularInfo({"config": that.chartLayoutObj[key[0]], "layoutname": key[0]})
         // config:chartA:{},layoutname:Layout-0
-        that.$refs[_ref].getModularInfo({"config": this.vegaObjectObj,"layoutname":'Layout-0'})
+        Object.keys(this.vegaObjectObj).forEach(item=>{
+          if(this.vegaObjectObj[item].isFilterSource){
+            let target = this.vegaObjectObj[item].filterTarget
+            this.vegaObjectObj[target] = this.vegaObjectObj[item].filterTargetData
+          }
+        })
+        that.$refs[_ref].getModularInfo({"config": this.vegaObjectObj, "layoutname": 'Layout-0'})
         that.model_config_text = JSON.parse(JSON.stringify(that.vegaObjectObj))
         that.$store.state.model_config_text = that.model_config_text
         that.popupActivo4 = !that.popupActivo4

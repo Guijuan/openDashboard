@@ -29,7 +29,10 @@ export default class VegaModel {
     this.layers = {}
     this.chartType = ''
     this.filterAttr=""
+    this.filterTarget = ""
+    this.filterType = ""
     this.isFilterSource = false
+    this.filterTargetData = null
   }
 
   getData() {

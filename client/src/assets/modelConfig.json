@@ -714,13 +714,13 @@
       {
         "name": "filter_in",
         "text": "",
-        "attr": "field",
+        "attr": "filter",
         "type": "in"
       }
     ],
     "slidePorts": [
       {
-        "name": "output",
+        "name": "filter_out",
         "text": "Output",
         "attr": "filter",
         "type": "out"
@@ -739,7 +739,7 @@
       {
         "name":"filter_out",
         "text": "filter_out",
-        "attr": "field",
+        "attr": "filed",
         "type": "out"
       }
     ],

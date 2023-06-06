@@ -4,7 +4,7 @@
       System Preview
     </div>
     <el-container v-on:dblclick="getData">
-      <el-main @click.native="getData"  @contextmenu.prevent = "alert('触发了')">
+      <el-main @click.native="getData">
               <grid-layout class="gridLayout"
                            :layout.sync="ttlayout"
                            v-if="!(typeof ttlayout==='undefined')"
@@ -26,7 +26,7 @@
                   :h="item.h"
                   :i="item.i"
                   :id="item.i"
-
+                  @click.native.stop="getData(item.i)"
                   @resized="resizeEvent"
                   @move="moveEvent"
                 >
@@ -600,7 +600,11 @@ export default{
         // console.log(that.$store.state.model_config_text['Layout-0'][name]['data']['layer'][0]['height']);
         // console.log('reSize---------------config---------------1',this.$store.state.model_config_text)
         console.log('reGenerateGraphBySize---重绘');
-        vegaEmbed(`#A-${name}`, that.layoutObj["config"][name]["data"])
+        let data = this.layoutObj["config"][name]["data"]
+        this.setConfig(data)
+        vegaEmbed(`#A-${name}`, data).then(res=>{
+            this.addChartEvent(res.view, name)
+        })
         console.log('generateGraph',that.layoutObj);
       }
     },
@@ -642,6 +646,43 @@ export default{
         cases.appendChild(casesText);
         return cases;
       }
+    },
+    setConfig(result){
+      result.layer[0]['selection'] = {"pts": {"type": "single", "encodings": ["y"]}}
+      result.layer[0]['encoding']["opacity"] = {"condition": {"selection": "pts", "value": 1}, "value": "0.3"}
+      if (result.layer[0].encoding.stacked) {
+        result.layer[0].encoding.sacles = {
+          "name": "color",
+          "type": "ordinal",
+          "domain": {"field": result.layer[0].encoding.stacked.field, "sort": true},
+          "range": "category"
+        }
+        result.layer[0].encoding.fill = {"scale": "color", "field": result.layer[0].encoding.stacked.field}
+      }
+    },
+    addChartEvent(view, name){
+      let that = this
+      view.addSignalListener('pts', function (e, value) {
+        console.log(value)
+        let vegaModel = that.layoutObj["config"][name]
+        console.log(vegaModel)
+        if(vegaModel.isFilterSource){
+          let target = vegaModel.filterTarget
+          let targetObj = that.layoutObj["config"][target]
+          let data = targetObj.data
+          console.log(data)
+          data.layer[0]['encoding']['opacity']={"condition":{"test":`datum.region=='${value.region[0]}'`,"value":1}, "value":0.3}
+          let dom = document.getElementById(`A-${target}`)
+          dom.innerHTML = ""
+          vegaEmbed(`#A-${target}`, data).then(res=>{
+            res.view.addEventListener('click', function (e){
+              console.log(e)
+              data.layer[0]['encoding']['opacity'] = {"condition":{"selection":"pts", "value":1}, "value":0.3}
+              vegaEmbed(`#A-${target}`, data)
+            })
+          })
+        }
+      })
     }
   }
 
