@@ -288,5 +288,55 @@
       }
     ],
     "length":238
+  },
+  {
+    "name":"WHO2",
+    "dimensions":[
+      {
+        "index": 0,
+        "name": "date",
+        "type": "nominal",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      },
+      {
+        "index": 1,
+        "name": "region",
+        "type": "ordinal",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      },
+      {
+        "index": 2,
+        "name": "cases",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      }
+    ],
+    "length":238
+  },
+  {
+    "name":"regionCase",
+    "dimensions":[
+      {
+        "index": 0,
+        "name": "region",
+        "type": "ordinal",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      },
+      {
+        "index": 1,
+        "name": "cases",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      }]
   }
 ]

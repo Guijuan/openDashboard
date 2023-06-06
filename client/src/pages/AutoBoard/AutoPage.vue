@@ -30,6 +30,7 @@ export default {
         }
     },
     mounted() {
+      console.log("激活了")
         this._init()
     },
     props: ["layout"],
@@ -88,11 +89,11 @@ export default {
                     })
                 }
             })
-            
+
             this.generateGraph()
         },
         generateGraph() {
-            
+
         }
     },
     components: {

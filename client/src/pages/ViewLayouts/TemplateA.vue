@@ -3,8 +3,8 @@
     <div class="header">
       System Preview
     </div>
-    <el-container v-on:click="getData">
-      <el-main @click.native="getData">
+    <el-container v-on:dblclick="getData">
+      <el-main @click.native="getData"  @contextmenu.prevent = "alert('触发了')">
               <grid-layout class="gridLayout"
                            :layout.sync="ttlayout"
                            v-if="!(typeof ttlayout==='undefined')"
@@ -26,7 +26,7 @@
                   :h="item.h"
                   :i="item.i"
                   :id="item.i"
-                  @click.native.stop="getData(item.i)"
+
                   @resized="resizeEvent"
                   @move="moveEvent"
                 >
@@ -238,10 +238,10 @@ export default{
       if(!re.test(id)){
         this.$store.commit('changeSelectId','template');
         this.selectChart = this.$store.state.templateData;
-        console.log('selectChart',this.selectChart);
-        console.log(this.$store.state.selectChartId)
+        // console.log('selectChart',this.selectChart);
+        // console.log(this.$store.state.selectChartId)
       }else{
-        console.log('带参数的')
+        // console.log('带参数的')
         this.$store.commit('changeSelectId',id);
         // this.selectChart = this.$store.state.chartArray[id]
         this.selectChart = {

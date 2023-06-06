@@ -197,113 +197,113 @@ var dataProcess = dataProcess || {};
 //     }
 // }
 
-// dataProcess = {
-//     storeData: function(dataName, dataType){
-//         if(dataType == 'csv'){
-//             //使用插件convert-csv-to-json读入csv并转成json赋id
-//             fs.readFile(path.join(__dirname, staticBasePath + dataName + '.' + dataType), 'utf-8', function(err, data){
-//                 if (err) throw err;
-//                 //处理字符串首字符问题
-//                 let firstCode = data.charCodeAt(0)
-//                 if (firstCode < 0x20 || firstCode > 0x7f){
-//                     data = data.substring(1)
-//                 }
-//
-//                 let json = dsv.parse(data)
-//                 let rawdata = []
-//                 let columns = json.columns
-//
-//                 json.forEach(function(d,i){
-//                     rawdata.push(d)
-//                 })
-//                 funcStore.addRawDataToBuffer(rawdata, dataName);
-//                 funcStore.generateDimensions(columns, dataName);
-//                 funcStore.calDimensionPreview(rawdata, dataName);
-//                 //funcStore.jsonAddId(rawdata);
-//                 //funcStore.createIndex(rawdata, dataName);
-//                 funcStore.storeToDB(dataName)
-//                 console.log(dataName + "." + dataType + " successful loading~")
-//             })
-//         } else if(dataType == 'json'){
-//             //使用fs读入json
-//             fs.readFile(path.join(__dirname, staticBasePath + dataName + '.' + dataType), 'utf-8', function(err, data) {
-//                 if (err) throw err;
-//
-//                 //处理字符串首字符问题
-//                 let firstCode = data.charCodeAt(0)
-//                 if (firstCode < 0x20 || firstCode > 0x7f){
-//                     data = data.substring(1)
-//                 }
-//
-//                 let rawdata = JSON.parse(data);
-//                 let columns = Object.keys(flatten(rawdata[0]))
-//                 funcStore.addRawDataToBuffer(rawdata, dataName);
-//                 funcStore.generateDimensions(columns, dataName);
-//                 funcStore.calDimensionPreview(rawdata, dataName);
-//                 //funcStore.jsonAddId(rawdata);
-//                 //funcStore.createIndex(rawdata, dataName);
-//                 funcStore.storeToDB(dataName);
-//                 console.log(dataName + "." + dataType + " successful loading~")
-//             })
-//         } else if(dataType == "join"){
-//             let data = arguments[0]["data"],
-//                 dataName = arguments[0]["name"],
-//                 columns = []
-//             if(data.length != 0){
-//                 columns = Object.keys(data[0])
-//             }
-//             funcStore.addRawDataToBuffer(data, dataName);
-//             funcStore.generateDimensions(columns, dataName);
-//             funcStore.calDimensionPreview(data, dataName);
-//             //funcStore.jsonAddId(rawdata);
-//             //funcStore.createIndex(rawdata, dataName);
-//             //funcStore.storeToDB(dataName)
-//             console.log(dataName + "." + dataType + " successful loading~")
-//         }
-//     },
-//     innerJoin: function(dataName_1, dataName_2, column_1, column_2){
-//         return fakeDataBaseProcess._inner(dataName_1, dataName_2, column_1, column_2)
-//     },
-//     outerJoin: function(dataName_1, dataName_2, column){
-//         let innerData = fakeDataBaseProcess._inner(dataName_1, dataName_2, column_1, column_2)
-//         let leftData = fakeDataBaseProcess._part(dataName_1, dataName_2, column_1, column_2)
-//         let rightData = fakeDataBaseProcess._part(dataName_2, dataName_1, column_2, column_1)
-//         return innerData.concat(leftData.concat(rightData))
-//     },
-//     leftJoin: function(dataName_1, dataName_2, column_1, column_2){
-//         let innerData = fakeDataBaseProcess._inner(dataName_1, dataName_2, column_1, column_2),
-//             leftData = fakeDataBaseProcess._part(dataName_1, dataName_2, column_1, column_2)
-//         return innerData.concat(leftData)
-//     },
-//     rightJoin: function(dataName_1, dataName_2, column_1, column_2){
-//         let innerData = fakeDataBaseProcess._inner(dataName_1, dataName_2, column_1, column_2),
-//             rightData = fakeDataBaseProcess._part(dataName_2, dataName_1, column_2, column_1)
-//             //console.log(innerData, "~~~~~", rightData)
-//         return innerData.concat(rightData)
-//     },
-//     deleteData: function(StoreId, filename){
-//         dataName = filename.split('.')[0]
-//         index = dataBuffer.index[dataName][StoreId]
-//         //isDelete = true 表示已经删除
-//         dataBuffer.data[dataName][index].isDelete = true
-//     },
-//     unDeleteData: function(StoreId, filename){
-//         dataName = filename.split('.')[0]
-//         index = dataBuffer.index[dataName][StoreId]
-//         //isDelete = false 表示未删除
-//         dataBuffer.data[dataName][index].isDelete = false
-//     },
-//     sortData: function(filename){
-//         dataName = filename.split('.')[0]
-//     },
-//     getDataFromDB: function(callback){
-//         const dbModel = mongoose.model("dbModel", dbSchema);
-//         dbModel.find().select("name data -_id").exec(callback)
-//
-//         //dbModel.findByName("name", callback)
-//         //return promise
-//     }
-// }
+dataProcess = {
+    storeData: function(dataName, dataType){
+        if(dataType == 'csv'){
+            //使用插件convert-csv-to-json读入csv并转成json赋id
+            fs.readFile(path.join(__dirname, staticBasePath + dataName + '.' + dataType), 'utf-8', function(err, data){
+                if (err) throw err;
+                //处理字符串首字符问题
+                let firstCode = data.charCodeAt(0)
+                if (firstCode < 0x20 || firstCode > 0x7f){
+                    data = data.substring(1)
+                }
+
+                let json = dsv.parse(data)
+                let rawdata = []
+                let columns = json.columns
+
+                json.forEach(function(d,i){
+                    rawdata.push(d)
+                })
+                funcStore.addRawDataToBuffer(rawdata, dataName);
+                funcStore.generateDimensions(columns, dataName);
+                funcStore.calDimensionPreview(rawdata, dataName);
+                //funcStore.jsonAddId(rawdata);
+                //funcStore.createIndex(rawdata, dataName);
+                funcStore.storeToDB(dataName)
+                console.log(dataName + "." + dataType + " successful loading~")
+            })
+        } else if(dataType == 'json'){
+            //使用fs读入json
+            fs.readFile(path.join(__dirname, staticBasePath + dataName + '.' + dataType), 'utf-8', function(err, data) {
+                if (err) throw err;
+
+                //处理字符串首字符问题
+                let firstCode = data.charCodeAt(0)
+                if (firstCode < 0x20 || firstCode > 0x7f){
+                    data = data.substring(1)
+                }
+
+                let rawdata = JSON.parse(data);
+                let columns = Object.keys(flatten(rawdata[0]))
+                funcStore.addRawDataToBuffer(rawdata, dataName);
+                funcStore.generateDimensions(columns, dataName);
+                funcStore.calDimensionPreview(rawdata, dataName);
+                //funcStore.jsonAddId(rawdata);
+                //funcStore.createIndex(rawdata, dataName);
+                funcStore.storeToDB(dataName);
+                console.log(dataName + "." + dataType + " successful loading~")
+            })
+        } else if(dataType == "join"){
+            let data = arguments[0]["data"],
+                dataName = arguments[0]["name"],
+                columns = []
+            if(data.length != 0){
+                columns = Object.keys(data[0])
+            }
+            funcStore.addRawDataToBuffer(data, dataName);
+            funcStore.generateDimensions(columns, dataName);
+            funcStore.calDimensionPreview(data, dataName);
+            //funcStore.jsonAddId(rawdata);
+            //funcStore.createIndex(rawdata, dataName);
+            //funcStore.storeToDB(dataName)
+            console.log(dataName + "." + dataType + " successful loading~")
+        }
+    },
+    innerJoin: function(dataName_1, dataName_2, column_1, column_2){
+        return fakeDataBaseProcess._inner(dataName_1, dataName_2, column_1, column_2)
+    },
+    outerJoin: function(dataName_1, dataName_2, column){
+        let innerData = fakeDataBaseProcess._inner(dataName_1, dataName_2, column_1, column_2)
+        let leftData = fakeDataBaseProcess._part(dataName_1, dataName_2, column_1, column_2)
+        let rightData = fakeDataBaseProcess._part(dataName_2, dataName_1, column_2, column_1)
+        return innerData.concat(leftData.concat(rightData))
+    },
+    leftJoin: function(dataName_1, dataName_2, column_1, column_2){
+        let innerData = fakeDataBaseProcess._inner(dataName_1, dataName_2, column_1, column_2),
+            leftData = fakeDataBaseProcess._part(dataName_1, dataName_2, column_1, column_2)
+        return innerData.concat(leftData)
+    },
+    rightJoin: function(dataName_1, dataName_2, column_1, column_2){
+        let innerData = fakeDataBaseProcess._inner(dataName_1, dataName_2, column_1, column_2),
+            rightData = fakeDataBaseProcess._part(dataName_2, dataName_1, column_2, column_1)
+            //console.log(innerData, "~~~~~", rightData)
+        return innerData.concat(rightData)
+    },
+    deleteData: function(StoreId, filename){
+        dataName = filename.split('.')[0]
+        index = dataBuffer.index[dataName][StoreId]
+        //isDelete = true 表示已经删除
+        dataBuffer.data[dataName][index].isDelete = true
+    },
+    unDeleteData: function(StoreId, filename){
+        dataName = filename.split('.')[0]
+        index = dataBuffer.index[dataName][StoreId]
+        //isDelete = false 表示未删除
+        dataBuffer.data[dataName][index].isDelete = false
+    },
+    sortData: function(filename){
+        dataName = filename.split('.')[0]
+    },
+    getDataFromDB: function(callback){
+        const dbModel = mongoose.model("dbModel", dbSchema);
+        dbModel.find().select("name data -_id").exec(callback)
+
+        //dbModel.findByName("name", callback)
+        //return promise
+    }
+}
 
 // const dataBuffer = {
 //     data: {},

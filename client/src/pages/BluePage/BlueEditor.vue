@@ -656,39 +656,30 @@ export default {
       } else {
         this.CompositeCom = false
         let result = this.vegaObjectObj[meta["id"]].getOutputForced();
-
+        console.log(result)
+        if(result.layer[0].encoding.stacked){
+          result.layer[0].encoding.sacles = {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {"field": result.layer[0].encoding.stacked.field, "sort": true},
+            "range": "category"
+          }
+          result.layer[0].encoding.fill = {"scale": "color", "field": result.layer[0].encoding.stacked.field}
+        }
         if(result['chartType']!="textChart") {
-          // result.data.values = [{"x": 0, "y": 28, "c": 0}, {"x": 0, "y": 55, "c": 1},
-          //   {"x": 1, "y": 43, "c": 0}, {"x": 1, "y": 91, "c": 1},
-          //   {"x": 2, "y": 81, "c": 0}, {"x": 2, "y": 53, "c": 1},
-          //   {"x": 3, "y": 19, "c": 0}, {"x": 3, "y": 87, "c": 1},
-          //   {"x": 4, "y": 52, "c": 0}, {"x": 4, "y": 48, "c": 1},
-          //   {"x": 5, "y": 24, "c": 0}, {"x": 5, "y": 49, "c": 1},
-          //   {"x": 6, "y": 87, "c": 0}, {"x": 6, "y": 66, "c": 1},
-          //   {"x": 7, "y": 17, "c": 0}, {"x": 7, "y": 27, "c": 1},
-          //   {"x": 8, "y": 68, "c": 0}, {"x": 8, "y": 16, "c": 1},
-          //   {"x": 9, "y": 49, "c": 0}, {"x": 9, "y": 15, "c": 1}]
           result.layer[0]['selection'] = {"pts": {"type": "single", "encodings": ["y"]}}
           result.layer[0]['encoding']["opacity"] = {"condition": {"selection": "pts", "value": 1}, "value": "0.3"}
-          // result.layer[0]['encoding']["x"]['field'] = "x"
-          // result.layer[0]['encoding']["y"]['field'] = "y"
-          // result.layer[0]['encoding']['scales'] = {
-          //   "name": "color",
-          //   "type": "ordinal",
-          //   "domain": {"field": "c", "sort": true},
-          //   "range": "category"
-          // }
-          // result.layer[0]['encoding']['color'] = {"scale": "color", "field": "c"}
         }
         console.log(result);
+        console.log(this.vegaObjectObj)
         vegaEmbed("#canvas", result, {theme: "default", mode:'vega-lite'}).then(res=>{
             res.view.addSignalListener('pts', function (e, value){
-            let vegaModel = that.vegaObjectObj[meta["id"]]
-            console.log(vegaModel)
+              let vegaModel = that.vegaObjectObj[meta["id"]]
+            console.log(that.vegaObjectObj)
             if(vegaModel.isFilterSource){
               let blueComponent = that.blueComponents.filter(item=>{return item.id === vegaModel.filterAttr})[0]
               console.log(blueComponent)
-              let targetModel = that.vegaObjectObj[blueComponent.filterTarget]
+              let targetModel = that.vegaObjectObj[blueComponent.filterTarget];
               console.log(targetModel)
               let filterName = blueComponent.filterAttributeName
               let filter = {'filter':{'field':filterName,'equal':value}}
@@ -706,6 +697,7 @@ export default {
       console.log('reGenerateChart样式更改');
       console.log(baseData.style.color);
       // 传输数据到settings中
+      console.log(this.vegaObjectObj)
       let tempObj = {DataPanel: 'DataPanel', WordHighlight: 'WordHighlight', Map: 'Map', CTable: 'CTable'}
       if (this.selectMeta.type in tempObj) {
         this.CompositeCom = true
@@ -719,7 +711,33 @@ export default {
         this.vegaObjectObj[this.selectMeta["id"]]['data']['layer'][0]['mark']['fill'] = baseData.style.color;
         this.vegaObjectObj[this.selectMeta["id"]]['data']['layer'][0]['mark']['stroke'] = baseData.style.stroke;
         let result = this.vegaObjectObj[this.selectMeta["id"]].getOutputForced();
-        vegaEmbed("#canvas", result, {theme: "default"});
+        result.layer[0]['selection'] = {"pts": {"type": "single", "encodings": ["y"]}}
+        result.layer[0]['encoding']["opacity"] = {"condition": {"selection": "pts", "value": 1}, "value": "0.3"}
+        if(result.layer[0].encoding.stacked){
+          result.layer[0].encoding.sacles = {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {"field": result.layer[0].encoding.stacked.field, "sort": true},
+            "range": "category"
+          }
+          result.layer[0].encoding.fill = {"scale": "color", "field": result.layer[0].encoding.stacked.field}
+        }
+        vegaEmbed("#canvas", result, {theme: "default",  mode:'vega-lite'}).then(res=>{
+          res.view.addSignalListener('pts', function (e, value){
+            let vegaModel = that.vegaObjectObj[meta["id"]]
+            console.log(that.vegaObjectObj)
+            if(vegaModel.isFilterSource){
+              let blueComponent = that.blueComponents.filter(item=>{return item.id === vegaModel.filterAttr})[0]
+              console.log(blueComponent)
+              let targetModel = that.vegaObjectObj[blueComponent.filterTarget];
+              console.log(targetModel)
+              let filterName = blueComponent.filterAttributeName
+              let filter = {'filter':{'field':filterName,'equal':value}}
+              targetModel.setTransform(filter)
+              console.log(targetModel)
+            }
+          })
+        });
         // this.$refs['settings'].getModularInfo({"config": result, "layoutname": this.meta["id"]});
       }
       this.notifications({"title": this.selectMeta.type, "text": "Generate success~", "color": 'rgb(31,116,225)'})
@@ -1059,31 +1077,6 @@ export default {
           }
         })
       }
-      if(_target.parent === 'ValueF'){
-        console.log(_target)
-        that.blueComponents.forEach(item=>{
-          if(item.id === _target.id){
-            console.log("进来了")
-            item.filterAttrs.push(_source.name)
-            item.filterSource = _source.parentid
-            let vegaModel = that.vegaObjectObj[_source.parentid]
-            if (vegaModel){
-              vegaModel.isFilterSource = true
-              vegaModel.filterAttr = item.id
-            }
-            let panel = document.querySelector('#filterSettingPanel')
-            if(panel) item.drawSettingPanel()
-          }
-        })
-      }
-      if(_source.parent === "ValueF"){
-        that.blueComponents.forEach(item=>{
-          if(item.id === _source.parentid){
-            item.filterTarget = _target.parentid
-            console.log(item)
-          }
-        })
-      }
       let componentGraph = new Array()
       //two dimensional matrix of storage blueprint connection logic
 
@@ -1275,14 +1268,12 @@ export default {
         let attrF = that.blueComponents.filter(item=>{return item.id === _source.parentid})[0]||[]
         let vegaModel = that.vegaObjectObj[_target['parentid']]
         vegaModel.filterAttr = attrF.filterAttributeName
-        console.log(vegaModel)
       }
       //属性过滤
       if("parentid" in _source){
         if(_source.parentid.includes('Chart') && _target.parent==='ValueF'){
           that.blueComponents.forEach(item=>{
             if(item.id == _target.id){
-              console.log(that.vegaObjectObj[_source['parentid']])
               item.filterAttributeName = that.vegaObjectObj[_source.parentid].filterAttr
               item.filterAttributeData = that.vegaObjectObj[_source.parentid].data
               item.drawSlider()
@@ -1290,7 +1281,30 @@ export default {
           })
         }
       }
-
+      //
+      if(_target.parent === 'ValueF' && !_source.parentid){
+        that.blueComponents.forEach(item=>{
+          if(item.id === _target.id){
+            item.filterAttrs.push(_source.name)
+            item.filterSource = _source.parentid
+            let vegaModel = that.vegaObjectObj[_source.parentid]
+            if (vegaModel){
+              vegaModel.isFilterSource = true
+              vegaModel.filterAttr = item.id
+            }
+            let panel = document.querySelector('#filterSettingPanel')
+            if(panel) item.drawSettingPanel()
+          }
+        })
+      }
+      if(_source.parent === "ValueF"){
+        that.blueComponents.forEach(item=>{
+          if(item.id === _source.parentid){
+            console.log("parentid")
+            item.filterTarget = _target.parentid
+          }
+        })
+      }
       // 设置select组件
       if(_target.name=="select_1"){
         that.select_1 = _source.name
@@ -1311,18 +1325,6 @@ export default {
         // let vegaModel = that.vegaObjectObj[_target['parentid']]
         // console.log(vegaModel)
       }
-      if(_source.dimension_type && _target.parentid.includes("Chart")){
-        let model = that.vegaObjectObj[_target.parentid]
-        model.data.layer[0].encoding.y = {"field":"WHO Region", "type":"quantitative"}
-        model.data.layer[0].encoding.x = {"field":"Cases - cumulative total", "type":"o"}
-      }
-      //数据转移
-      if(_source.parent==='ValueF' &&_target.parentid.includes('Chart')){
-        let attrF = that.blueComponents.filter(item=>{return item.id === _source.parentid})[0]||[]
-        let vegaModel = that.vegaObjectObj[_target['parentid']]
-        vegaModel.data = attrF.filterAttributeData
-        console.log(vegaModel)
-      }
     },
     notifications(message) {
       this.$vs.notify({
@@ -1337,10 +1339,8 @@ export default {
       //only allowed to exist one layout in blueEditor
       let that = this
       let key = Object.keys(that.chartLayoutObj)
-      console.log(this.vegaObjectObj);
       let _ref = "msg-A";
       that['A'] = true;
-      console.log(that.$refs[_ref]);
       if (that.$refs[_ref] != undefined) {
         let select =null
         this.blueComponents.forEach(item=>{
@@ -1352,7 +1352,6 @@ export default {
           if(that.$store.state.mapData_2!=null){
             that.$store.state.mapData_2["select"] = select
           }
-          console.log(that.$store.state.mapData_2)
         }
         // that.$refs[_ref].getModularInfo({"config": that.chartLayoutObj[key[0]], "layoutname": key[0]})
         // config:chartA:{},layoutname:Layout-0
@@ -1360,7 +1359,6 @@ export default {
         that.model_config_text = JSON.parse(JSON.stringify(that.vegaObjectObj))
         that.$store.state.model_config_text = that.model_config_text
         that.popupActivo4 = !that.popupActivo4
-        console.log(that.$refs[_ref],"getModularInfo")
       }
       // 废弃
       // that.layoutlist.forEach(function (d) {
