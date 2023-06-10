@@ -62,6 +62,8 @@ import { mapGetters } from "vuex";
 export default{
   data() {
     return {
+      mapName:null,
+      select_text_flag:false,
       targetSelect:[],
       sourceSelect:[],
       select1Option:null,
@@ -207,19 +209,44 @@ export default{
     },
     // 移动事件
     moveEvent(i){
-      let name = ''
+      let name = '';
+      let that = this;
+      if(that.mapName!=null&&that.select_text_flag==false){
+        that.$store.state.model_config_text[that.mapName]["select_chart"] = {}
+        that.$store.state.model_config_text[that.mapName]["text_chart"] = {}
+        that.select_text_flag = true;
+      }
       for(let item of this.ttlayout){
         if(item['i']==i){
           name = item['name']
         }
       }
       console.log(name);
-      let x = this.getTranslate(document.getElementById(i),'x')
-      let y = this.getTranslate(document.getElementById(i),'y')
-      this.$store.state.model_config_text['Layout-0'][name]['data']['x'] = x
-      this.$store.state.model_config_text['Layout-0'][name]['data']['y'] = y
-      console.log('name-x-----------------------',name,x);
-      console.log(name,y);
+      debugger;
+      if(name=="select"){
+        let x = this.getTranslate(document.getElementById(i),'x')
+        let y = this.getTranslate(document.getElementById(i),'y')
+        that.$store.state.model_config_text[that.mapName]["select_chart"]["x"] = x
+        that.$store.state.model_config_text[that.mapName]["select_chart"]["y"] = y
+      }
+      else if(name == "WHOText"){
+        let x = this.getTranslate(document.getElementById(i),'x')
+        let y = this.getTranslate(document.getElementById(i),'y')
+        that.$store.state.model_config_text[that.mapName]["text_chart"]["x"] = x
+        that.$store.state.model_config_text[that.mapName]["text_chart"]["y"] = y
+      }
+      else{
+        name = name.slice(2,);
+        let x = this.getTranslate(document.getElementById(i),'x')
+        let y = this.getTranslate(document.getElementById(i),'y')
+        debugger;
+        that.$store.state.model_config_text[name]['data']['x'] = x
+        that.$store.state.model_config_text[name]['data']['y'] = y
+      }
+      // this.$store.state.model_config_text['Layout-0'][name]['data']['x'] = x
+      // this.$store.state.model_config_text['Layout-0'][name]['data']['y'] = y
+      // console.log('name-x-----------------------',name,x);
+      // console.log(name,y);
     },
     // grid大小调整，触发cavans大小调整
     resizeEvent(i, newH, newW, newHPx, newWPx) {
@@ -470,11 +497,9 @@ export default{
     },
     generateGraph(color='#1F9CC9'){
       let that = this
-      // debugger;
       let charts = Object.keys(that.layoutObj["config"])
       // 构造ttlayout
       this.$refs.setting.getLayoutObj(this.layoutObj);
-      // debugger
       console.log('generateGraph',charts);
       // for(let i=0;i<charts.length;i++){
       //   that.ttlayout[i]["component"] = "DA"
@@ -484,6 +509,7 @@ export default{
         // 构造ttlayout
         if(that.layoutObj['config'][d]['chartType']=='Map'){
           that.ttlayout.push({"x":charts.indexOf(d)*2+2,"y":0,"w":2,"h":2,"i":charts.indexOf(d).toString(), static: false, name:`A-${d}`,component:'Map'})
+          that.mapName = d;
           // console.log('这是一个地图，接下来进行地图在GraphView中的绘制');
           // for(let item in that.ttlayout){
           //   console.log(that.ttlayout[item],d)
@@ -540,26 +566,44 @@ export default{
     },
     reGenerateGraphBySize(i,width,height){
       let that = this
+      if(that.mapName!=null&&that.select_text_flag==false){
+        that.$store.state.model_config_text[that.mapName]["select_chart"] = {}
+        that.$store.state.model_config_text[that.mapName]["text_chart"] = {}
+        that.select_text_flag = true;
+      }
       let charts = Object.keys(that.layoutObj["config"])
       let table = {0:'chartA',1:'chartB',2:'chartC',3:'chartD'}
       let name = ''
       let _ref = "MapChart"
+      let x = this.getTranslate(document.getElementById(i),'x')
+      let y = this.getTranslate(document.getElementById(i),'y')
       console.log(i);
       if(i==100){
         if(this.selectCard==false){
           this.createSelect(width,height,that.$store.state.mapData_2.select,that.$store.state.mapData_2.data.values);
           this.selectCard=true;
+          that.$store.state.model_config_text[that.mapName]["select_chart"]['width'] = `${width}px`;
+          that.$store.state.model_config_text[that.mapName]["select_chart"]['height'] = `${height}px`;
+          that.$store.state.model_config_text[that.mapName]["select_chart"]["x"] = x
+          that.$store.state.model_config_text[that.mapName]["select_chart"]["y"] = y
         }
         else {
           let select_div = document.getElementById("select")
           select_div.style.width = `${width}px`;
           select_div.style.height = `${height}px`
+          that.$store.state.model_config_text[that.mapName]["select_chart"]['width'] = `${width}px`;
+          that.$store.state.model_config_text[that.mapName]["select_chart"]['height'] = `${height}px`;
+          that.$store.state.model_config_text[that.mapName]["select_chart"]["x"] = x
+          that.$store.state.model_config_text[that.mapName]["select_chart"]["y"] = y
         }
       }
-      if(i==200){
-        debugger
+      else if(i==200){
         document.getElementById("WHOText").style.width = `${width}px`;
         document.getElementById('WHOText').style.height = `${height}px`;
+        that.$store.state.model_config_text[that.mapName]["text_chart"]['width'] = `${width}px`;
+        that.$store.state.model_config_text[that.mapName]["text_chart"]['height'] = `${height}px`;
+        that.$store.state.model_config_text[that.mapName]["text_chart"]["x"] = x
+        that.$store.state.model_config_text[that.mapName]["text_chart"]["y"] = y
         console.log("width:",width,"height:",height)
         if(this.selectText == false){
           this.setWHOText(width,height);
@@ -591,15 +635,18 @@ export default{
         that.$store.state.model_config_text[name]['data']['height'] = height
         that.$store.state.model_config_text[name]['data']['layer'][0]['width'] = width
         that.$store.state.model_config_text[name]['data']['layer'][0]['height'] = width
+        that.$store.state.model_config_text[name]['data']['x'] = x
+        that.$store.state.model_config_text[name]['data']['y'] = y
         // that.$store.state.model_config_text['Layout-0'][name]['data']['width'] = width
         // that.$store.state.model_config_text['Layout-0'][name]['data']['height'] = height
         // that.$store.state.model_config_text['Layout-0'][name]['data']['layer'][0]['width'] = width
         // that.$store.state.model_config_text['Layout-0'][name]['data']['layer'][0]['height'] = height
 
 
-        // console.log(that.$store.state.model_config_text['Layout-0'][name]['data']['layer'][0]['height']);
-        // console.log('reSize---------------config---------------1',this.$store.state.model_config_text)
-        console.log('reGenerateGraphBySize---重绘');
+        // console.log("that.$store.state.model_config_text",that.$store.state.model_config_text)
+        // // console.log(that.$store.state.model_config_text['Layout-0'][name]['data']['layer'][0]['height']);
+        // // console.log('reSize---------------config---------------1',this.$store.state.model_config_text)
+        // console.log('reGenerateGraphBySize---重绘');
         let data = this.layoutObj["config"][name]["data"]
         this.setConfig(data)
         vegaEmbed(`#A-${name}`, data).then(res=>{
@@ -607,6 +654,10 @@ export default{
         })
         console.log('generateGraph',that.layoutObj);
       }
+      console.log("that.$store.state.model_config_text",that.$store.state.model_config_text)
+      // console.log(that.$store.state.model_config_text['Layout-0'][name]['data']['layer'][0]['height']);
+      // console.log('reSize---------------config---------------1',this.$store.state.model_config_text)
+      console.log('reGenerateGraphBySize---重绘');
     },
     setWHOText(width,height){
       const textContainer = document.getElementById('WHOText');

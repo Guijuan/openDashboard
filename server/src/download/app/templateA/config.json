@@ -3362,7 +3362,9 @@
             "Deaths - newly reported in last 24 hours": 0
           }
         ]
-      }
+      },
+      "x": 217,
+      "y": 10
     },
     "config": {},
     "layers": {
@@ -3384,6 +3386,18 @@
     "isFilterSource": false,
     "filterTargetData": null,
     "select_1": "Cases - cumulative total per 100000 population",
-    "select_2": null
+    "select_2": null,
+    "select_chart": {
+      "x": 10,
+      "y": 10,
+      "width": "197px",
+      "height": "590px"
+    },
+    "text_chart": {
+      "x": 10,
+      "y": 610,
+      "width": "1540px",
+      "height": "150px"
+    }
   }
 }

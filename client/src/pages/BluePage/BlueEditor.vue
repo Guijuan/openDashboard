@@ -1354,7 +1354,6 @@ export default {
         that.model_config_text = JSON.parse(JSON.stringify(that.vegaObjectObj))
         that.$store.state.model_config_text = that.model_config_text
         console.log(that.$store.state.model_config_text);
-        debugger;
         that.popupActivo4 = !that.popupActivo4
       }
       // 废弃
@@ -1548,13 +1547,13 @@ export default {
     },
     downloadSetting: function () {
       let that = this
+      console.log(that.$store.state.model_config_text);
       let req = async function () {
         let key = Object.keys(that.chartLayoutObj)
         let config = {
           "data": that.$store.state.model_config_text,
           "template":  "templateA"
         }
-        debugger;
         const res = await dataManager.downloadSetting(config)
         // if (key.length == 0) {
         //   that.notifications({'title': 'Notice', 'text': 'Please connect a layout', 'color': 'danger'})
