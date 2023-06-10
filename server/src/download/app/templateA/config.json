@@ -3375,7 +3375,7 @@
           }
         },
         "width": 960,
-        "height": 290,
+        "height": 306,
         "mark": "symbol"
       }
     },
@@ -3397,7 +3397,7 @@
       "x": 10,
       "y": 610,
       "width": "1540px",
-      "height": "150px"
+      "height": "190px"
     }
   }
 }
