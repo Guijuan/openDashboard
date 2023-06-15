@@ -2,22 +2,31 @@ var app = new Vue({
 	el: '#autoboard',
 	data() {
 		return {
+			selected:null,
+			targetSelect:[],
+			sourceSelect:[],
+			select1Option:null,
+			select2Option:null,
+			mapData:null,
+			mapID:null,
+			blueColor:["#007092","#008ebc","#00ace3","#54cbf2","#95dcf4","#ffedc1","#b6b6b6"],
+			redColor:["#994414","#bb551b","#d86422","#e08d5e","#e2a786","#ffedc1","#b6b6b6"],
 			items: [],
 			ModularInfo: {},
 			chartStyle: {
-				"chartA": {
+				"Chart-0": {
 					"width": 828,
 					"height": 390
 				},
-				"chartB": {
+				"Chart-1": {
 					"width": 828,
 					"height": 390
 				},
-				"chartC": {
+				"Chart-2": {
 					"width": 828,
 					"height": 390
 				},
-				"chartD": {
+				"Chart-3": {
 					"width": 828,
 					"height": 390
 				}
@@ -33,17 +42,17 @@ var app = new Vue({
 		_init() {
 			let that = this
 			d3.json("config.json", function(err, data) {
-				const layoutName = Object.keys(data)[0]
-				for(let key in data['Layout-0']){
+				// const layoutName = Object.keys(data)[0]
+				for(let key in data){
 					console.log(key);
-					console.log(data['Layout-0'][key]);
-					that.chartStyle[key]['width'] = data['Layout-0'][key]['data']['layer'][0]['width'];
-					that.chartStyle[key]['height'] = data['Layout-0'][key]['data']['layer'][0]['height'];
-					document.getElementById(key).style.transform = `translate3d(${data['Layout-0'][key]['data']['x']}px,${data['Layout-0'][key]['data']['y']}px,0px)`;
+					console.log(data[key]);
+					that.chartStyle[key]['width'] = data[key]['data']['layer'][0]['width'];
+					that.chartStyle[key]['height'] = data[key]['data']['layer'][0]['height'];
+					document.getElementById(key).style.transform = `translate3d(${data[key]['data']['x']}px,${data[key]['data']['y']}px,0px)`;
 				}
 				that.getModularInfo({
-					"config": data[layoutName],
-					"layoutname": layoutName
+					"config": data,
+					"layoutname": "layout"
 				})
 			})
 		},
@@ -53,7 +62,9 @@ var app = new Vue({
 			console.log(this.layoutObj);
 			//this.calculateChartWH()
 			//this.setBackgroundColor()
-			this.adaptWidthHeight()
+			if(that.layoutObj['config']["Chart-0"]['chartType']!='Map'){
+				this.adaptWidthHeight()
+			}
 			this.generateGraph()
 
 		},
@@ -81,9 +92,21 @@ var app = new Vue({
 			charts.forEach(function(d) {
 				console.log(d);
 				if(that.layoutObj['config'][d]['chartType']=='Map'){
-					document.getElementById(d).style.height = that.layoutObj["config"][d]['data']['height'].toString()+'px'
-					document.getElementById(d).style.width = that.layoutObj["config"][d]['data']['width'].toString()+'px'
-					that.createMap(d,that.layoutObj["config"][d]["data"]['data']['values'])
+					if("select_1" in that.layoutObj['config'][d]){
+						document.getElementById(d).style.height = that.layoutObj["config"][d]['data']['height'].toString()+'px'
+						document.getElementById(d).style.width = that.layoutObj["config"][d]['data']['width'].toString()+'px'
+						that.targetSelect = that.layoutObj["config"][d]["select_1"].split(" ")
+						that.createMap2(d,that.layoutObj['config'][d]["select_1"],that.layoutObj["config"][d]["data"]['data']['values'])
+						that.setWHOText(that.layoutObj['config'][d]["text_chart"]['width'],that.layoutObj['config'][d]["text_chart"]['height'])
+						that.mapID = d;
+						that.mapData = that.layoutObj['config'][d]["data"]["data"]["values"];
+						that.createSelect(that.layoutObj['config'][d]["select_chart"]['width'],that.layoutObj['config'][d]["select_chart"]['height'],that.layoutObj['config'][d]["select_1"],that.layoutObj['config'][d]["data"]["data"]["values"])
+					}
+					else{
+						document.getElementById(d).style.height = that.layoutObj["config"][d]['data']['height'].toString()+'px'
+						document.getElementById(d).style.width = that.layoutObj["config"][d]['data']['width'].toString()+'px'
+						that.createMap(d,that.layoutObj["config"][d]["data"]['data']['values'])
+					}
 				}
 				else {
 					vegaEmbed("#" + d, that.layoutObj["config"][d]["data"])
@@ -170,6 +193,226 @@ var app = new Vue({
 					this.map.getCanvas().style.cursor = '';
 				});
 			});
+		},
+		createMap2(container,select,data){
+			console.log("createMap2")
+			this.select = select
+			this.data = data
+			let nameList = []
+			let select_list = []
+			let that = this;
+			console.log("筛选条件：",this.select)
+			this.data.forEach(item=>{
+				if(item.Name!="Global"){
+					select_list.push(item[this.select]);
+				}
+			})
+			let select_max = Math.max(...select_list)
+			this.data.forEach(item=>{
+				if(item.Name!="Global"){
+					let nameTemp = item.Name;
+					let hdi = item[this.select]/select_max
+					nameList.push({'code':nameTemp,"hdi":hdi})
+				}
+			})
+			mapboxgl.accessToken = 'pk.eyJ1Ijoid2pzMjIyIiwiYSI6ImNreGVkYnBlbDBtMnoyb3BlM2Jib3dxcDAifQ.GKErleh4uNcXyGpxdQa-og';
+			this.map = new mapboxgl.Map({
+				container:  container,
+				// Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+				style: 'mapbox://styles/mapbox/light-v11',
+				center: [12, 50],
+				zoom: 5,
+			});
+			// const data = [
+			//   { 'code': 'Croatia', 'hdi': 0.811 },
+			// ];
+
+			that.map.on('load', () => {
+				// Add source for country polygons using the Mapbox Countries tileset
+				// The polygons contain an ISO 3166 alpha-3 code which can be used to for joining the data
+				// https://docs.mapbox.com/vector-tiles/reference/mapbox-countries-v1
+				debugger;
+				that.map.addSource('countries', {
+					type: 'vector',
+					url: 'mapbox://mapbox.country-boundaries-v1'
+				});
+				let colorList = that.select.split(" ")[0]=="Cases"?that.blueColor:that.redColor;
+				// Build a GL match expression that defines the color for every vector tile feature
+				// Use the ISO 3166-1 alpha 3 code as the lookup key for the country shape
+				const matchExpression = ['match', ['get', 'name_en']];
+
+				// Calculate color values for each country based on 'hdi' value
+				for (const row of nameList) {
+					// Convert the range of data values to a suitable color
+					// const green = row['hdi'] * 255;
+					// const color = `rgb(0, ${green}, 0)`;
+					let color = null;
+					if(row["hdi"]>=0.9) color = colorList[0];
+					else if(row["hdi"]>=0.7&&row["hdi"]<0.9) color = colorList[1];
+					else if(row["hdi"]>=0.5&&row["hdi"]<0.7) color = colorList[2];
+					else if(row["hdi"]>=0.3&&row["hdi"]<0.5) color = colorList[3];
+					else if(row["hdi"]>=0.2&&row["hdi"]<0.3) color = colorList[4];
+					else if(row["hdi"]>=0.1&&row["hdi"]<0.2) color = colorList[5];
+					else if(row["hdi"]>=0&&row["hdi"]<0.1) color = colorList[6];
+
+					matchExpression.push(row['code'], color);
+				}
+
+				// Last value is the default, used where there is no data
+				matchExpression.push('rgba(0, 0, 0, 0)');
+				console.log(matchExpression);
+
+
+				// The mapbox.country-boundaries-v1 tileset includes multiple polygons for some
+				// countries with disputed borders.  The following expression filters the
+				// map view to show the "US" perspective of borders for disputed countries.
+				// Other world views are available, for more details, see the documentation
+				// on the "worldview" feature property at
+				// https://docs.mapbox.com/data/tilesets/reference/mapbox-countries-v1/#--polygon---worldview-text
+				const WORLDVIEW = "US";
+				const worldview_filter = [ "all", [ "==", ["get", "disputed"], "false" ], [ "any", [ "==", "all", ["get", "worldview"] ], [ "in", WORLDVIEW, ["get", "worldview"] ] ] ];
+
+				// Add layer from the vector tile source to create the choropleth
+				// Insert it below the 'admin-1-boundary-bg' layer in the style
+				that.map.addLayer(
+					{
+						'id': 'countries-join',
+						'type': 'fill',
+						'source': 'countries',
+						'source-layer': 'country_boundaries',
+						'paint': {
+							'fill-color': matchExpression
+						},
+						'filter': worldview_filter
+					},
+					'admin-1-boundary-bg'
+				);
+			});
+		},
+		setWHOText(width,height){
+			const textContainer = document.getElementById('WHOText');
+
+			const line1 = document.createElement('p');
+			//const line1Text = document.createTextNode('In China, from 3 January 2020 to 6:03am CEST, 24 May 2023, there have been ');
+			//line1.appendChild(line1Text);
+
+			line1.appendChild(getSpan("In "));
+			line1.appendChild(getSpan("China","blue"));
+			line1.appendChild(getSpan(", from "));
+			line1.appendChild(getSpan("3 January 2020","blue"));
+			line1.appendChild(getSpan(" to "));
+			line1.appendChild(getSpan("6:03am CEST, 24 May 2023","blue"));
+			line1.appendChild(getSpan(", there have been "));
+			line1.appendChild(getSpan("99,261,812 confirmed cases","blue"));
+			line1.appendChild(getSpan(" of COVID-19 with "));
+			line1.appendChild(getSpan("121,144","orange"));
+
+			// const line2 = document.createElement('p');
+			line1.appendChild(getSpan("deaths","orange"));
+			line1.appendChild(getSpan(", reported to WHO. As of "));
+			line1.appendChild(getSpan("22 March 2023","blue"));
+			line1.appendChild(getSpan(", a total of "));
+			line1.appendChild(getSpan("3,515,872,818 vaccine doses","blue"));
+			line1.appendChild(getSpan(" have been administered."));
+
+			const line2Continuation = document.createTextNode(' vaccine doses have been administered.');
+
+			// 将文本节点添加到容器中
+			textContainer.appendChild(line1);
+			// textContainer.appendChild(line2);
+			function getSpan(str,className = "WHO-Text"){
+				let cases = document.createElement("span");
+				cases.classList.add(className);
+				let casesText = document.createTextNode(str);
+				cases.appendChild(casesText);
+				return cases;
+			}
+		},
+		createSelect(width=200,height=400,select,data){
+			debugger;
+			let selectName = select.split(' ')[0]
+			// 创建下拉框元素
+			const select1 = document.createElement('select');
+
+			select1.innerHTML = `
+      <option value="Cases">Cases</option>
+      <option value="Deaths">Deaths</option>
+    `;
+			select1.setAttribute("class","WHO-text");
+			const select2 = document.createElement('select');
+			select2.innerHTML = `
+      <option value="cumulative total">total</option>
+      <option value="cumulative total per 100000 population">total per 100000 population</option>
+      <option value="newly reported in last 7 days">newly reported in last 7 days</option>
+    `;
+			select2.setAttribute("class","WHO-text");
+			//加入change事件
+			let that = this;
+			select1.addEventListener('change',function (event) {
+				debugger;
+				that.select1Option = event.target.value;
+				console.log(that.select1Option);
+				let div1 = document.getElementById("div1");
+				let div3 = document.getElementById("div3");
+				let div5 = document.getElementById("div5");
+				debugger;
+				div1.textContent = `${data[0][`${that.select1Option} - cumulative total`]}`;
+				div3.textContent = `${data[0][`${that.select1Option} - cumulative total per 100000 population`]}`;
+				div5.textContent = `${data[0][`${that.select1Option} - newly reported in last 7 days`]}`;
+				that.targetSelect[0] = that.select1Option;
+				that.selected = `${that.targetSelect[0]} - ${that.targetSelect[2]}`
+				that.reCreate();
+			})
+			select2.addEventListener('change',function (event) {
+				that.select2Option = event.target.value;
+				that.targetSelect[2] = that.select2Option;
+				that.selected = `${that.targetSelect[0]} - ${that.targetSelect[2]}`
+				that.reCreate();
+				that.reCreate();
+			})
+			console.log(this.select1Option,this.select2Option)
+			select1.setAttribute('id', 'select1');
+			select2.setAttribute('id', 'select2');
+			// 创建文本
+			const div1 = document.createElement('div');
+			const div2 = document.createElement('div');
+			const div3 = document.createElement('div');
+			const div4 = document.createElement('div');
+			const div5 = document.createElement('div');
+			const div6 = document.createElement('div');
+
+			div1.textContent = `${data[0][`${selectName} - cumulative total`]}`;
+			div2.textContent = `cumulative total`;
+			div3.textContent = `${data[0][`${selectName} - cumulative total per 100000 population`]}`;
+			div4.textContent = `cumulative total`;
+			div5.textContent = `${data[0][`${selectName} - newly reported in last 7 days`]}`;
+			div6.textContent = `newly reported in last 7 days`;
+
+			div1.setAttribute('id', 'div1');
+			div2.setAttribute('id', 'div2');
+			div3.setAttribute('id', 'div3');
+			div4.setAttribute('id', 'div4');
+			div5.setAttribute('id', 'div5');
+			div6.setAttribute('id', 'div6');
+			// 获取目标容器
+			const formContainer = document.getElementById('select');
+
+			// 添加下拉框和多行文本框到目标容器
+			formContainer.appendChild(select1);
+			formContainer.appendChild(select2);
+			formContainer.appendChild(div1);
+			formContainer.appendChild(div2);
+			formContainer.appendChild(div3);
+			formContainer.appendChild(div4);
+			formContainer.appendChild(div5);
+			formContainer.appendChild(div6);
+			formContainer.style.width=width;
+			formContainer.style.height=height;
+		},
+		reCreate(){
+			console.log("remove")
+			this.map.remove();
+			this.createMap2(this.mapID,this.selected,this.mapData);
 		},
 	}
 })

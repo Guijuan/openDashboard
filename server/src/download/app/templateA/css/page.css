@@ -55,3 +55,79 @@ body {
 .mapboxgl-control-container{
 	display: none;
 }
+
+p{
+	text-align:center
+}
+.blue {
+	color: blue;
+	font-size:20px;
+	font-weight: bold;
+}
+.orange{
+	color: orange;
+	font-size:20px;
+	font-weight: bold;
+}
+.WHO-Text{
+	font-size:20px;
+}
+#WHOText{
+	background-color:#FFFFFF;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.WHO-text{
+	font-size: 2em;
+}
+#select{
+	display:flex;
+	flex-direction:column;
+	position: absolute;
+}
+#select1{
+	flex:1;
+}
+#select2{
+	flex:1;
+}
+#div1{
+	flex:1;
+	text-align: right;
+	font-size:2.5em;
+	font-weight:bold;
+	margin-right: 10px;
+}
+#div2{
+	flex:1;
+	text-align: right;
+	margin-right: 10px;
+	font-size:1.5em;
+}
+#div3{
+	flex:1;
+	text-align: right;
+	font-size:2.5em;
+	font-weight:bold;
+	margin-right: 10px;
+}
+#div4{
+	flex:1;
+	text-align: right;
+	margin-right: 10px;
+	font-size:1.5em;
+}
+#div5{
+	flex:1;
+	font-size:2.5em;
+	font-weight:bold;
+	text-align: right;
+	margin-right: 10px;
+}
+#div6{
+	flex:1;
+	text-align: right;
+	margin-right: 10px;
+	font-size:1.5em;
+}

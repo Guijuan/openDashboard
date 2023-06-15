@@ -1351,6 +1351,7 @@ export default {
         that.$refs[_ref].getModularInfo({"config": this.vegaObjectObj, "layoutname": 'Layout-0'})
         that.model_config_text = JSON.parse(JSON.stringify(that.vegaObjectObj))
         that.$store.state.model_config_text = that.model_config_text
+        console.log(that.$store.state.model_config_text);
         that.popupActivo4 = !that.popupActivo4
       }
       // 废弃
@@ -1544,25 +1545,31 @@ export default {
     },
     downloadSetting: function () {
       let that = this
+      console.log(that.$store.state.model_config_text);
       let req = async function () {
         let key = Object.keys(that.chartLayoutObj)
-        if (key.length == 0) {
-          that.notifications({'title': 'Notice', 'text': 'Please connect a layout', 'color': 'danger'})
-        } else if (key.length == 1) {
-          let template = key[0]
-          let obj = {
-            "Layout-0": "templateA",
-            "Layout-1": "templateB"
-          }
-
-          let config = {
-            "data": that.$store.state.model_config_text,
-            "template": obj[template]
-          }
-          console.log(config);
-          //{"config": that.chartLayoutObj[key[0]], "layoutname": key[0]}
-          const res = await dataManager.downloadSetting(config)
+        let config = {
+          "data": that.$store.state.model_config_text,
+          "template":  "templateA"
         }
+        const res = await dataManager.downloadSetting(config)
+        // if (key.length == 0) {
+        //   that.notifications({'title': 'Notice', 'text': 'Please connect a layout', 'color': 'danger'})
+        // } else if (key.length == 1) {
+        //   let template = key[0]
+        //   let obj = {
+        //     "Layout-0": "templateA",
+        //     "Layout-1": "templateB"
+        //   }
+        //
+        //   let config = {
+        //     "data": that.$store.state.model_config_text,
+        //     "template": obj[template]
+        //   }
+        //   console.log(config);
+        //   //{"config": that.chartLayoutObj[key[0]], "layoutname": key[0]}
+        //   const res = await dataManager.downloadSetting(config)
+        // }
       }
       req()
     },
