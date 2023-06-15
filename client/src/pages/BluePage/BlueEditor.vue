@@ -98,9 +98,9 @@
               </div>
             </div>
             <div style="height:85%; border-right: 1px solid rgba(0,0,0,0.2)"></div>
-            <div v-if="!CompositeCom" id='canvas' style="display:flex; width:1000px; padding-left:20px;"></div>
+            <div v-if="!CompositeCom" id='canvas' style="display:flex; width:1200px; padding-left:20px;"></div>
             <div v-if="!CompositeCom" id="settings"
-                 style="width:420px; height:150px;padding-left:20px;overflow-y: scroll">
+                 style="width:220px; height:150px;padding-left:20px;overflow-y: scroll">
               <SettingSide v-if="settingsView" ref="settings" style="" @reGenerateChart="reGenerateChart"></SettingSide>
             </div>
             <div style="height: 100%;width:90%;display: flex;justify-content: center;align-items: center" v-else>
@@ -696,8 +696,10 @@ export default {
         this.component = () => import(`../../common/DataListBar/${this.selectMeta.type}`)
       } else {
         console.log(this.vegaObjectObj[this.selectMeta["id"]]['data']);
+        debugger;
         this.vegaObjectObj[this.selectMeta["id"]]['data']['layer'][0]['mark']['fill'] = baseData.style.color;
         this.vegaObjectObj[this.selectMeta["id"]]['data']['layer'][0]['mark']['stroke'] = baseData.style.stroke;
+        this.vegaObjectObj[this.selectMeta["id"]]["data"]["title"]["text"] = baseData.Config.title
         let result = this.vegaObjectObj[this.selectMeta["id"]].getOutputForced();
         result.layer[0]['selection'] = {"pts": {"type": "single", "encodings": ["y"]}}
         result.layer[0]['encoding']["opacity"] = {"condition": {"selection": "pts", "value": 1}, "value": "0.3"}
@@ -1171,7 +1173,7 @@ export default {
         if (!(d in that.vegaObjectObj)) {
           //不存在则新建vegaobject
           let _height = window.innerHeight * 0.29
-          let _width = window.innerWidth * 0.5
+          let _width = window.innerWidth * 0.6
           //1300 300
 
           //1350 350

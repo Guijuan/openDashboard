@@ -8,7 +8,7 @@
       v-show="collapseShow(key)"
     >
       <div v-for="(val, k) in value" :key="k">
-        <div v-if="key =='MetaConfig'" >
+        <div v-if="key =='Config'" >
           <span>{{k}}</span>
           <el-input v-model="value.title" size="mini" v-if="value.hasOwnProperty('title')"></el-input>
         </div>
@@ -36,65 +36,65 @@
           </div>
         </div>
 
-        <div v-if="key =='datamappers'" :id="getDatamappersId(k)">
-          <div v-for="(v, i, index) in val" :key="index">
-            <span v-if="i=='Fieldname'||i=='Fieldtype'">{{i}}:{{v}}</span>
-            <div v-if="i=='Mapfrom'">
-              <span>{{i}}</span>
-              <el-input v-model="val.Mapfrom" size="mini"></el-input>
-            </div>
-            <div v-if="i=='Alias'">
-              <span>{{i}}</span>
-              <el-input v-model="val.Alias" size="mini"></el-input>
-            </div>
-          </div>
-          <el-divider v-if="k==0"></el-divider>
-        </div>
+<!--        <div v-if="key =='datamappers'" :id="getDatamappersId(k)">-->
+<!--          <div v-for="(v, i, index) in val" :key="index">-->
+<!--            <span v-if="i=='Fieldname'||i=='Fieldtype'">{{i}}:{{v}}</span>-->
+<!--            <div v-if="i=='Mapfrom'">-->
+<!--              <span>{{i}}</span>-->
+<!--              <el-input v-model="val.Mapfrom" size="mini"></el-input>-->
+<!--            </div>-->
+<!--            <div v-if="i=='Alias'">-->
+<!--              <span>{{i}}</span>-->
+<!--              <el-input v-model="val.Alias" size="mini"></el-input>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <el-divider v-if="k==0"></el-divider>-->
+<!--        </div>-->
       </div>
 
-      <div v-if="key =='data' && value.length !== 0">
-        <v-table
-          v-if="value[0].hasOwnProperty('name')"
-          column-width-drag
-          :table-data="value"
-          :columns="columnsName"
-          :cell-edit-done="cellEditDone"
-          style="width:100%"
-        ></v-table>
-        <v-table
-          v-if="value[0].hasOwnProperty('x')"
-          column-width-drag
-          :table-data="value"
-          :columns="columnsX"
-          :cell-edit-done="cellEditDone"
-          style="width:100%"
-        ></v-table>
-        <v-table
-          v-if="value[0].hasOwnProperty('item')"
-          column-width-drag
-          :table-data="value"
-          :columns="columnsItem"
-          :cell-edit-done="cellEditDone"
-          style="width:100%"
-        ></v-table>
-        <v-table
-          v-if="value[0].hasOwnProperty('date')"
-          column-width-drag
-          :table-data="value"
-          :columns="columnsDate"
-          :cell-edit-done="cellEditDone"
-          style="width:100%"
-        ></v-table>
-        <v-table
-          v-if="value[0].hasOwnProperty('city')"
-          column-width-drag
-          :table-data="value"
-          :columns="columnsCity"
-          :cell-edit-done="cellEditDone"
-          style="width:100%"
-        ></v-table>
-      </div>
-      <div v-if="key == 'button'">
+<!--      <div v-if="key =='data' && value.length !== 0">-->
+<!--        <v-table-->
+<!--          v-if="value[0].hasOwnProperty('name')"-->
+<!--          column-width-drag-->
+<!--          :table-data="value"-->
+<!--          :columns="columnsName"-->
+<!--          :cell-edit-done="cellEditDone"-->
+<!--          style="width:100%"-->
+<!--        ></v-table>-->
+<!--        <v-table-->
+<!--          v-if="value[0].hasOwnProperty('x')"-->
+<!--          column-width-drag-->
+<!--          :table-data="value"-->
+<!--          :columns="columnsX"-->
+<!--          :cell-edit-done="cellEditDone"-->
+<!--          style="width:100%"-->
+<!--        ></v-table>-->
+<!--        <v-table-->
+<!--          v-if="value[0].hasOwnProperty('item')"-->
+<!--          column-width-drag-->
+<!--          :table-data="value"-->
+<!--          :columns="columnsItem"-->
+<!--          :cell-edit-done="cellEditDone"-->
+<!--          style="width:100%"-->
+<!--        ></v-table>-->
+<!--        <v-table-->
+<!--          v-if="value[0].hasOwnProperty('date')"-->
+<!--          column-width-drag-->
+<!--          :table-data="value"-->
+<!--          :columns="columnsDate"-->
+<!--          :cell-edit-done="cellEditDone"-->
+<!--          style="width:100%"-->
+<!--        ></v-table>-->
+<!--        <v-table-->
+<!--          v-if="value[0].hasOwnProperty('city')"-->
+<!--          column-width-drag-->
+<!--          :table-data="value"-->
+<!--          :columns="columnsCity"-->
+<!--          :cell-edit-done="cellEditDone"-->
+<!--          style="width:100%"-->
+<!--        ></v-table>-->
+<!--      </div>-->
+      <div v-if="key == ' '">
         <el-button v-on:click="sendIsActive(value.method)" size="small">{{value.title}}</el-button>
       </div>
     </el-collapse-item>
@@ -111,30 +111,30 @@ export default {
     return {
       layoutObj:null,
       baseData: {
-        MetaConfig: {
+        Config: {
           title: "background"
         },
         style: {
           color: []
         },
-        data: [],
-        datamappers: [
-          {
-            Fieldname: "value",
-            Fieldtype: "num",
-            Mapfrom: null,
-            Alias: null
-          },
-          {
-            Fieldname: "name",
-            Fieldtype: "string",
-            Mapfrom: null,
-            Alias: null
-          }
-        ]
+        // data: [],
+        // datamappers: [
+        //   {
+        //     Fieldname: "value",
+        //     Fieldtype: "num",
+        //     Mapfrom: null,
+        //     Alias: null
+        //   },
+        //   {
+        //     Fieldname: "name",
+        //     Fieldtype: "string",
+        //     Mapfrom: null,
+        //     Alias: null
+        //   }
+        // ]
       },
 
-      activeNames: ["MetaConfig", "style", "data", "button", "datamappers"], //折叠面板
+      activeNames: ["Config", "style", "data", "button", "datamappers"], //折叠面板
 
       columnsName: [
         {
@@ -241,7 +241,7 @@ export default {
   },
   mounted(){
     // this.baseData = {
-    //   "MetaConfig": {
+    //   "Config": {
     //     "title": "柱状图"
     //   },
     //   "style": {
@@ -287,45 +287,45 @@ export default {
     //   "mapperdatas": null
     // }
     let baseData1 = {
-        "MetaConfig": {
+        "Config": {
           "title": "柱状图"
         },
         "style": {
           "color": ["#1F9CC9"]
         },
         "id": "this.id",
-        "data": [
-          {
-            "name": "id",
-            "value": 1
-          },
-          {
-            "name": "time",
-            "value": "10"
-          },
-          {
-            "name": "lat",
-            "value": "40"
-          },
-          {
-            "name": "lng",
-            "value": "100.20"
-          },
-        ],
-        "datamappers": [
-          {
-            "Fieldname": "value",
-            "Fieldtype": "num",
-            "Mapfrom": null,
-            "Alias": null
-          },
-          {
-            "Fieldname": "name",
-            "Fieldtype": "string",
-            "Mapfrom": null,
-            "Alias": null
-          }
-        ],
+        // "data": [
+        //   {
+        //     "name": "id",
+        //     "value": 1
+        //   },
+        //   {
+        //     "name": "time",
+        //     "value": "10"
+        //   },
+        //   {
+        //     "name": "lat",
+        //     "value": "40"
+        //   },
+        //   {
+        //     "name": "lng",
+        //     "value": "100.20"
+        //   },
+        // ],
+        // "datamappers": [
+        //   {
+        //     "Fieldname": "value",
+        //     "Fieldtype": "num",
+        //     "Mapfrom": null,
+        //     "Alias": null
+        //   },
+        //   {
+        //     "Fieldname": "name",
+        //     "Fieldtype": "string",
+        //     "Mapfrom": null,
+        //     "Alias": null
+        //   }
+        // ],
         "button": {
           "method": "startanalyzedata",
           "title": "Apply"
@@ -333,45 +333,45 @@ export default {
         "mapperdatas": null
       }
     let baseData2 = {
-      "MetaConfig": {
+      "Config": {
         "title": "柱状图"
       },
       "style": {
         "color": ["#1F9CC9"]
       },
       "id": "this.id",
-      "data": [
-        {
-          "name": "id",
-          "value": 1
-        },
-        {
-          "name": "time",
-          "value": "10"
-        },
-        {
-          "name": "lat",
-          "value": "40"
-        },
-        {
-          "name": "lng",
-          "value": "100.20"
-        },
-      ],
-      "datamappers": [
-        {
-          "Fieldname": "value",
-          "Fieldtype": "num",
-          "Mapfrom": null,
-          "Alias": null
-        },
-        {
-          "Fieldname": "name",
-          "Fieldtype": "string",
-          "Mapfrom": null,
-          "Alias": null
-        }
-      ],
+      // "data": [
+      //   {
+      //     "name": "id",
+      //     "value": 1
+      //   },
+      //   {
+      //     "name": "time",
+      //     "value": "10"
+      //   },
+      //   {
+      //     "name": "lat",
+      //     "value": "40"
+      //   },
+      //   {
+      //     "name": "lng",
+      //     "value": "100.20"
+      //   },
+      // ],
+      // "datamappers": [
+      //   {
+      //     "Fieldname": "value",
+      //     "Fieldtype": "num",
+      //     "Mapfrom": null,
+      //     "Alias": null
+      //   },
+      //   {
+      //     "Fieldname": "name",
+      //     "Fieldtype": "string",
+      //     "Mapfrom": null,
+      //     "Alias": null
+      //   }
+      // ],
       "button": {
         "method": "startanalyzedata",
         "title": "Apply"
@@ -379,45 +379,45 @@ export default {
       "mapperdatas": null
     }
     let baseData3 = {
-      "MetaConfig": {
+      "Config": {
         "title": "柱状图"
       },
       "style": {
         "color": ["#1F9CC9"]
       },
       "id": "this.id",
-      "data": [
-        {
-          "name": "id",
-          "value": 1
-        },
-        {
-          "name": "time",
-          "value": "10"
-        },
-        {
-          "name": "lat",
-          "value": "40"
-        },
-        {
-          "name": "lng",
-          "value": "100.20"
-        },
-      ],
-      "datamappers": [
-        {
-          "Fieldname": "value",
-          "Fieldtype": "num",
-          "Mapfrom": null,
-          "Alias": null
-        },
-        {
-          "Fieldname": "name",
-          "Fieldtype": "string",
-          "Mapfrom": null,
-          "Alias": null
-        }
-      ],
+      // "data": [
+      //   {
+      //     "name": "id",
+      //     "value": 1
+      //   },
+      //   {
+      //     "name": "time",
+      //     "value": "10"
+      //   },
+      //   {
+      //     "name": "lat",
+      //     "value": "40"
+      //   },
+      //   {
+      //     "name": "lng",
+      //     "value": "100.20"
+      //   },
+      // ],
+      // "datamappers": [
+      //   {
+      //     "Fieldname": "value",
+      //     "Fieldtype": "num",
+      //     "Mapfrom": null,
+      //     "Alias": null
+      //   },
+      //   {
+      //     "Fieldname": "name",
+      //     "Fieldtype": "string",
+      //     "Mapfrom": null,
+      //     "Alias": null
+      //   }
+      // ],
       "button": {
         "method": "startanalyzedata",
         "title": "Apply"
@@ -425,49 +425,49 @@ export default {
       "mapperdatas": null
     }
     let baseData4 = {
-      "MetaConfig": {
+      "Config": {
         "title": "柱状图"
       },
       "style": {
         "color": ["#1F9CC9"]
       },
       "id": "this.id",
-      "data": [
-        {
-          "name": "id",
-          "value": 1
-        },
-        {
-          "name": "time",
-          "value": "10"
-        },
-        {
-          "name": "lat",
-          "value": "40"
-        },
-        {
-          "name": "lng",
-          "value": "100.20"
-        },
-      ],
-      "datamappers": [
-        {
-          "Fieldname": "value",
-          "Fieldtype": "num",
-          "Mapfrom": null,
-          "Alias": null
-        },
-        {
-          "Fieldname": "name",
-          "Fieldtype": "string",
-          "Mapfrom": null,
-          "Alias": null
-        }
-      ],
-      "button": {
-        "method": "startanalyzedata",
-        "title": "Apply"
-      },
+      // "data": [
+      //   {
+      //     "name": "id",
+      //     "value": 1
+      //   },
+      //   {
+      //     "name": "time",
+      //     "value": "10"
+      //   },
+      //   {
+      //     "name": "lat",
+      //     "value": "40"
+      //   },
+      //   {
+      //     "name": "lng",
+      //     "value": "100.20"
+      //   },
+      // ],
+      // "datamappers": [
+      //   {
+      //     "Fieldname": "value",
+      //     "Fieldtype": "num",
+      //     "Mapfrom": null,
+      //     "Alias": null
+      //   },
+      //   {
+      //     "Fieldname": "name",
+      //     "Fieldtype": "string",
+      //     "Mapfrom": null,
+      //     "Alias": null
+      //   }
+      // ],
+      // "button": {
+      //   "method": "startanalyzedata",
+      //   "title": "Apply"
+      // },
       "mapperdatas": null
     }
     this.$store.state.chartArray.push({id:'0',baseData:baseData1})
@@ -494,7 +494,7 @@ export default {
     //       let tempBaseData = {}
     //       if(that.layoutObj['config'][d]['chartType']=='Map'){
     //         tempBaseData = {
-    //           "MetaConfig": {
+    //           "Config": {
     //             "title": "柱状图"
     //           },
     //           "style": {
@@ -542,7 +542,7 @@ export default {
     //       }
     //       else if(that.layoutObj['config'][d]['chartType']=="TextChart"){
     //         tempBaseData = {
-    //           "MetaConfig": {
+    //           "Config": {
     //             "title": "柱状图"
     //           },
     //           "style": {
@@ -590,7 +590,7 @@ export default {
     //       }
     //       else{
     //         tempBaseData = {
-    //           "MetaConfig": {
+    //           "Config": {
     //             "title": "柱状图"
     //           },
     //           "style": {
@@ -694,45 +694,45 @@ export default {
         let tempBaseData = {}
         if(that.layoutObj['config'][d]['chartType']=="TextChart") {
           tempBaseData = {
-            "MetaConfig": {
+            "Config": {
               "title": "柱状图"
             },
             "style": {
               "color": ["#1F9CC9"]
             },
             "id": "this.id",
-            "data": [
-              {
-                "name": "id",
-                "value": 1
-              },
-              {
-                "name": "time",
-                "value": "10"
-              },
-              {
-                "name": "lat",
-                "value": "40"
-              },
-              {
-                "name": "lng",
-                "value": "100.20"
-              },
-            ],
-            "datamappers": [
-              {
-                "Fieldname": "value",
-                "Fieldtype": "num",
-                "Mapfrom": null,
-                "Alias": null
-              },
-              {
-                "Fieldname": "name",
-                "Fieldtype": "string",
-                "Mapfrom": null,
-                "Alias": null
-              }
-            ],
+            // "data": [
+            //   {
+            //     "name": "id",
+            //     "value": 1
+            //   },
+            //   {
+            //     "name": "time",
+            //     "value": "10"
+            //   },
+            //   {
+            //     "name": "lat",
+            //     "value": "40"
+            //   },
+            //   {
+            //     "name": "lng",
+            //     "value": "100.20"
+            //   },
+            // ],
+            // "datamappers": [
+            //   {
+            //     "Fieldname": "value",
+            //     "Fieldtype": "num",
+            //     "Mapfrom": null,
+            //     "Alias": null
+            //   },
+            //   {
+            //     "Fieldname": "name",
+            //     "Fieldtype": "string",
+            //     "Mapfrom": null,
+            //     "Alias": null
+            //   }
+            // ],
             "button": {
               "method": "startanalyzedata",
               "title": "Apply"
@@ -755,7 +755,7 @@ export default {
       //this.setBackgroundColor()
       console.log(this.layoutObj['config']['data']['values'].slice(0, 5));
       this.baseData={
-        "MetaConfig": {
+        "Config": {
           "title": this.layoutObj['config']['layer'][0]['mark']['type']
         },
         "style": {
@@ -763,22 +763,22 @@ export default {
           "stroke":[this.layoutObj['config']['layer'][0]['mark']['stroke']]
         },
         "id": this.layoutObj['config']['title']['text'],
-        "data": this.layoutObj['config']['data']['values'].slice(0,5),
-        "datamappers": [
-          {
-            "Fieldname": "value",
-            "Fieldtype": "num",
-            "Mapfrom": null,
-            "Alias": null
-          },
-          {
-            "Fieldname": "name",
-            "Fieldtype": "string",
-            "Mapfrom": null,
-            "Alias": null
-          }
-        ],
-        "button": {
+        // "data": this.layoutObj['config']['data']['values'].slice(0,5),
+        // "datamappers": [
+        //   {
+        //     "Fieldname": "value",
+        //     "Fieldtype": "num",
+        //     "Mapfrom": null,
+        //     "Alias": null
+        //   },
+        //   {
+        //     "Fieldname": "name",
+        //     "Fieldtype": "string",
+        //     "Mapfrom": null,
+        //     "Alias": null
+        //   }
+        // ],
+        " ": {
           "method": "startanalyzedata",
           "title": "Apply"
         },
@@ -802,7 +802,7 @@ export default {
       else return "x";
     },
     collapseShow(key) {
-      return (key == "MetaConfig" ||key == "style" ||(key == "data" && this.baseData.data.length != 0)||key == "button" ||key == "datamappers");
+      return (key == "Config" ||key == "style" ||(key == "data" && this.baseData.data.length != 0)||key == " " ||key == "datamappers");
     }
   }
 };
