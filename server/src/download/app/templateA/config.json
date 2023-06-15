@@ -2,7 +2,7 @@
   "Chart-0": {
     "data": {
       "width": 1333,
-      "height": 590,
+      "height": 630,
       "layer": [
         {
           "encoding": {
@@ -3391,13 +3391,13 @@
       "x": 10,
       "y": 10,
       "width": "197px",
-      "height": "590px"
+      "height": "630px"
     },
     "text_chart": {
       "x": 10,
-      "y": 610,
+      "y": 650,
       "width": "1540px",
-      "height": "190px"
+      "height": "150px"
     }
   }
 }
