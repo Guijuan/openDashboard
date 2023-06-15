@@ -1059,9 +1059,7 @@ export default {
             item.filterAttrs.push(_source.name)
             item.filterSource = _source.parentid
             let vegaModel = that.vegaObjectObj[_source.parentid]
-
             //定制设置
-
             if (vegaModel) {
               vegaModel.isFilterSource = true
             }

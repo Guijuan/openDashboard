@@ -188,7 +188,7 @@
     "length": 24
   },
   {
-    "name":"WHO",
+    "name":"WHO-COVID-19-global-table-data",
     "dimensions":[
       {
         "index": 0,
@@ -290,7 +290,7 @@
     "length":238
   },
   {
-    "name":"WHO2",
+    "name":"WHO-COVID-19-global-time-series-data",
     "dimensions":[
       {
         "index": 0,

@@ -2,7 +2,7 @@
   <vs-navbar class="nabarx" color='rgb(50, 60, 90)'>
     <div slot="title" style="display: flex;align-items: center">
       <vs-navbar-title style="color:white;">
-        OpenVIS
+        FlowDashboard
       </vs-navbar-title>
 <!--      <vs-navbar-item index="0" style="color:white; padding-left:5px">-->
 <!--        <a href="http://localhost:8080/home">Home</a>-->
@@ -14,46 +14,38 @@
         <a href="http://localhost:8080/gallery">Gallery</a>
       </vs-navbar-item>
       <vs-navbar-item index="1" style="color:white; padding-left:5px">
-        <a href="http://localhost:8080/blue">Dashboard</a>
+        <a href="http://localhost:8080/blue">Editor</a>
       </vs-navbar-item>
     </div>
 
 
     <vs-spacer></vs-spacer>
-    <div class="color-panel-box" @click="colorPanelState=true">
-      <button class='color-btn'></button>
-    </div>
-    <vs-popup class="color-panel" title="color panel" :active.sync="colorPanelState">
+    <vs-button @click="colorPanelState=true" class='tool_button' radius color="#1473e6" type="filled"
+               icon="star"></vs-button>
+    <vs-popup class="color-panel" title="Vis Palette" :active.sync="colorPanelState">
       <div class="panel-content">
         <div>
-          <h3>预定义</h3>
+          <vs-divider>Colors</vs-divider>
           <div style="display: flex;">
             <div class="color-item" v-for="(item,index) in preDefineColor" :key="index" :style="{background:item}"></div>
           </div>
-        </div>
-        <div>
-          <h3>自定义</h3>
-        </div>
-      </div>
-    </vs-popup>
-
-    <vs-button class='tool_button' radius color="#1473e6" type="filled"
-               icon="view_quilt" @click="gridPanelState=true"></vs-button>
-    <vs-popup class="grid-panel" title="grid panel" :active.sync="gridPanelState">
-      <div class="panel-content">
-        <div>
-          <h3>预定义</h3>
-          <div style="display: flex;">
-            <div class="color-item" v-for="(item,index) in preDefineGrid" style="width: auto" :key="index">{{item}}</div>
+          <div>
+            <h3>自定义</h3>
           </div>
         </div>
         <div>
-          <h3>自定义</h3>
+          <h3>gridPanel</h3>
+          <div style="display: flex;">
+            <div class="color-item" v-for="(item,index) in preDefineGrid" style="width: auto" :key="index">{{item}}</div>
+          </div>
+          <div>
+            <h3>自定义</h3>
+          </div>
         </div>
       </div>
     </vs-popup>
     <vs-navbar-item index="2" style="color:white; padding-left:5px">
-      <a href="http://localhost:8080/blue">about</a>
+      <a href="http://localhost:8080/blue">About</a>
     </vs-navbar-item>
   </vs-navbar>
 </template>
