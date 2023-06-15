@@ -230,13 +230,15 @@ export default class BlueComponent {
 
   drawInPorts() {
     let that = this
+    let cury = 0
     this.container
       .selectAll('port')
       .data(this.inPorts)
       .enter()
       .filter(function(e){
-
+        if(!e.multiple) return true
       })
+      .append("circle")
       .attr('class', 'port')
       .attr('fill', 'white')
       .attr('stroke', 'black')
@@ -247,10 +249,34 @@ export default class BlueComponent {
       })
       .attr('cy', function (d, i) {
         d.y = 20 + (i + 1) * 30
+        cury = d.y
         return d.y
       })
       .attr('r', 6)
 
+    this.container
+      .selectAll('port')
+      .data(this.inPorts)
+      .enter()
+      .filter(function(e){
+        return e.multiple
+      })
+      .append("rect")
+      .attr('class', 'port')
+      .attr('fill', 'white')
+      .attr('stroke', 'black')
+      .attr('stroke-width', '2')
+      .attr('x', function (d) {
+        d.x = 15
+        return d.x
+      })
+      .attr('y', function (d, i) {
+        d.y = cury-10 + (i + 1) * 30
+        cury = d.y
+        return d.y
+      })
+      .attr('width', 12)
+      .attr('height', 12)
 
     this.container
       .selectAll('portname')
@@ -264,6 +290,8 @@ export default class BlueComponent {
         return 30
       })
       .attr('y', function (d, i) {
+        if(d.multiple)
+          return d.y+5
         return d.y
       })
       .attr('fill', 'white')
@@ -279,20 +307,21 @@ export default class BlueComponent {
       .selectAll('port')
       .data(this.outPorts)
       .enter()
-      .append('circle')
+      .append('rect')
       .attr('class', 'port')
       .attr('fill', 'white')
       .attr('stroke', 'black')
       .attr('stroke-width', '2')
-      .attr('cx', function (d, i) {
+      .attr('x', function (d, i) {
         d.x = that.width - 20
         return d.x
       })
-      .attr('cy', function (d, i) {
+      .attr('y', function (d, i) {
         d.y = 20 + (i + 1) * 30
         return d.y
       })
-      .attr('r', 6)
+      .attr('width', 12)
+      .attr('height', 12)
 
     this.container
       .selectAll('portname')
@@ -304,7 +333,7 @@ export default class BlueComponent {
       .attr('alignment-baseline', 'central')
       .attr('x', this.width - 30)
       .attr('y', function (d, i) {
-        return d.y
+        return d.y+5
       })
       .attr('fill', 'white')
       .attr('font-size', '14')

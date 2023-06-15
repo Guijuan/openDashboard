@@ -33,7 +33,7 @@
       },
       {
         "name": "filter",
-        "text": "filter",
+        "text": "Filter",
         "attr": "encoding",
         "type": "in",
         "multiple": true
@@ -717,7 +717,7 @@
       {
         "name": "filter_in",
         "text": "",
-        "attr": "filter",
+        "attr": "Filter",
         "type": "in"
       }
     ],

@@ -1,6 +1,6 @@
 {
   "Chart": {
-    "name": "Chart",
+    "name": "Visual Forms",
     "childrens": [
       "Barchart",
       "Linechart",
@@ -21,7 +21,7 @@
     "color": "#967ADC"
   },
   "Caculator": {
-    "name": "Caculator",
+    "name": " Data Transformations",
     "childrens": [
       "Sum",
       "Reduce",
@@ -29,14 +29,6 @@
       "Division"
     ],
     "color": "#37BC9B"
-  },
-  "Layout": {
-    "name": "Layout",
-    "childrens": [
-      "Template A",
-      "Template B"
-    ],
-    "color": "#37BC22"
   },
   "Filter": {
     "name": "Interactions",
@@ -46,5 +38,9 @@
       "Select"
     ],
     "color": "#37BC22"
+  },
+  "Dynamic Update": {
+    "name": "Dynamic Update",
+    "childrens": []
   }
 }

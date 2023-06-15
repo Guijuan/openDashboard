@@ -22,7 +22,7 @@
         <!--该列放置数据和操作-->
         <!--数据列-->
         <div style="height: 90vh;overflow: auto">
-          <vs-divider border-style="solid" color="dark">DATALIST AREA</vs-divider>
+          <vs-divider border-style="solid" color="dark">DATASET</vs-divider>
           <vs-row vs-h="5" style="display:block">
             <div id='data_list'>
               <vs-collapse accordion :key="index" v-for="(data, index) in dataList">
@@ -50,7 +50,7 @@
             </div>
           </vs-row>
           <!--功能列-->
-          <vs-divider border-style="solid" color="dark">FUNCTION AREA</vs-divider>
+          <vs-divider border-style="solid" color="dark">TRANSFORMATIONS</vs-divider>
           <vs-row vs-h="5">
             <div id='editor'>
               <vs-collapse accordion :key="item.name" v-for="item in componentTypes">
