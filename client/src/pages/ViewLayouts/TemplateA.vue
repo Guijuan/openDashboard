@@ -63,6 +63,7 @@ export default{
   data() {
     return {
       mapName:null,
+      generateBool:false,
       select_text_flag:false,
       targetSelect:[],
       sourceSelect:[],
@@ -139,6 +140,26 @@ export default{
     Map
   },
   watch:{
+    ttlayout:{
+      handler(newVal){
+        let that = this;
+        console.log(this.ttlayout)
+        if(that.generateBool==false){
+          setTimeout(()=>{
+            console.log(document.getElementById("A-Chart-0"))
+            that.ttlayout.forEach(function (d) {
+              if(d.i==100||d.i==200){
+                that.reGenerateGraphBySize(d.i,300,100)
+              }else {
+                that.reGenerateGraphBySize(d.i,300,100)
+              }
+            })
+          },1000)
+          that.generateBool = true;
+        }
+      },
+      deep:true
+    },
     layout:{
       handler(curval){
         console.log(curval)
@@ -179,17 +200,28 @@ export default{
     }
   },
   mounted(){
+    let that = this;
     console.log("template开始渲染")
     console.log('this.$store.state.ttlayout',this.ttlayout);
     this.$store.commit("pushToTemplateData", {baseData: this.baseData, i: "template" });
     this.$store.commit("changeSelectId", "template");
-    this.targetSelect = this.$store.state.mapData_2.select.split(' ')
+    try{
+      this.targetSelect = this.$store.state.mapData_2.select.split(' ')
+    }catch (e) {
+      console.log("无地图")
+    }
+    // debugger;
+    // that.ttlayout.forEach(function (d) {
+    //   that.reGenerateGraphBySize(d.i,500,500)
+    // })
+
     // 设置setting值
     // console.log(this.layoutObj);
     // for(let item in this.ttlayout){
     //
     // }
     // this.$refs.setting.getLayoutObj(this.layoutObj);
+    console.log(that.ttlayout);
   },
   methods:{
     //获取translate
@@ -522,27 +554,32 @@ export default{
           //     console.log(that.ttlayout[item].component);
           //   }
           // }
+          let len = that.ttlayout.length
+          if(Object.keys(that.$store.state.mapData_2).length!=null){
+            if(document.getElementById("select")==null){
+              that.ttlayout.push({"x":(len)*2+2,"y":0,"w":4,"h":4,"i":100, static: false, name:`select`,component:null})
+              that.ttlayout.push({"x":(len+1)*2+2,"y":0,"w":4,"h":4,"i":200, static: false, name:`WHOText`,component:null})
+              // this.createSelect();
+            }
+          }
         }
         else if(that.layoutObj['config'][d]['chartType']=="TextChart"){
           vegaEmbed("#" + d, that.layoutObj["config"][d]["data"])
         }
         else{
-          that.ttlayout.push({"x":charts.indexOf(d)*2+2,"y":0,"w":2,"h":2,"i":charts.indexOf(d).toString(), static: false, name:`A-${d}`,component:null})
+          that.ttlayout.push({"x":charts.indexOf(d)*2+2,"y":0,"w":4,"h":4,"i":charts.indexOf(d).toString(), static: false, name:`A-${d}`,component:null})
           console.log(that.layoutObj["config"][d]["data"]);
           that.layoutObj["config"][d]["data"]['layer'][0]['mark']['fill'] = color
           vegaEmbed("#" + `A-${d}`, that.layoutObj["config"][d]["data"])
         }
       })
-      let len = that.ttlayout.length
-      if(Object.keys(that.$store.state.mapData_2).length!=null){
-        if(document.getElementById("select")==null){
-          that.ttlayout.push({"x":(len)*2+2,"y":0,"w":2,"h":2,"i":100, static: false, name:`select`,component:null})
-          that.ttlayout.push({"x":(len+1)*2+2,"y":0,"w":2,"h":2,"i":200, static: false, name:`WHOText`,component:null})
-          // this.createSelect();
-        }
-      }
       console.log(that.ttlayout)
       // console.log(document.getElementById(this.container).parentNode);
+      // 初始化
+      // debugger;
+      // that.ttlayout.forEach(function (d) {
+      //   that.reGenerateGraphBySize(d.i,500,500)
+      // })
     },
     reGenerateGraphByStyle(newVal){
       let that = this

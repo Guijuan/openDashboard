@@ -696,7 +696,6 @@ export default {
         this.component = () => import(`../../common/DataListBar/${this.selectMeta.type}`)
       } else {
         console.log(this.vegaObjectObj[this.selectMeta["id"]]['data']);
-        debugger;
         this.vegaObjectObj[this.selectMeta["id"]]['data']['layer'][0]['mark']['fill'] = baseData.style.color;
         this.vegaObjectObj[this.selectMeta["id"]]['data']['layer'][0]['mark']['stroke'] = baseData.style.stroke;
         this.vegaObjectObj[this.selectMeta["id"]]["data"]["title"]["text"] = baseData.Config.title
