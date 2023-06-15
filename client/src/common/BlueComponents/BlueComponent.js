@@ -234,7 +234,9 @@ export default class BlueComponent {
       .selectAll('port')
       .data(this.inPorts)
       .enter()
-      .append('circle')
+      .filter(function(e){
+
+      })
       .attr('class', 'port')
       .attr('fill', 'white')
       .attr('stroke', 'black')

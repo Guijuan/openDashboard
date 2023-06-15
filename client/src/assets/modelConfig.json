@@ -35,7 +35,8 @@
         "name": "filter",
         "text": "filter",
         "attr": "encoding",
-        "type": "in"
+        "type": "in",
+        "multiple": true
       }
     ],
     "outPorts": [
@@ -43,7 +44,8 @@
         "name": "out",
         "text": "out",
         "attr": "field",
-        "type": "out"
+        "type": "out",
+        "multiple": true
       }
     ],
     "type": "Chart",
@@ -709,7 +711,8 @@
         "name": "dimension",
         "text": "",
         "attr": "filter",
-        "type": "in"
+        "type": "in",
+        "multiple": true
       },
       {
         "name": "filter_in",
@@ -740,7 +743,8 @@
         "name":"filter_out",
         "text": "filter_out",
         "attr": "filed",
-        "type": "out"
+        "type": "out",
+        "multiple": true
       }
     ],
     "type": "Filter"

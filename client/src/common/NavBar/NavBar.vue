@@ -22,25 +22,27 @@
     <vs-spacer></vs-spacer>
     <vs-button @click="colorPanelState=true" class='tool_button' radius color="#1473e6" type="filled"
                icon="star"></vs-button>
-    <vs-popup class="color-panel" title="Vis Palette" :active.sync="colorPanelState">
+    <vs-popup class="color-panel" :active.sync="colorPanelState" >
       <div class="panel-content">
         <div>
-          <vs-divider>Colors</vs-divider>
+          <vs-divider>Vis Palette</vs-divider>
+          <h4>Color</h4>
           <div style="display: flex;">
             <div class="color-item" v-for="(item,index) in preDefineColor" :key="index" :style="{background:item}"></div>
           </div>
-          <div>
-            <h3>自定义</h3>
-          </div>
+          <vs-divider></vs-divider>
+          <h4>Background</h4>
+          <vs-divider></vs-divider>
+          <h4>Other</h4>
+          <vs-button>Use In My Design</vs-button>
         </div>
         <div>
+          <vs-divider>Visual Forms</vs-divider>
           <h3>gridPanel</h3>
           <div style="display: flex;">
             <div class="color-item" v-for="(item,index) in preDefineGrid" style="width: auto" :key="index">{{item}}</div>
           </div>
-          <div>
-            <h3>自定义</h3>
-          </div>
+          <vs-button>Use In My Design</vs-button>
         </div>
       </div>
     </vs-popup>
@@ -92,5 +94,8 @@ li {
   margin-right: 0.5rem;
   box-shadow: 1px 1px;
   border-radius: 3px;
+}
+.vs-popup{
+  width: 20%;
 }
 </style>
