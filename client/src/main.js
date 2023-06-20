@@ -83,6 +83,15 @@ const store = new Vuex.Store({
     mapData_2:{},
     map:null,
     newBaseData:null,
+    preChartStyle:{
+      visPalette:{
+        Color: {
+          Background:[],
+          Other:[],
+        }
+      },
+      visualForms:[]
+    }
   },
   mutations: {
     getimgkey(state, data) {
