@@ -82,6 +82,7 @@ const store = new Vuex.Store({
     mapData:[],
     mapData_2:{},
     map:null,
+    newBaseData:null,
   },
   mutations: {
     getimgkey(state, data) {
@@ -173,6 +174,9 @@ const store = new Vuex.Store({
     },
     getMapData_2:state=>{
       return state.mapData_2;
+    },
+    getNewBaseData:state => {
+      return state.newBaseData;
     }
   },
   actions: {

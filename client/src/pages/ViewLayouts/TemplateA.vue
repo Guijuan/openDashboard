@@ -126,7 +126,8 @@ export default{
   computed:{
     // ...mapGetters(['layout'])
     ...mapGetters({getChartArray: 'getChartArray'}),
-    ...mapGetters({getChartArray: 'getMapData_2'})
+    ...mapGetters({getMapData_2: 'getMapData_2'}),
+    ...mapGetters({getNewBaseData:'getNewBaseData'}),
   },
   components: {
     //图表组件
@@ -140,6 +141,19 @@ export default{
     Map
   },
   watch:{
+    getNewBaseData:{
+      handler(newVal){
+        let that = this;
+        that.ttlayout.forEach(function (d) {
+          if(d.i==100||d.i==200){
+            // that.reGenerateGraphBySize(d.i,300,100)
+          }else {
+            that.reGenerateGraphByStyle_2(newVal)
+          }
+        })
+      },
+      deep:true
+    },
     ttlayout:{
       handler(newVal){
         let that = this;
@@ -147,6 +161,7 @@ export default{
         if(that.generateBool==false){
           setTimeout(()=>{
             console.log(document.getElementById("A-Chart-0"))
+            debugger;
             that.ttlayout.forEach(function (d) {
               if(d.i==100||d.i==200){
                 that.reGenerateGraphBySize(d.i,300,100)
@@ -254,7 +269,6 @@ export default{
         }
       }
       console.log(name);
-      debugger;
       if(name=="select"){
         let x = this.getTranslate(document.getElementById(i),'x')
         let y = this.getTranslate(document.getElementById(i),'y')
@@ -271,7 +285,6 @@ export default{
         name = name.slice(2,);
         let x = this.getTranslate(document.getElementById(i),'x')
         let y = this.getTranslate(document.getElementById(i),'y')
-        debugger;
         that.$store.state.model_config_text[name]['data']['x'] = x
         that.$store.state.model_config_text[name]['data']['y'] = y
       }
@@ -301,57 +314,77 @@ export default{
         // console.log(this.$store.state.selectChartId)
       }else{
         // console.log('带参数的')
+        console.log(id);
         this.$store.commit('changeSelectId',id);
-        // this.selectChart = this.$store.state.chartArray[id]
-        this.selectChart = {
-          "baseData": {
-            "MetaConfig": {
-              "title": "降雨量"
-            },
-            "style": {
-              "color": ["#69C0FF"]
-            },
-            "id": "this.id",
-            "data": [
-              {
-                "name": "Mon",
-                "value": "10"
-              },
-              {
-                "name": "Tue",
-                "value": "706"
-              },
-              {
-                "name": "Wed",
-                "value": "239"
-              },
-              {
-                "name": "Thu",
-                "value": 172
-              }
-            ],
-            "datamappers": [
-              {
-                "Fieldname": "value",
-                "Fieldtype": "num",
-                "Mapfrom": null,
-                "Alias": null
-              },
-              {
-                "Fieldname": "name",
-                "Fieldtype": "string",
-                "Mapfrom": null,
-                "Alias": null
-              }
-            ],
-            "button": {
-              "method": "startanalyzedata",
-              "title": "Apply"
-            },
-            "mapperdatas": null
-          }
-        }
-        console.log('selectChart',this.selectChart);
+        console.log(this.layoutObj);
+        // 根据ID值获取layoutObj数据中选中图的数据
+        let ChartId = `Chart-${id}`;
+        this.$store.state.newBaseData = {
+          "Config": {
+            "Title": this.layoutObj['config'][ChartId]["data"]['layer'][0]['mark']['type']
+          },
+          "Style": {
+            "Color": [this.layoutObj['config'][ChartId]["data"]['layer'][0]['mark']['fill']],
+            "Stroke":[this.layoutObj['config'][ChartId]["data"]['layer'][0]['mark']['stroke']]
+          },
+          "id": this.layoutObj['config'][ChartId]["data"]['title']['text'],
+          " ": {
+            "method": "startanalyzedata",
+            "title": "Apply"
+          },
+          "mapperdatas": null
+        };
+
+        // // this.selectChart = this.$store.state.chartArray[id]
+        // this.selectChart = {
+        //   "baseData": {
+        //     "MetaConfig": {
+        //       "title": "降雨量"
+        //     },
+        //     "style": {
+        //       "color": ["#69C0FF"]
+        //     },
+        //     "id": "this.id",
+        //     "data": [
+        //       {
+        //         "name": "Mon",
+        //         "value": "10"
+        //       },
+        //       {
+        //         "name": "Tue",
+        //         "value": "706"
+        //       },
+        //       {
+        //         "name": "Wed",
+        //         "value": "239"
+        //       },
+        //       {
+        //         "name": "Thu",
+        //         "value": 172
+        //       }
+        //     ],
+        //     "datamappers": [
+        //       {
+        //         "Fieldname": "value",
+        //         "Fieldtype": "num",
+        //         "Mapfrom": null,
+        //         "Alias": null
+        //       },
+        //       {
+        //         "Fieldname": "name",
+        //         "Fieldtype": "string",
+        //         "Mapfrom": null,
+        //         "Alias": null
+        //       }
+        //     ],
+        //     "button": {
+        //       "method": "startanalyzedata",
+        //       "title": "Apply"
+        //     },
+        //     "mapperdatas": null
+        //   }
+        // }
+        // console.log('selectChart',this.selectChart);
       }
     },
     callReDraw(id,newVal) {
@@ -464,7 +497,6 @@ export default{
       //加入change事件
       let that = this;
       select1.addEventListener('change',function (event) {
-        debugger;
         that.select1Option = event.target.value;
         console.log(that.select1Option);
         let div1 = document.getElementById("div1");
@@ -531,7 +563,7 @@ export default{
       let that = this
       let charts = Object.keys(that.layoutObj["config"])
       // 构造ttlayout
-      this.$refs.setting.getLayoutObj(this.layoutObj);
+      // this.$refs.setting.getLayoutObj(this.layoutObj);
       console.log('generateGraph',charts);
       // for(let i=0;i<charts.length;i++){
       //   that.ttlayout[i]["component"] = "DA"
@@ -569,7 +601,7 @@ export default{
         else{
           that.ttlayout.push({"x":charts.indexOf(d)*2+2,"y":0,"w":4,"h":4,"i":charts.indexOf(d).toString(), static: false, name:`A-${d}`,component:null})
           console.log(that.layoutObj["config"][d]["data"]);
-          that.layoutObj["config"][d]["data"]['layer'][0]['mark']['fill'] = color
+          // that.layoutObj["config"][d]["data"]['layer'][0]['mark']['fill'] = color
           vegaEmbed("#" + `A-${d}`, that.layoutObj["config"][d]["data"])
         }
       })
@@ -581,6 +613,7 @@ export default{
       //   that.reGenerateGraphBySize(d.i,500,500)
       // })
     },
+    // 废弃
     reGenerateGraphByStyle(newVal){
       let that = this
       let i = 0
@@ -599,7 +632,34 @@ export default{
         i = i + 1
       })
       console.log('config---------------1',this.$store.state.model_config_text)
-
+    },
+    reGenerateGraphByStyle_2(newVal){
+      debugger;
+      let that = this;
+      // 参数准备
+      let chartID = `Chart-${that.$store.state.selectChartId}`;
+      let name = that.ttlayout[that.$store.state.selectChartId]["name"];
+      let color = newVal["Style"]["Color"][0]
+      that.layoutObj["config"][chartID]["data"]["layer"][0]["mark"]["fill"] = color
+      // 重绘
+      vegaEmbed("#" + name,that.layoutObj["config"][chartID]["data"])
+      // 无用
+      // let i = 0
+      // let charts = Object.keys(that.layoutObj["config"])
+      // //  Layout-0
+      // let table = {0:'chartA',1:'chartB',2:'chartC',3:'chartD'}
+      // console.log(newVal);
+      // console.log('generateGraph',charts);
+      // console.log('config',this.$store.state.model_config_text)
+      // charts.forEach(function(d){
+      //   console.log(that.layoutObj["config"][d]["data"]);
+      //   console.log(newVal[i]['baseData']['style']['color'][0]);
+      //   that.layoutObj["config"][d]["data"]['layer'][0]['mark']['fill'] = newVal[i]['baseData']['style']['color'][0]
+      //   that.$store.state.model_config_text['Layout-0'][table[i]]['data']['layer'][0]['mark']['fill'] = newVal[i]['baseData']['style']['color'][0]
+      //   vegaEmbed(`#A-${name}`, that.layoutObj["config"][d]["data"])
+      //   i = i + 1
+      // })
+      // console.log('config---------------1',this.$store.state.model_config_text)
     },
     reGenerateGraphBySize(i,width,height){
       let that = this

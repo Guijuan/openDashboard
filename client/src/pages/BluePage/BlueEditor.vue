@@ -683,7 +683,7 @@ export default {
 
     reGenerateChart(baseData) {
       console.log('reGenerateChart样式更改');
-      console.log(baseData.style.color);
+      console.log(baseData.Style.Color);
       // 传输数据到settings中
       console.log(this.vegaObjectObj)
       let tempObj = {DataPanel: 'DataPanel', WordHighlight: 'WordHighlight', Map: 'Map', CTable: 'CTable'}
@@ -696,9 +696,9 @@ export default {
         this.component = () => import(`../../common/DataListBar/${this.selectMeta.type}`)
       } else {
         console.log(this.vegaObjectObj[this.selectMeta["id"]]['data']);
-        this.vegaObjectObj[this.selectMeta["id"]]['data']['layer'][0]['mark']['fill'] = baseData.style.color;
-        this.vegaObjectObj[this.selectMeta["id"]]['data']['layer'][0]['mark']['stroke'] = baseData.style.stroke;
-        this.vegaObjectObj[this.selectMeta["id"]]["data"]["title"]["text"] = baseData.Config.title
+        this.vegaObjectObj[this.selectMeta["id"]]['data']['layer'][0]['mark']['fill'] = baseData.Style.Color;
+        this.vegaObjectObj[this.selectMeta["id"]]['data']['layer'][0]['mark']['stroke'] = baseData.Style.Stroke;
+        this.vegaObjectObj[this.selectMeta["id"]]["data"]["title"]["text"] = baseData.Config.Title
         let result = this.vegaObjectObj[this.selectMeta["id"]].getOutputForced();
         result.layer[0]['selection'] = {"pts": {"type": "single", "encodings": ["y"]}}
         result.layer[0]['encoding']["opacity"] = {"condition": {"selection": "pts", "value": 1}, "value": "0.3"}
@@ -1350,6 +1350,7 @@ export default {
           }
         })
         that.$refs[_ref].getModularInfo({"config": this.vegaObjectObj, "layoutname": 'Layout-0'})
+        console.log(this.vegaObjectObj);
         that.model_config_text = JSON.parse(JSON.stringify(that.vegaObjectObj))
         that.$store.state.model_config_text = that.model_config_text
         console.log(that.$store.state.model_config_text);
