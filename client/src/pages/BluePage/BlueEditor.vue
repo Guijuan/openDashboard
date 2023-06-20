@@ -973,6 +973,9 @@ export default {
         this.$store.commit("setMapData", data)
 
       }
+      if(target.parent == "WordHighlight"){
+        this.vegaObjectObj[vegaObjKey]['chartType'] = 'WordHighlight';
+      }
       if (target.parent == 'TextChart') {
         this.vegaObjectObj[vegaObjKey]['chartType'] = 'TextChart';
         let data = this.vegaObjectObj[vegaObjKey].getMapData();

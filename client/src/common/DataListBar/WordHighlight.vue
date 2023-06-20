@@ -1,5 +1,5 @@
 <template>
-    <div id="word-highlight">
+    <div class="word-highlight" :id="container">
         {{text}}
     </div>
 </template>
@@ -9,8 +9,9 @@ export default {
   name: "WordHighlight",
   props:{
     text:{
-      default:'这是一段测试文本，其中包含数据1000，动物1000只，等数据.'
-    }
+      default:'测试用例.数据1：10000；数据2：2123123'
+    },
+    container: null
   },
   data(){
     return{
@@ -19,10 +20,11 @@ export default {
   },
   mounted() {
     this.hightLight()
+    console.log("加载wordHighlight")
   },
   methods:{
     hightLight(){
-      const div = document.getElementById("word-highlight");
+      const div = document.getElementById(this.container);
       const text = div.innerText; // 获取 div 元素中的文本
 
       // 使用正则表达式匹配数字和单位，然后用 <span> 标签包裹起来
@@ -40,7 +42,7 @@ export default {
 </script>
 
 <style scoped>
-#word-highlight{
+.word-highlight{
   display: flex;
   padding: 10px;
   width: auto;

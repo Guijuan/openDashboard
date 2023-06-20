@@ -37,6 +37,13 @@
                     :id="item.name"
                     :container="item.name"
                     ></component>
+                  <component
+                    v-if="item.component=='WordHighlight'"
+                    :text="wordText"
+                    :is="item.component"
+                    :id="item.name"
+                    :container="item.name"
+                  ></component>
                   <div
                     v-if="item.component==null"
                     :id="item.name"></div>
@@ -59,9 +66,11 @@ import * as d3 from "d3";
 import VueGridLayout from 'vue-grid-layout';
 import SettingSide from '../Settingside/SettingSide'
 import { mapGetters } from "vuex";
+import WordHighlight from "../../common/DataListBar/WordHighlight";
 export default{
   data() {
     return {
+      wordText:"Globally, as of 3:20pm CEST, 14 June 2023, there have been 767,984,989 confirmed cases of COVID-19, including 6,943,390 deaths, reported to WHO. As of 12 June 2023, a total of 13,397,334,282 vaccine doses have been administered",
       mapName:null,
       generateBool:false,
       select_text_flag:false,
@@ -138,7 +147,8 @@ export default{
     GridLayout:VueGridLayout.GridLayout,
     GridItem:VueGridLayout.GridItem,
     SettingSide,
-    Map
+    Map,
+    WordHighlight
   },
   watch:{
     getNewBaseData:{
@@ -591,14 +601,16 @@ export default{
           let len = that.ttlayout.length
           if(Object.keys(that.$store.state.mapData_2).length!=null){
             if(document.getElementById("select")==null){
+              // 100是选择器，200是文字
               that.ttlayout.push({"x":(len)*2+2,"y":0,"w":4,"h":4,"i":100, static: false, name:`select`,component:null})
-              that.ttlayout.push({"x":(len+1)*2+2,"y":0,"w":4,"h":4,"i":200, static: false, name:`WHOText`,component:null})
+              // that.ttlayout.push({"x":(len+1)*2+2,"y":0,"w":4,"h":4,"i":200, static: false, name:`WHOText`,component:null})
               // this.createSelect();
             }
           }
         }
-        else if(that.layoutObj['config'][d]['chartType']=="TextChart"){
-          vegaEmbed("#" + d, that.layoutObj["config"][d]["data"])
+        else if(that.layoutObj['config'][d]['chartType']=="WordHighlight"){
+          // vegaEmbed("#" + d, that.layoutObj["config"][d]["data"])
+          that.ttlayout.push({"x":charts.indexOf(d)*2+2,"y":0,"w":4,"h":4,"i":300, static: false, name:`A-${d}`,component:"WordHighlight"})
         }
         else{
           that.ttlayout.push({"x":charts.indexOf(d)*2+2,"y":0,"w":4,"h":4,"i":charts.indexOf(d).toString(), static: false, name:`A-${d}`,component:null})
