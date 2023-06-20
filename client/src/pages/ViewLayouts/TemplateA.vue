@@ -161,12 +161,14 @@ export default{
         if(that.generateBool==false){
           setTimeout(()=>{
             console.log(document.getElementById("A-Chart-0"))
-            debugger;
+            console.log("初始化")
             that.ttlayout.forEach(function (d) {
-              if(d.i==100||d.i==200){
-                that.reGenerateGraphBySize(d.i,300,100)
+              let width = document.getElementById("A-Chart-0").parentNode.clientWidth
+              let height = document.getElementById("A-Chart-0").parentNode.clientHeight
+             if(d.i==100||d.i==200){
+                that.reGenerateGraphBySize(d.i,width-10,height-10)
               }else {
-                that.reGenerateGraphBySize(d.i,300,100)
+                that.reGenerateGraphBySize(d.i,width-10,height-10)
               }
             })
           },1000)
