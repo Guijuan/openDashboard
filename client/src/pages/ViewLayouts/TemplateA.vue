@@ -4,7 +4,7 @@
       System Preview
     </div>
     <el-container v-on:dblclick="getData">
-      <el-main @click.native="getData">
+      <el-main @dblclick.native="getData">
               <grid-layout class="gridLayout"
                            :layout.sync="ttlayout"
                            v-if="!(typeof ttlayout==='undefined')"
@@ -26,7 +26,7 @@
                   :h="item.h"
                   :i="item.i"
                   :id="item.i"
-                  @click.native.stop="getData(item.i)"
+                  @dblclick.native.stop="getData(item.i)"
                   @resized="resizeEvent"
                   @move="moveEvent"
                 >
@@ -816,6 +816,7 @@ export default{
         // console.log('reGenerateGraphBySize---重绘');
         let data = this.layoutObj["config"][name]["data"]
         this.setConfig(data)
+        console.log(data)
         vegaEmbed(`#A-${name}`, data).then(res=>{
             this.addChartEvent(res.view, name)
         })
@@ -871,9 +872,10 @@ export default{
       if (result.layer[0].encoding.stacked) {
         result.layer[0].encoding.sacles = {
           "name": "color",
-          "type": "ordinal",
-          "domain": {"field": result.layer[0].encoding.stacked.field, "sort": true},
-          "range": "category"
+          "type": "nominal",
+          // "domain": {"field": result.layer[0].encoding.stacked.field, "sort": true},
+          "domain":['AFRO','AMRO','EMRO','EURO','Other','SEARO','WPRO'],
+          "range": ['#c9d75e','#c12592','#ffbb30','#5200ae','#27baa0','#0a71d5','#d86422']
         }
         result.layer[0].encoding.fill = {"scale": "color", "field": result.layer[0].encoding.stacked.field}
       }

@@ -66,10 +66,10 @@ export default {
   name: "NavBar",
   data: function () {
     return {
-      preDefineColor:[{'color':'red',"select":false},
-        {'color':'green',"select":false},
-        {'color':'blue', "select":false},
-        {'color':'write', "select":false}],
+      preDefineColor:[{'color':'#d90013',"select":false},
+        {'color':'#1f77b4',"select":false},
+        {'color':'#e7ba52', "select":false},
+        {'color':'#9467bd', "select":false}],
       preDefineGrid:[{"chart":'templateA', "select":false},{"chart":'templateB', "select":false}],
       colors:[],
       others:[],
