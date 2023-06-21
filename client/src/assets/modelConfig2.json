@@ -1,7 +1,6 @@
 {
 
     "Barchart":{
-
         "inPorts": [
             {"name":"x","text":"X","attr":"encoding","type":"in"},
             {"name":"y","text":"Y","attr":"encoding","type":"in"},
@@ -15,7 +14,6 @@
         "maker": "bar"
     },
     "Linechart":{
-
         "inPorts": [
             {"name":"x","text":"X","attr":"encoding","type":"in"},
             {"name":"y","text":"Y","attr":"encoding","type":"in"},
@@ -29,7 +27,6 @@
         "maker": "line"
     },
     "Scatterplot":{
-
         "inPorts": [
             {"name":"x","text":"X","attr":"encoding","type":"in"},
             {"name":"y","text":"Y","attr":"encoding","type":"in"},
@@ -186,7 +183,7 @@
             {"name":"chart_c","text":"chartC","attr":"Layout","type":"in"},
             {"name":"chart_d","text":"chartD","attr":"Layout","type":"in"}
         ],
-        
+
         "type":"Layout"
     },
     "Template B":{

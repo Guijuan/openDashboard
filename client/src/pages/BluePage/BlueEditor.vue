@@ -1057,7 +1057,7 @@ export default {
       }
       console.log("连接对象:", _target)
       console.log("连接源:", _source)
-      if (_target.parent === 'ValueF') {
+      if (_target.parent === 'Filter') {
         that.blueComponents.forEach(item => {
           if (item.id === _target.id) {
             item.filterAttrs.push(_source.name)
@@ -1072,7 +1072,7 @@ export default {
           }
         })
       }
-      if (_source.parent === "ValueF") {
+      if (_source.parent === "Filter") {
         that.blueComponents.forEach(item => {
           if (item.id === _source.parentid) {
             let source  = item.filterSource
@@ -1282,7 +1282,7 @@ export default {
       }
       //属性过滤
       // if ("parentid" in _source) {
-      //   if (_source.parentid.includes('Chart') && _target.parent === 'ValueF') {
+      //   if (_source.parentid.includes('Chart') && _target.parent === 'Filter') {
       //     that.blueComponents.forEach(item => {
       //       if (item.id == _target.id) {
       //         item.filterAttributeName = that.vegaObjectObj[_source.parentid].filterAttr

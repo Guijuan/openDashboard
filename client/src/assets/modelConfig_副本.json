@@ -1,82 +1,4 @@
 {
-  "NumBerCard": {
-    "inPorts": [
-      {
-        "name": "x",
-        "text": "X",
-        "attr": "encoding",
-        "type": "in"
-      },
-      {
-        "name": "y",
-        "text": "Y",
-        "attr": "encoding",
-        "type": "in"
-      },
-      {
-        "name": "color",
-        "text": "Stroke",
-        "attr": "encoding",
-        "type": "in"
-      },
-      {
-        "name": "filter",
-        "text": "Interactions",
-        "attr": "encoding",
-        "type": "in",
-        "multiple": true
-      }
-    ],
-    "outPorts": [
-      {
-        "name": "out",
-        "text": "select",
-        "attr": "field",
-        "type": "out"
-      }
-    ],
-    "type": "Chart",
-    "maker": "rect"
-  },
-  "CTable": {
-    "inPorts": [
-      {
-        "name": "x",
-        "text": "X",
-        "attr": "encoding",
-        "type": "in"
-      },
-      {
-        "name": "y",
-        "text": "Y",
-        "attr": "encoding",
-        "type": "in"
-      },
-      {
-        "name": "color",
-        "text": "Stroke",
-        "attr": "encoding",
-        "type": "in"
-      },
-      {
-        "name": "filter",
-        "text": "Interactions",
-        "attr": "encoding",
-        "type": "in",
-        "multiple": true
-      }
-    ],
-    "outPorts": [
-      {
-        "name": "out",
-        "text": "select",
-        "attr": "field",
-        "type": "out"
-      }
-    ],
-    "type": "Chart",
-    "maker": "table"
-  },
   "Barchart": {
     "inPorts": [
       {
@@ -111,7 +33,7 @@
       },
       {
         "name": "filter",
-        "text": "Interactions",
+        "text": "Filter",
         "attr": "encoding",
         "type": "in",
         "multiple": true
@@ -120,7 +42,7 @@
     "outPorts": [
       {
         "name": "out",
-        "text": "select",
+        "text": "out",
         "attr": "field",
         "type": "out",
         "multiple": true
@@ -160,70 +82,18 @@
         "text": "filter",
         "attr": "encoding",
         "type": "in"
-      },
-      {
-        "name": "filter",
-        "text": "Interactions",
-        "attr": "encoding",
-        "type": "in",
-        "multiple": true
       }
     ],
     "outPorts": [
       {
         "name": "out",
-        "text": "select",
+        "text": "out",
         "attr": "field",
         "type": "out"
       }
     ],
     "type": "Chart",
     "maker": "line"
-  },
-  "Map": {
-    "inPorts": [
-      {
-        "name": "x",
-        "text": "X",
-        "attr": "encoding",
-        "type": "in"
-      },
-      {
-        "name": "y",
-        "text": "Y",
-        "attr": "encoding",
-        "type": "in"
-      },
-      {
-        "name": "data",
-        "text": "data",
-        "attr": "encoding",
-        "type": "in"
-      },
-      {
-        "name": "color",
-        "text": "Stroke",
-        "attr": "encoding",
-        "type": "in"
-      },
-      {
-        "name": "filter",
-        "text": "Interactions",
-        "attr": "encoding",
-        "type": "in",
-        "multiple": true
-      }
-    ],
-    "outPorts": [
-      {
-        "name": "out",
-        "text": "select",
-        "attr": "field",
-        "type": "out"
-      }
-    ],
-    "type": "Chart",
-    "maker": "symbol"
   },
   "Scatterplot": {
     "inPorts": [
@@ -262,64 +132,18 @@
         "text": "filter",
         "attr": "encoding",
         "type": "in"
-      },
-      {
-        "name": "filter",
-        "text": "Interactions",
-        "attr": "encoding",
-        "type": "in",
-        "multiple": true
       }
     ],
     "outPorts": [
       {
         "name": "out",
-        "text": "select",
+        "text": "out",
         "attr": "field",
         "type": "out"
       }
     ],
     "type": "Chart",
     "maker": "point"
-  },
-  "TEXT": {
-    "inPorts": [
-      {
-        "name": "x",
-        "text": "X",
-        "attr": "encoding",
-        "type": "in"
-      },
-      {
-        "name": "y",
-        "text": "Y",
-        "attr": "encoding",
-        "type": "in"
-      },
-      {
-        "name": "color",
-        "text": "Stroke",
-        "attr": "encoding",
-        "type": "in"
-      },
-      {
-        "name": "filter",
-        "text": "Interactions",
-        "attr": "encoding",
-        "type": "in",
-        "multiple": true
-      }
-    ],
-    "outPorts": [
-      {
-        "name": "out",
-        "text": "select",
-        "attr": "field",
-        "type": "out"
-      }
-    ],
-    "type": "Chart",
-    "maker": ""
   },
   "Stripplot": {
     "inPorts": [
@@ -352,25 +176,100 @@
         "text": "filter",
         "attr": "encoding",
         "type": "in"
-      },
-      {
-        "name": "filter",
-        "text": "Interactions",
-        "attr": "encoding",
-        "type": "in",
-        "multiple": true
       }
     ],
     "outPorts": [
       {
         "name": "out",
-        "text": "select",
+        "text": "out",
         "attr": "field",
         "type": "out"
       }
     ],
     "type": "Chart",
     "maker": "tick"
+  },
+  "Boxplot": {
+    "inPorts": [
+      {
+        "name": "x",
+        "text": "X",
+        "attr": "encoding",
+        "type": "in"
+      },
+      {
+        "name": "y",
+        "text": "Y",
+        "attr": "encoding",
+        "type": "in"
+      },
+      {
+        "name": "stroke",
+        "text": "Stroke",
+        "attr": "encoding",
+        "type": "in"
+      },
+      {
+        "name": "row",
+        "text": "Row",
+        "attr": "encoding",
+        "type": "in"
+      },
+      {
+        "name": "filter",
+        "text": "filter",
+        "attr": "encoding",
+        "type": "in"
+      }
+    ],
+    "outPorts": [
+      {
+        "name": "out",
+        "text": "out",
+        "attr": "field",
+        "type": "out"
+      }
+    ],
+    "type": "Chart",
+    "maker": "boxplot"
+  },
+  "Areaplot": {
+    "inPorts": [
+      {
+        "name": "x",
+        "text": "X",
+        "attr": "encoding",
+        "type": "in"
+      },
+      {
+        "name": "y",
+        "text": "Y",
+        "attr": "encoding",
+        "type": "in"
+      },
+      {
+        "name": "color",
+        "text": "Stroke",
+        "attr": "encoding",
+        "type": "in"
+      },
+      {
+        "name": "filter",
+        "text": "filter",
+        "attr": "encoding",
+        "type": "in"
+      }
+    ],
+    "outPorts": [
+      {
+        "name": "out",
+        "text": "out",
+        "attr": "field",
+        "type": "out"
+      }
+    ],
+    "type": "Chart",
+    "maker": "area"
   },
   "Circle": {
     "inPorts": [
@@ -410,6 +309,128 @@
     "type": "Chart",
     "maker": "circle"
   },
+  "ErrorBar": {
+    "inPorts": [
+      {
+        "name": "x",
+        "text": "X",
+        "attr": "encoding",
+        "type": "in"
+      },
+      {
+        "name": "y",
+        "text": "Y",
+        "attr": "encoding",
+        "type": "in"
+      }
+    ],
+    "outPorts": [
+      {
+        "name": "out",
+        "text": "out",
+        "attr": "field",
+        "type": "out"
+      }
+    ],
+    "type": "Chart",
+    "maker": "errorbar"
+  },
+  "ErrorBand": {
+    "inPorts": [
+      {
+        "name": "x",
+        "text": "X",
+        "attr": "encoding",
+        "type": "in"
+      },
+      {
+        "name": "y",
+        "text": "Y",
+        "attr": "encoding",
+        "type": "in"
+      }
+    ],
+    "outPorts": [
+      {
+        "name": "out",
+        "text": "out",
+        "attr": "field",
+        "type": "out"
+      }
+    ],
+    "type": "Chart",
+    "maker": "errorband"
+  },
+  "Reacplot": {
+    "inPorts": [
+      {
+        "name": "x",
+        "text": "X",
+        "attr": "encoding",
+        "type": "in"
+      },
+      {
+        "name": "y",
+        "text": "Y",
+        "attr": "encoding",
+        "type": "in"
+      },
+      {
+        "name": "color",
+        "text": "Stroke",
+        "attr": "encoding",
+        "type": "in"
+      }
+    ],
+    "outPorts": [
+      {
+        "name": "out",
+        "text": "out",
+        "attr": "field",
+        "type": "out"
+      }
+    ],
+    "type": "Chart",
+    "maker": "rect"
+  },
+  "Map": {
+    "inPorts": [
+      {
+        "name": "x",
+        "text": "X",
+        "attr": "encoding",
+        "type": "in"
+      },
+      {
+        "name": "y",
+        "text": "Y",
+        "attr": "encoding",
+        "type": "in"
+      },
+      {
+        "name": "data",
+        "text": "data",
+        "attr": "encoding",
+        "type": "in"
+      },
+      {
+        "name": "color",
+        "text": "Stroke",
+        "attr": "encoding",
+        "type": "in"
+      }
+    ],
+    "outPorts": [
+      {
+        "name": "out",
+        "text": "out",
+        "attr": "field",
+        "type": "out"
+      }
+    ],
+    "type": "Chart",
+    "maker": "symbol"
+  },
   "TextChart": {
     "inPorts": [
       {
@@ -429,6 +450,102 @@
     ],
     "type": "Chart",
     "maker": "text"
+  },
+  "DataPanel": {
+    "inPorts": [
+      {
+        "name": "x",
+        "text": "X",
+        "attr": "encoding",
+        "type": "in"
+      },
+      {
+        "name": "y",
+        "text": "Y",
+        "attr": "encoding",
+        "type": "in"
+      },
+      {
+        "name": "color",
+        "text": "Stroke",
+        "attr": "encoding",
+        "type": "in"
+      }
+    ],
+    "outPorts": [
+      {
+        "name": "out",
+        "text": "out",
+        "attr": "field",
+        "type": "out"
+      }
+    ],
+    "type": "Chart",
+    "maker": "rect"
+  },
+  "CTable": {
+    "inPorts": [
+      {
+        "name": "x",
+        "text": "X",
+        "attr": "encoding",
+        "type": "in"
+      },
+      {
+        "name": "y",
+        "text": "Y",
+        "attr": "encoding",
+        "type": "in"
+      },
+      {
+        "name": "color",
+        "text": "Stroke",
+        "attr": "encoding",
+        "type": "in"
+      }
+    ],
+    "outPorts": [
+      {
+        "name": "out",
+        "text": "out",
+        "attr": "field",
+        "type": "out"
+      }
+    ],
+    "type": "Chart",
+    "maker": "table"
+  },
+  "WordHighlight": {
+    "inPorts": [
+      {
+        "name": "x",
+        "text": "X",
+        "attr": "encoding",
+        "type": "in"
+      },
+      {
+        "name": "y",
+        "text": "Y",
+        "attr": "encoding",
+        "type": "in"
+      },
+      {
+        "name": "color",
+        "text": "Stroke",
+        "attr": "encoding",
+        "type": "in"
+      }
+    ],
+    "outPorts": [
+      {
+        "name": "out",
+        "text": "out",
+        "attr": "field",
+        "type": "out"
+      }
+    ],
+    "type": "Chart",
+    "maker": ""
   },
   "Color": {
     "inPorts": [
@@ -588,7 +705,7 @@
     ],
     "type": "Filter"
   },
-  "Filter": {
+  "ValueF": {
     "inPorts": [
       {
         "name": "dimension",

@@ -9,6 +9,13 @@
       "Map",
       "Scatterplot",
       "Text",
+      "Boxplot",
+      "Stripplot",
+      "Areaplot",
+      "Circle",
+      "ErrorBar",
+      "ErrorBand",
+      "Reacplot",
       "TextChart"
     ],
     "color": "#967ADC"
@@ -27,7 +34,7 @@
     "name": "Interactions",
     "childrens": [
       "AttributeF",
-      "Filter",
+      "ValueF",
       "Select"
     ],
     "color": "#37BC22"
