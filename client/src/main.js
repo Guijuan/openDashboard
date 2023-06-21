@@ -190,6 +190,9 @@ const store = new Vuex.Store({
     },
     getWordText:state=>{
       return state.wordText;
+    },
+    getPreChartStyle:state=>{
+      return state.preChartStyle;
     }
   },
   actions: {
