@@ -35,6 +35,22 @@
             <el-color-picker v-model="val[i]" size="mini" v-if="value.hasOwnProperty('Color')"></el-color-picker>
           </div>
         </div>
+        <div v-if="key =='Text'">
+          <el-input
+          v-model="val.toString()">
+
+          </el-input>
+<!--          <div v-for="(v, i, index) in val" :key="index">-->
+<!--            <el-input-->
+<!--              class="colorInput"-->
+<!--              v-model="val[i]"-->
+<!--              size="mini"-->
+<!--              v-if="value.hasOwnProperty('text')"-->
+<!--            >-->
+<!--              -->
+<!--            </el-input>-->
+<!--          </div>-->
+        </div>
 
 <!--        <div v-if="key =='datamappers'" :id="getDatamappersId(k)">-->
 <!--          <div v-for="(v, i, index) in val" :key="index">-->
@@ -134,7 +150,7 @@ export default {
         // ]
       },
 
-      activeNames: ["Config", "Style", "data", "button", "datamappers"], //折叠面板
+      activeNames: ["Config", "Style", "data", "button", "datamappers","Text"], //折叠面板
 
       columnsName: [
         {
@@ -809,7 +825,7 @@ export default {
       else return "x";
     },
     collapseShow(key) {
-      return (key == "Config" ||key == "Style" ||(key == "data" && this.baseData.data.length != 0)||key == " " ||key == "datamappers");
+      return (key=="Text"||key == "Config" ||key == "Style" ||(key == "data" && this.baseData.data.length != 0)||key == " " ||key == "datamappers");
     }
   }
 };

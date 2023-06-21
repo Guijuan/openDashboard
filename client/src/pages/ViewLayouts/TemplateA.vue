@@ -39,7 +39,7 @@
                     ></component>
                   <component
                     v-if="item.component=='WordHighlight'"
-                    :text="wordText"
+                    :text="getWordText"
                     :is="item.component"
                     :id="item.name"
                     :container="item.name"
@@ -70,7 +70,8 @@ import WordHighlight from "../../common/DataListBar/WordHighlight";
 export default{
   data() {
     return {
-      wordText:"Globally, as of 3:20pm CEST, 14 June 2023, there have been 767,984,989 confirmed cases of COVID-19, including 6,943,390 deaths, reported to WHO. As of 12 June 2023, a total of 13,397,334,282 vaccine doses have been administered",
+      wordChartName:null,
+      // wordText:"Globally, as of 3:20pm CEST, 14 June 2023, there have been 767,984,989 confirmed cases of COVID-19, including 6,943,390 deaths, reported to WHO. As of 12 June 2023, a total of 13,397,334,282 vaccine doses have been administered",
       mapName:null,
       generateBool:false,
       select_text_flag:false,
@@ -137,6 +138,7 @@ export default{
     ...mapGetters({getChartArray: 'getChartArray'}),
     ...mapGetters({getMapData_2: 'getMapData_2'}),
     ...mapGetters({getNewBaseData:'getNewBaseData'}),
+    ...mapGetters({getWordText:'getWordText'}),
   },
   components: {
     //图表组件
@@ -173,11 +175,18 @@ export default{
             console.log(document.getElementById("A-Chart-0"))
             console.log("初始化")
             that.ttlayout.forEach(function (d) {
-              let width = document.getElementById("A-Chart-0").parentNode.clientWidth
-              let height = document.getElementById("A-Chart-0").parentNode.clientHeight
+              debugger;
+              let width = document.getElementById(d.name).parentNode.clientWidth
+              let height = document.getElementById(d.name).parentNode.clientHeight
+              document.getElementById(d.name).style.backgroundColor="white"
              if(d.i==100||d.i==200){
-                that.reGenerateGraphBySize(d.i,width-10,height-10)
-              }else {
+               that.reGenerateGraphBySize(d.i,width-10,height-10)
+              }
+             else if(d.i==300){
+               that.wordChartName = d.name
+               document.getElementById(d.name).style.fontSize = "2.5em"
+             }
+             else {
                 that.reGenerateGraphBySize(d.i,width-10,height-10)
               }
             })
@@ -317,6 +326,7 @@ export default{
     },
     // 选中焦点时的触发事件，之后要改变setting状态栏
     getData(id){
+      let that = this
       console.log('getData')
       let re = /^[0-9]+.?[0-9]*/; //判断字符串是否为数字//判断正整数/[1−9]+[0−9]∗]∗/
       if(!re.test(id)){
@@ -330,22 +340,48 @@ export default{
         this.$store.commit('changeSelectId',id);
         console.log(this.layoutObj);
         // 根据ID值获取layoutObj数据中选中图的数据
-        let ChartId = `Chart-${id}`;
-        this.$store.state.newBaseData = {
-          "Config": {
-            "Title": this.layoutObj['config'][ChartId]["data"]['layer'][0]['mark']['type']
-          },
-          "Style": {
-            "Color": [this.layoutObj['config'][ChartId]["data"]['layer'][0]['mark']['fill']],
-            "Stroke":[this.layoutObj['config'][ChartId]["data"]['layer'][0]['mark']['stroke']]
-          },
-          "id": this.layoutObj['config'][ChartId]["data"]['title']['text'],
-          " ": {
-            "method": "startanalyzedata",
-            "title": "Apply"
-          },
-          "mapperdatas": null
-        };
+        if(id==300){
+          let charts = Object.keys(that.layoutObj["config"])
+          charts.forEach(function (d) {
+            if(that.layoutObj["config"][d]["chartType"] == "WordHighlight"){
+              that.$store.state.newBaseData = {
+                "Config": {
+                  "Title": that.layoutObj['config'][d]["data"]['layer'][0]['mark']['type']
+                },
+                "Style": {
+                  "Color": [that.layoutObj['config'][d]["data"]['layer'][0]['mark']['fill']],
+                  "Stroke":[that.layoutObj['config'][d]["data"]['layer'][0]['mark']['stroke']]
+                },
+                "id": that.layoutObj['config'][d]["data"]['title']['text'],
+                "Text":{
+                  "text":that.wordText,
+                },
+                " ": {
+                  "method": "startanalyzedata",
+                  "title": "Apply"
+                },
+                "mapperdatas": null
+              };
+            }
+          })
+        }else{
+          let ChartId = `Chart-${id}`;
+          this.$store.state.newBaseData = {
+            "Config": {
+              "Title": this.layoutObj['config'][ChartId]["data"]['layer'][0]['mark']['type']
+            },
+            "Style": {
+              "Color": [this.layoutObj['config'][ChartId]["data"]['layer'][0]['mark']['fill']],
+              "Stroke":[this.layoutObj['config'][ChartId]["data"]['layer'][0]['mark']['stroke']]
+            },
+            "id": this.layoutObj['config'][ChartId]["data"]['title']['text'],
+            " ": {
+              "method": "startanalyzedata",
+              "title": "Apply"
+            },
+            "mapperdatas": null
+          };
+        }
 
         // // this.selectChart = this.$store.state.chartArray[id]
         // this.selectChart = {
@@ -602,8 +638,14 @@ export default{
           if(Object.keys(that.$store.state.mapData_2).length!=null){
             if(document.getElementById("select")==null){
               // 100是选择器，200是文字
+              debugger;
               that.ttlayout.push({"x":(len)*2+2,"y":0,"w":4,"h":4,"i":100, static: false, name:`select`,component:null})
               // that.ttlayout.push({"x":(len+1)*2+2,"y":0,"w":4,"h":4,"i":200, static: false, name:`WHOText`,component:null})
+              try{
+                this.createSelect();
+              }catch (e) {
+
+              }
               // this.createSelect();
             }
           }
@@ -648,7 +690,6 @@ export default{
       console.log('config---------------1',this.$store.state.model_config_text)
     },
     reGenerateGraphByStyle_2(newVal){
-      debugger;
       let that = this;
       // 参数准备
       let chartID = `Chart-${that.$store.state.selectChartId}`;
@@ -690,6 +731,7 @@ export default{
       let y = this.getTranslate(document.getElementById(i),'y')
       console.log(i);
       if(i==100){
+        // this.createSelect(width,height,that.$store.state.mapData_2.select,that.$store.state.mapData_2.data.values);
         if(this.selectCard==false){
           this.createSelect(width,height,that.$store.state.mapData_2.select,that.$store.state.mapData_2.data.values);
           this.selectCard=true;
@@ -720,6 +762,11 @@ export default{
           this.setWHOText(width,height);
           this.selectText = true;
         }
+      }
+      else if(i==300){
+        let select_div = document.getElementById(that.wordChartName)
+        select_div.style.width = `${width}px`
+        select_div.style.height = `${height}px`
       }
       else {
         for(let item of this.ttlayout){
