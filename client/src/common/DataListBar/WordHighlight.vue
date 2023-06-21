@@ -36,7 +36,7 @@ export default {
   name: "WordHighlight",
   props:{
     text:{
-      default:'测试用例.数据1：10000；数据2：2123123'
+      default:'Globally, as of 3:20pm CEST, 14 June 2023, there have been 767,984,989 confirmed cases of COVID-19, including 6,943,390 deaths, reported to WHO. As of 12 June 2023, a total of 13,397,334,282 vaccine doses have been administered'
     },
     container: null
   },
@@ -100,10 +100,11 @@ export default {
 .word-highlight{
   display: flex;
   padding: 10px;
-  width: auto;
+  width: 100%;
   min-width: 300px;
-  height: auto;
-  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1)
+  height: 100%;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);
+  font-size:1em
 }
 .el-dialog{
   z-index: 200;

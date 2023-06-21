@@ -70,6 +70,7 @@ import WordHighlight from "../../common/DataListBar/WordHighlight";
 export default{
   data() {
     return {
+      wordChartName:null,
       // wordText:"Globally, as of 3:20pm CEST, 14 June 2023, there have been 767,984,989 confirmed cases of COVID-19, including 6,943,390 deaths, reported to WHO. As of 12 June 2023, a total of 13,397,334,282 vaccine doses have been administered",
       mapName:null,
       generateBool:false,
@@ -174,11 +175,18 @@ export default{
             console.log(document.getElementById("A-Chart-0"))
             console.log("初始化")
             that.ttlayout.forEach(function (d) {
-              let width = document.getElementById("A-Chart-0").parentNode.clientWidth
-              let height = document.getElementById("A-Chart-0").parentNode.clientHeight
+              debugger;
+              let width = document.getElementById(d.name).parentNode.clientWidth
+              let height = document.getElementById(d.name).parentNode.clientHeight
+              document.getElementById(d.name).style.backgroundColor="white"
              if(d.i==100||d.i==200){
-                that.reGenerateGraphBySize(d.i,width-10,height-10)
-              }else {
+               that.reGenerateGraphBySize(d.i,width-10,height-10)
+              }
+             else if(d.i==300){
+               that.wordChartName = d.name
+               document.getElementById(d.name).style.fontSize = "2.5em"
+             }
+             else {
                 that.reGenerateGraphBySize(d.i,width-10,height-10)
               }
             })
@@ -630,8 +638,14 @@ export default{
           if(Object.keys(that.$store.state.mapData_2).length!=null){
             if(document.getElementById("select")==null){
               // 100是选择器，200是文字
+              debugger;
               that.ttlayout.push({"x":(len)*2+2,"y":0,"w":4,"h":4,"i":100, static: false, name:`select`,component:null})
               // that.ttlayout.push({"x":(len+1)*2+2,"y":0,"w":4,"h":4,"i":200, static: false, name:`WHOText`,component:null})
+              try{
+                this.createSelect();
+              }catch (e) {
+
+              }
               // this.createSelect();
             }
           }
@@ -717,6 +731,7 @@ export default{
       let y = this.getTranslate(document.getElementById(i),'y')
       console.log(i);
       if(i==100){
+        // this.createSelect(width,height,that.$store.state.mapData_2.select,that.$store.state.mapData_2.data.values);
         if(this.selectCard==false){
           this.createSelect(width,height,that.$store.state.mapData_2.select,that.$store.state.mapData_2.data.values);
           this.selectCard=true;
@@ -747,6 +762,11 @@ export default{
           this.setWHOText(width,height);
           this.selectText = true;
         }
+      }
+      else if(i==300){
+        let select_div = document.getElementById(that.wordChartName)
+        select_div.style.width = `${width}px`
+        select_div.style.height = `${height}px`
       }
       else {
         for(let item of this.ttlayout){
