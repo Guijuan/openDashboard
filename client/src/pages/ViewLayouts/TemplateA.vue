@@ -39,7 +39,7 @@
                     ></component>
                   <component
                     v-if="item.component=='WordHighlight'"
-                    :text="wordText"
+                    :text="getWordText"
                     :is="item.component"
                     :id="item.name"
                     :container="item.name"
@@ -70,7 +70,7 @@ import WordHighlight from "../../common/DataListBar/WordHighlight";
 export default{
   data() {
     return {
-      wordText:"Globally, as of 3:20pm CEST, 14 June 2023, there have been 767,984,989 confirmed cases of COVID-19, including 6,943,390 deaths, reported to WHO. As of 12 June 2023, a total of 13,397,334,282 vaccine doses have been administered",
+      // wordText:"Globally, as of 3:20pm CEST, 14 June 2023, there have been 767,984,989 confirmed cases of COVID-19, including 6,943,390 deaths, reported to WHO. As of 12 June 2023, a total of 13,397,334,282 vaccine doses have been administered",
       mapName:null,
       generateBool:false,
       select_text_flag:false,
@@ -137,6 +137,7 @@ export default{
     ...mapGetters({getChartArray: 'getChartArray'}),
     ...mapGetters({getMapData_2: 'getMapData_2'}),
     ...mapGetters({getNewBaseData:'getNewBaseData'}),
+    ...mapGetters({getWordText:'getWordText'}),
   },
   components: {
     //图表组件
@@ -317,6 +318,7 @@ export default{
     },
     // 选中焦点时的触发事件，之后要改变setting状态栏
     getData(id){
+      let that = this
       console.log('getData')
       let re = /^[0-9]+.?[0-9]*/; //判断字符串是否为数字//判断正整数/[1−9]+[0−9]∗]∗/
       if(!re.test(id)){
@@ -330,22 +332,48 @@ export default{
         this.$store.commit('changeSelectId',id);
         console.log(this.layoutObj);
         // 根据ID值获取layoutObj数据中选中图的数据
-        let ChartId = `Chart-${id}`;
-        this.$store.state.newBaseData = {
-          "Config": {
-            "Title": this.layoutObj['config'][ChartId]["data"]['layer'][0]['mark']['type']
-          },
-          "Style": {
-            "Color": [this.layoutObj['config'][ChartId]["data"]['layer'][0]['mark']['fill']],
-            "Stroke":[this.layoutObj['config'][ChartId]["data"]['layer'][0]['mark']['stroke']]
-          },
-          "id": this.layoutObj['config'][ChartId]["data"]['title']['text'],
-          " ": {
-            "method": "startanalyzedata",
-            "title": "Apply"
-          },
-          "mapperdatas": null
-        };
+        if(id==300){
+          let charts = Object.keys(that.layoutObj["config"])
+          charts.forEach(function (d) {
+            if(that.layoutObj["config"][d]["chartType"] == "WordHighlight"){
+              that.$store.state.newBaseData = {
+                "Config": {
+                  "Title": that.layoutObj['config'][d]["data"]['layer'][0]['mark']['type']
+                },
+                "Style": {
+                  "Color": [that.layoutObj['config'][d]["data"]['layer'][0]['mark']['fill']],
+                  "Stroke":[that.layoutObj['config'][d]["data"]['layer'][0]['mark']['stroke']]
+                },
+                "id": that.layoutObj['config'][d]["data"]['title']['text'],
+                "Text":{
+                  "text":that.wordText,
+                },
+                " ": {
+                  "method": "startanalyzedata",
+                  "title": "Apply"
+                },
+                "mapperdatas": null
+              };
+            }
+          })
+        }else{
+          let ChartId = `Chart-${id}`;
+          this.$store.state.newBaseData = {
+            "Config": {
+              "Title": this.layoutObj['config'][ChartId]["data"]['layer'][0]['mark']['type']
+            },
+            "Style": {
+              "Color": [this.layoutObj['config'][ChartId]["data"]['layer'][0]['mark']['fill']],
+              "Stroke":[this.layoutObj['config'][ChartId]["data"]['layer'][0]['mark']['stroke']]
+            },
+            "id": this.layoutObj['config'][ChartId]["data"]['title']['text'],
+            " ": {
+              "method": "startanalyzedata",
+              "title": "Apply"
+            },
+            "mapperdatas": null
+          };
+        }
 
         // // this.selectChart = this.$store.state.chartArray[id]
         // this.selectChart = {
@@ -648,7 +676,6 @@ export default{
       console.log('config---------------1',this.$store.state.model_config_text)
     },
     reGenerateGraphByStyle_2(newVal){
-      debugger;
       let that = this;
       // 参数准备
       let chartID = `Chart-${that.$store.state.selectChartId}`;

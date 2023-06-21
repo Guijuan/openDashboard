@@ -91,7 +91,8 @@ const store = new Vuex.Store({
         }
       },
       visualForms:[]
-    }
+    },
+    wordText:""
   },
   mutations: {
     getimgkey(state, data) {
@@ -186,6 +187,9 @@ const store = new Vuex.Store({
     },
     getNewBaseData:state => {
       return state.newBaseData;
+    },
+    getWordText:state=>{
+      return state.wordText;
     }
   },
   actions: {
