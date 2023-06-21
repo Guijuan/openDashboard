@@ -4,7 +4,7 @@
       System Preview
     </div>
     <el-container v-on:dblclick="getData">
-      <el-main @dblclick.native="getData">
+      <el-main @click.native="getData">
               <grid-layout class="gridLayout"
                            :layout.sync="ttlayout"
                            v-if="!(typeof ttlayout==='undefined')"
@@ -26,7 +26,7 @@
                   :h="item.h"
                   :i="item.i"
                   :id="item.i"
-                  @dblclick.native.stop="getData(item.i)"
+                  @click.native.stop="getData(item.i)"
                   @resized="resizeEvent"
                   @move="moveEvent"
                 >
@@ -175,17 +175,21 @@ export default{
             console.log(document.getElementById("A-Chart-0"))
             console.log("初始化")
             that.ttlayout.forEach(function (d) {
-              let width = document.getElementById(d.name).parentNode.clientWidth
-              let height = document.getElementById(d.name).parentNode.clientHeight
-              document.getElementById(d.name).style.backgroundColor="white"
-             if(d.i==100||d.i==200){
-               that.reGenerateGraphBySize(d.i,width-10,height-10)
+              // let width = document.getElementById(d.name).parentNode.clientWidth
+              // let height = document.getElementById(d.name).parentNode.clientHeight
+             if(d.i==100){
+               // let width = document.getElementById("select").parentNode.clientWidth
+               // let height = document.getElementById("select").parentNode.clientHeight
+               that.reGenerateGraphBySize(d.i,400,400)
               }
              else if(d.i==300){
                that.wordChartName = d.name
+               document.getElementById(d.name).style.backgroundColor="white"
                document.getElementById(d.name).style.fontSize = "2.5em"
              }
              else {
+               let width = document.getElementById(d.name).parentNode.clientWidth
+               let height = document.getElementById(d.name).parentNode.clientHeight
                 that.reGenerateGraphBySize(d.i,width-10,height-10)
               }
             })
@@ -527,6 +531,7 @@ export default{
     createSelect(width=200,height=400,select,data){
       let selectName = select.split(' ')[0]
       // 创建下拉框元素
+      debugger
       const select1 = document.createElement('select');
 
       select1.innerHTML = `
@@ -616,6 +621,11 @@ export default{
       //   that.ttlayout[i]["component"] = "DA"
       // }
       that.ttlayout=[]
+      that.selectCard = false;
+      that.generateBool = false;
+      if(document.getElementById("select")!=null){
+        // document.getElementById("select").remove();
+      }
       charts.forEach(function(d){
         // 构造ttlayout
         if(that.layoutObj['config'][d]['chartType']=='Map'){
@@ -637,14 +647,13 @@ export default{
           if(Object.keys(that.$store.state.mapData_2).length!=null){
             if(document.getElementById("select")==null){
               // 100是选择器，200是文字
-              debugger;
               that.ttlayout.push({"x":(len)*2+2,"y":0,"w":4,"h":4,"i":100, static: false, name:`select`,component:null})
               // that.ttlayout.push({"x":(len+1)*2+2,"y":0,"w":4,"h":4,"i":200, static: false, name:`WHOText`,component:null})
-              try{
-                this.createSelect();
-              }catch (e) {
-
-              }
+              // try{
+              //   that.createSelect();
+              // }catch (e) {
+              //
+              // }
               // this.createSelect();
             }
           }
@@ -728,6 +737,7 @@ export default{
       let _ref = "MapChart"
       let x = this.getTranslate(document.getElementById(i),'x')
       let y = this.getTranslate(document.getElementById(i),'y')
+      console.log(that.ttlayout)
       console.log(i);
       if(i==100){
         // this.createSelect(width,height,that.$store.state.mapData_2.select,that.$store.state.mapData_2.data.values);
@@ -863,16 +873,15 @@ export default{
           "name": "color",
           "type": "ordinal",
           "domain": {"field": result.layer[0].encoding.stacked.field, "sort": true},
-          "range": ["#c8d65b","#c12592","#ffbb30","#5200ae","#00ae8f","#0a71d5","#afadad"]
+          "range": "category"
         }
         result.layer[0].encoding.fill = {"scale": "color", "field": result.layer[0].encoding.stacked.field}
       }
     },
     addChartEvent(view, name){
-      console.log("进入了")
       let that = this
       view.addSignalListener('pts', function (e, value) {
-        console.log("触发了")
+        console.log(value)
         let vegaModel = that.layoutObj["config"][name]
         console.log(vegaModel)
         if(vegaModel.isFilterSource){
