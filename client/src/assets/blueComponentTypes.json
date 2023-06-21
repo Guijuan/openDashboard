@@ -26,7 +26,6 @@
   "Filter": {
     "name": "Interactions",
     "childrens": [
-      "AttributeF",
       "Filter",
       "Select"
     ],

@@ -106,10 +106,4 @@ export default {
   box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);
   font-size:1em
 }
-.el-dialog{
-  z-index: 200;
-}
-#text-input{
-  z-index: 10000;
-}
 </style>

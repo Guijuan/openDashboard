@@ -3,19 +3,19 @@
     "inPorts": [
       {
         "name": "x",
-        "text": "X",
+        "text": "numbers",
         "attr": "encoding",
         "type": "in"
       },
       {
         "name": "y",
-        "text": "Y",
+        "text": "description",
         "attr": "encoding",
         "type": "in"
       },
       {
-        "name": "color",
-        "text": "Stroke",
+        "name": "z",
+        "text": "tips",
         "attr": "encoding",
         "type": "in"
       },
@@ -42,19 +42,7 @@
     "inPorts": [
       {
         "name": "x",
-        "text": "X",
-        "attr": "encoding",
-        "type": "in"
-      },
-      {
-        "name": "y",
-        "text": "Y",
-        "attr": "encoding",
-        "type": "in"
-      },
-      {
-        "name": "color",
-        "text": "Stroke",
+        "text": "data",
         "attr": "encoding",
         "type": "in"
       },
@@ -184,13 +172,13 @@
     "inPorts": [
       {
         "name": "x",
-        "text": "X",
+        "text": "lat",
         "attr": "encoding",
         "type": "in"
       },
       {
         "name": "y",
-        "text": "Y",
+        "text": "log",
         "attr": "encoding",
         "type": "in"
       },
@@ -286,19 +274,7 @@
     "inPorts": [
       {
         "name": "x",
-        "text": "X",
-        "attr": "encoding",
-        "type": "in"
-      },
-      {
-        "name": "y",
-        "text": "Y",
-        "attr": "encoding",
-        "type": "in"
-      },
-      {
-        "name": "color",
-        "text": "Stroke",
+        "text": "text",
         "attr": "encoding",
         "type": "in"
       },
@@ -553,40 +529,6 @@
     "inPorts": [],
     "outPorts": [],
     "type": "Data"
-  },
-  "AttributeF": {
-    "inPorts": [
-      {
-        "name": "x",
-        "text": "X",
-        "attr": "filter",
-        "type": "in"
-      },
-      {
-        "name": "data",
-        "text": "data",
-        "attr": "filter",
-        "type": "in"
-      }
-    ],
-    "sletectPorts": [
-      {
-        "name": "attr_select",
-        "text": "select_attr",
-        "attr": "filter",
-        "type": "out",
-        "options": []
-      }
-    ],
-    "outPorts": [
-      {
-        "name": "output",
-        "text": "Output",
-        "attr": "field",
-        "type": "out"
-      }
-    ],
-    "type": "Filter"
   },
   "Filter": {
     "inPorts": [

@@ -1055,8 +1055,6 @@ export default {
           }
         })
       }
-      console.log("连接对象:", _target)
-      console.log("连接源:", _source)
       if (_target.parent === 'Filter') {
         that.blueComponents.forEach(item => {
           if (item.id === _target.id) {
@@ -1350,6 +1348,7 @@ export default {
           if(this.vegaObjectObj[item].isFilterSource){
             let target = this.vegaObjectObj[item].filterTarget
             this.vegaObjectObj[target] = this.vegaObjectObj[item].filterTargetData
+            console.log(this.vegaObjectObj[item])
           }
         })
         that.$refs[_ref].getModularInfo({"config": this.vegaObjectObj, "layoutname": 'Layout-0'})

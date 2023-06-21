@@ -27,7 +27,7 @@
       <div style="height: 350px;width: 250px">
         <p style="height: 20px;font-size: 15px;text-align: center;background: #2c3e50;color: #FFFFFF">Vis Palette</p>
         <h4>Color</h4>
-        <div style="padding-left: 10px;margin-bottom: 1.5rem">
+        <div style="padding-left: 10px;margin-bottom: 2.5rem">
           <h4>Background</h4>
           <div style="display: flex;height: 60px;padding: 5px;border: 1px solid;
           background: #f2f2f2;border-radius: 5px;flex-flow: wrap;">
@@ -38,12 +38,11 @@
           <h4>Other</h4>
           <div style="display: flex;margin-bottom: 0.5rem;height: 60px;padding: 5px;border: 1px solid;
           background: #f2f2f2;border-radius: 5px;flex-flow: wrap;">
-            <div class="color-item" v-for="(item,index) in preDefineColor" :key="index" :style="{background:item.color,opacity:item.select?1:0.5}"
+            <div class="color-item" v-for="(item,index) in []" :key="index" :style="{background:item.color,opacity:item.select?1:0.5}"
                  @click="visPaletteSetting(item, 2)"></div>
           </div>
-          <vs-button style="width: 150px;height: 30px;position: absolute;right: 10px" color="success" @click="pushSet(1)">Use In My Design</vs-button>
+          <vs-button style="width: 150px;height: 30px;position: absolute;right: 10px;" color="success" @click="pushSet(1)">Use In My Design</vs-button>
         </div>
-        <vs-divider></vs-divider>
         <h4>Visual Forms</h4>
         <div style="padding-left: 10px;height: 80px">
           <div style="display: flex;margin-bottom: 0.5rem;height: 60px;border: 1px solid;padding: 5px;
@@ -88,17 +87,18 @@ export default {
         }
       }else {
         switch (type){
-          case 1:this.colors = this.colors.filter(e=>{return e.color!=item.color});break
-          case 2:this.others = this.others.filter(e=>{return e.color!=item.color});break
-          case 3:this.forms = this.forms.filter(e=>{return e.chart!=item.chart});break
+          case 1:this.colors = this.colors.filter(e=>{return e!==item.color});break
+          case 2:this.others = this.others.filter(e=>{return e!=item.color});break
+          case 3:this.forms = this.forms.filter(e=>{return e!=item.chart});break
         }
       }
+      console.log(this.colors)
     },
     pushSet(type){
       switch (type){
-        case 1:this.$store.state.preChartStyle.visPalette.Color.Background = this.colors.map(item=>{return item.color});
-          this.$store.state.preChartStyle.visPalette.Color.Other = this.others.map(item=>{return item.color});break;
-        case 2:this.$store.state.preChartStyle.visualForms = this.forms.map(item=>{return item.chart})
+        case 1:this.$store.state.preChartStyle.visPalette.Color.Background = this.colors;
+          this.$store.state.preChartStyle.visPalette.Color.Other = this.others;break;
+        case 2:this.$store.state.preChartStyle.visualForms = this.forms
       }
     }
   }
