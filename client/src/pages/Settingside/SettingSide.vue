@@ -130,7 +130,8 @@ export default {
   name: "settingside",
   data() {
     return {
-      preColor:null,
+      colorIndex:0,
+      preColor:[],
       blueColor:["#007092","#008ebc","#00ace3","#54cbf2","#95dcf4","#ffedc1","#b6b6b6"],
       layoutObj:null,
       baseData: {
@@ -510,6 +511,9 @@ export default {
       handler(newVal){
         debugger;
         this.preColor = this.$store.state.preChartStyle.visPalette.Color.Background;
+        // this.preColor = ["#00ace3","#54cbf2","#95dcf4","#ffedc1","#b6b6b6"]
+        // this.colorIndex++
+        console.log(this.preColor);
       },
       deep:true,
     },
