@@ -4,7 +4,7 @@
       System Preview
     </div>
     <el-container v-on:dblclick="getData">
-      <el-main @click.native="getData">
+      <el-main @dblclick.native="getData">
               <grid-layout class="gridLayout"
                            :layout.sync="ttlayout"
                            v-if="!(typeof ttlayout==='undefined')"
@@ -26,7 +26,7 @@
                   :h="item.h"
                   :i="item.i"
                   :id="item.i"
-                  @click.native.stop="getData(item.i)"
+                  @dblclick.native.stop="getData(item.i)"
                   @resized="resizeEvent"
                   @move="moveEvent"
                 >
@@ -175,7 +175,6 @@ export default{
             console.log(document.getElementById("A-Chart-0"))
             console.log("初始化")
             that.ttlayout.forEach(function (d) {
-              debugger;
               let width = document.getElementById(d.name).parentNode.clientWidth
               let height = document.getElementById(d.name).parentNode.clientHeight
               document.getElementById(d.name).style.backgroundColor="white"
@@ -864,15 +863,16 @@ export default{
           "name": "color",
           "type": "ordinal",
           "domain": {"field": result.layer[0].encoding.stacked.field, "sort": true},
-          "range": "category"
+          "range": ["#c8d65b","#c12592","#ffbb30","#5200ae","#00ae8f","#0a71d5","#afadad"]
         }
         result.layer[0].encoding.fill = {"scale": "color", "field": result.layer[0].encoding.stacked.field}
       }
     },
     addChartEvent(view, name){
+      console.log("进入了")
       let that = this
       view.addSignalListener('pts', function (e, value) {
-        console.log(value)
+        console.log("触发了")
         let vegaModel = that.layoutObj["config"][name]
         console.log(vegaModel)
         if(vegaModel.isFilterSource){
