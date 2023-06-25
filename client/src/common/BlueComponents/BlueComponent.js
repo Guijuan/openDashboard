@@ -393,7 +393,7 @@ export default class BlueComponent {
     this.container.append('text')
       .attr('x', 60)
       .attr('y', 60)
-      .text('设置属性')
+      .text('Setting')
       .attr('id', 'filterText')
   }
   drawSettingPanel(){
@@ -425,7 +425,7 @@ export default class BlueComponent {
       </div>
       <hr />
       <div id="filterDom"></div>
-      <button style="margin-top: 10px" id="filterSubmit">确定</button>
+      <button style="margin-top: 10px" id="filterSubmit">Confirm</button>
     </div>
     `
     that.filterType = 'range'
