@@ -635,7 +635,7 @@ export default {
       this.settingsView = true;
       let that = this;
       // 传输数据到settings中
-      let tempObj = {DataPanel: 'DataPanel', WordHighlight: 'WordHighlight', Map: 'Map', CTable: 'CTable'}
+      let tempObj = {DataPanel: 'DataPanel', Text: 'Text', Map: 'Map', CTable: 'CTable'}
       if (meta.type in tempObj) {
         this.CompositeCom = true
         if (meta.type == 'Map') {
@@ -686,7 +686,7 @@ export default {
       console.log(baseData.Style.Color);
       // 传输数据到settings中
       console.log(this.vegaObjectObj)
-      let tempObj = {DataPanel: 'DataPanel', WordHighlight: 'WordHighlight', Map: 'Map', CTable: 'CTable'}
+      let tempObj = {DataPanel: 'DataPanel', Text: 'Text', Map: 'Map', CTable: 'CTable'}
       if (this.selectMeta.type in tempObj) {
         this.CompositeCom = true
         if (this.selectMeta.type == 'Map') {
@@ -973,8 +973,8 @@ export default {
         this.$store.commit("setMapData", data)
 
       }
-      if(target.parent == "WordHighlight"){
-        this.vegaObjectObj[vegaObjKey]['chartType'] = 'WordHighlight';
+      if(target.parent == "Text"){
+        this.vegaObjectObj[vegaObjKey]['chartType'] = 'Text';
       }
       if (target.parent == 'TextChart') {
         this.vegaObjectObj[vegaObjKey]['chartType'] = 'TextChart';
