@@ -683,7 +683,7 @@ export default {
 
     reGenerateChart(baseData) {
       console.log('reGenerateChart样式更改');
-      console.log(baseData.style.color);
+      console.log(baseData.Style.Color);
       // 传输数据到settings中
       console.log(this.vegaObjectObj)
       let tempObj = {DataPanel: 'DataPanel', WordHighlight: 'WordHighlight', Map: 'Map', CTable: 'CTable'}
@@ -696,9 +696,9 @@ export default {
         this.component = () => import(`../../common/DataListBar/${this.selectMeta.type}`)
       } else {
         console.log(this.vegaObjectObj[this.selectMeta["id"]]['data']);
-        this.vegaObjectObj[this.selectMeta["id"]]['data']['layer'][0]['mark']['fill'] = baseData.style.color;
-        this.vegaObjectObj[this.selectMeta["id"]]['data']['layer'][0]['mark']['stroke'] = baseData.style.stroke;
-        this.vegaObjectObj[this.selectMeta["id"]]["data"]["title"]["text"] = baseData.Config.title
+        this.vegaObjectObj[this.selectMeta["id"]]['data']['layer'][0]['mark']['fill'] = baseData.Style.Color;
+        this.vegaObjectObj[this.selectMeta["id"]]['data']['layer'][0]['mark']['stroke'] = baseData.Style.Stroke;
+        this.vegaObjectObj[this.selectMeta["id"]]["data"]["title"]["text"] = baseData.Config.Title
         let result = this.vegaObjectObj[this.selectMeta["id"]].getOutputForced();
         result.layer[0]['selection'] = {"pts": {"type": "single", "encodings": ["y"]}}
         result.layer[0]['encoding']["opacity"] = {"condition": {"selection": "pts", "value": 1}, "value": "0.3"}
@@ -973,6 +973,9 @@ export default {
         this.$store.commit("setMapData", data)
 
       }
+      if(target.parent == "WordHighlight"){
+        this.vegaObjectObj[vegaObjKey]['chartType'] = 'WordHighlight';
+      }
       if (target.parent == 'TextChart') {
         this.vegaObjectObj[vegaObjKey]['chartType'] = 'TextChart';
         let data = this.vegaObjectObj[vegaObjKey].getMapData();
@@ -1052,9 +1055,7 @@ export default {
           }
         })
       }
-      console.log("连接对象:", _target)
-      console.log("连接源:", _source)
-      if (_target.parent === 'ValueF') {
+      if (_target.parent === 'Filter') {
         that.blueComponents.forEach(item => {
           if (item.id === _target.id) {
             item.filterAttrs.push(_source.name)
@@ -1069,7 +1070,7 @@ export default {
           }
         })
       }
-      if (_source.parent === "ValueF") {
+      if (_source.parent === "Filter") {
         that.blueComponents.forEach(item => {
           if (item.id === _source.parentid) {
             let source  = item.filterSource
@@ -1279,7 +1280,7 @@ export default {
       }
       //属性过滤
       // if ("parentid" in _source) {
-      //   if (_source.parentid.includes('Chart') && _target.parent === 'ValueF') {
+      //   if (_source.parentid.includes('Chart') && _target.parent === 'Filter') {
       //     that.blueComponents.forEach(item => {
       //       if (item.id == _target.id) {
       //         item.filterAttributeName = that.vegaObjectObj[_source.parentid].filterAttr
@@ -1347,9 +1348,11 @@ export default {
           if(this.vegaObjectObj[item].isFilterSource){
             let target = this.vegaObjectObj[item].filterTarget
             this.vegaObjectObj[target] = this.vegaObjectObj[item].filterTargetData
+            console.log(this.vegaObjectObj[item])
           }
         })
         that.$refs[_ref].getModularInfo({"config": this.vegaObjectObj, "layoutname": 'Layout-0'})
+        console.log(this.vegaObjectObj);
         that.model_config_text = JSON.parse(JSON.stringify(that.vegaObjectObj))
         that.$store.state.model_config_text = that.model_config_text
         console.log(that.$store.state.model_config_text);

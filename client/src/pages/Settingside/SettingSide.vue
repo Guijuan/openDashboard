@@ -10,10 +10,10 @@
       <div v-for="(val, k) in value" :key="k">
         <div v-if="key =='Config'" >
           <span>{{k}}</span>
-          <el-input v-model="value.title" size="mini" v-if="value.hasOwnProperty('title')"></el-input>
+          <el-input v-model="value.Title" size="mini" v-if="value.hasOwnProperty('Title')"></el-input>
         </div>
 
-        <div v-if="key =='style'">
+        <div v-if="key =='Style'">
           <span>{{k}}</span>
           <div>
             <div v-if="k==='backgroundColor'">
@@ -30,10 +30,26 @@
               class="colorInput"
               v-model="val[i]"
               size="mini"
-              v-if="value.hasOwnProperty('color')"
+              v-if="value.hasOwnProperty('Color')"
             ></el-input>
-            <el-color-picker v-model="val[i]" size="mini" v-if="value.hasOwnProperty('color')"></el-color-picker>
+            <el-color-picker v-model="val[i]" size="mini" v-if="value.hasOwnProperty('Color')"></el-color-picker>
           </div>
+        </div>
+        <div v-if="key =='Text'">
+          <el-input
+          v-model="val.toString()">
+
+          </el-input>
+<!--          <div v-for="(v, i, index) in val" :key="index">-->
+<!--            <el-input-->
+<!--              class="colorInput"-->
+<!--              v-model="val[i]"-->
+<!--              size="mini"-->
+<!--              v-if="value.hasOwnProperty('text')"-->
+<!--            >-->
+<!--              -->
+<!--            </el-input>-->
+<!--          </div>-->
         </div>
 
 <!--        <div v-if="key =='datamappers'" :id="getDatamappersId(k)">-->
@@ -134,7 +150,7 @@ export default {
         // ]
       },
 
-      activeNames: ["Config", "style", "data", "button", "datamappers"], //折叠面板
+      activeNames: ["Config", "Style", "data", "button", "datamappers","Text"], //折叠面板
 
       columnsName: [
         {
@@ -288,10 +304,10 @@ export default {
     // }
     let baseData1 = {
         "Config": {
-          "title": "柱状图"
+          "Title": "柱状图"
         },
-        "style": {
-          "color": ["#1F9CC9"]
+        "Style": {
+          "Color": ["#1F9CC9"]
         },
         "id": "this.id",
         // "data": [
@@ -334,10 +350,10 @@ export default {
       }
     let baseData2 = {
       "Config": {
-        "title": "柱状图"
+        "Title": "柱状图"
       },
-      "style": {
-        "color": ["#1F9CC9"]
+      "Style": {
+        "Color": ["#1F9CC9"]
       },
       "id": "this.id",
       // "data": [
@@ -380,10 +396,10 @@ export default {
     }
     let baseData3 = {
       "Config": {
-        "title": "柱状图"
+        "Title": "柱状图"
       },
-      "style": {
-        "color": ["#1F9CC9"]
+      "Style": {
+        "Color": ["#1F9CC9"]
       },
       "id": "this.id",
       // "data": [
@@ -426,10 +442,10 @@ export default {
     }
     let baseData4 = {
       "Config": {
-        "title": "柱状图"
+        "Title": "柱状图"
       },
-      "style": {
-        "color": ["#1F9CC9"]
+      "Style": {
+        "Color": ["#1F9CC9"]
       },
       "id": "this.id",
       // "data": [
@@ -482,175 +498,181 @@ export default {
     ...mapGetters({ selectChartId: "getSelectChartId"}),
   },
   watch: {
-    // layoutObj:{
-    //   handler(newVal){
-    //     debugger;
-    //     console.log("layoutObj改变")
-    //     let that = this
-    //     this.$store.state.chartArray = []
-    //     let charts = Object.keys(that.layoutObj["config"])
-    //     let id = 0
-    //     charts.forEach(function(d){
-    //       let tempBaseData = {}
-    //       if(that.layoutObj['config'][d]['chartType']=='Map'){
-    //         tempBaseData = {
-    //           "Config": {
-    //             "title": "柱状图"
-    //           },
-    //           "style": {
-    //             "color": ["#1F9CC9"]
-    //           },
-    //           "id": "this.id",
-    //           "data": [
-    //             {
-    //               "name": "id",
-    //               "value": 1
-    //             },
-    //             {
-    //               "name": "time",
-    //               "value": "10"
-    //             },
-    //             {
-    //               "name": "lat",
-    //               "value": "40"
-    //             },
-    //             {
-    //               "name": "lng",
-    //               "value": "100.20"
-    //             },
-    //           ],
-    //           "datamappers": [
-    //             {
-    //               "Fieldname": "value",
-    //               "Fieldtype": "num",
-    //               "Mapfrom": null,
-    //               "Alias": null
-    //             },
-    //             {
-    //               "Fieldname": "name",
-    //               "Fieldtype": "string",
-    //               "Mapfrom": null,
-    //               "Alias": null
-    //             }
-    //           ],
-    //           "button": {
-    //             "method": "startanalyzedata",
-    //             "title": "Apply"
-    //           },
-    //           "mapperdatas": null
-    //         }
-    //       }
-    //       else if(that.layoutObj['config'][d]['chartType']=="TextChart"){
-    //         tempBaseData = {
-    //           "Config": {
-    //             "title": "柱状图"
-    //           },
-    //           "style": {
-    //             "color": ["#1F9CC9"]
-    //           },
-    //           "id": "this.id",
-    //           "data": [
-    //             {
-    //               "name": "id",
-    //               "value": 1
-    //             },
-    //             {
-    //               "name": "time",
-    //               "value": "10"
-    //             },
-    //             {
-    //               "name": "lat",
-    //               "value": "40"
-    //             },
-    //             {
-    //               "name": "lng",
-    //               "value": "100.20"
-    //             },
-    //           ],
-    //           "datamappers": [
-    //             {
-    //               "Fieldname": "value",
-    //               "Fieldtype": "num",
-    //               "Mapfrom": null,
-    //               "Alias": null
-    //             },
-    //             {
-    //               "Fieldname": "name",
-    //               "Fieldtype": "string",
-    //               "Mapfrom": null,
-    //               "Alias": null
-    //             }
-    //           ],
-    //           "button": {
-    //             "method": "startanalyzedata",
-    //             "title": "Apply"
-    //           },
-    //           "mapperdatas": null
-    //         }
-    //       }
-    //       else{
-    //         tempBaseData = {
-    //           "Config": {
-    //             "title": "柱状图"
-    //           },
-    //           "style": {
-    //             "color": ["#1F9CC9"]
-    //           },
-    //           "id": "this.id",
-    //           "data": [
-    //             {
-    //               "name": "id",
-    //               "value": 1
-    //             },
-    //             {
-    //               "name": "time",
-    //               "value": "10"
-    //             },
-    //             {
-    //               "name": "lat",
-    //               "value": "40"
-    //             },
-    //             {
-    //               "name": "lng",
-    //               "value": "100.20"
-    //             },
-    //           ],
-    //           "datamappers": [
-    //             {
-    //               "Fieldname": "value",
-    //               "Fieldtype": "num",
-    //               "Mapfrom": null,
-    //               "Alias": null
-    //             },
-    //             {
-    //               "Fieldname": "name",
-    //               "Fieldtype": "string",
-    //               "Mapfrom": null,
-    //               "Alias": null
-    //             }
-    //           ],
-    //           "button": {
-    //             "method": "startanalyzedata",
-    //             "title": "Apply"
-    //           },
-    //           "mapperdatas": null
-    //         }
-    //       }
-    //       that.$store.state.chartArray.push({id:id.toString(),baseData:tempBaseData})
-    //       id += 1;
-    //     })
-    //     console.log(that.$store.state.chartArray);
-    //   },
-    //   deep:true
-    // },
+    layoutObj:{
+      handler(newVal){
+        console.log("layoutObj改变")
+        let that = this
+        this.$store.state.chartArray = []
+        let charts = Object.keys(that.layoutObj["config"])
+        let id = 0
+        charts.forEach(function(d){
+          let tempBaseData = {}
+          if(that.layoutObj['config'][d]['chartType']=='Map'){
+            tempBaseData = {
+              "Config": {
+                "title": "柱状图"
+              },
+              "style": {
+                "color": ["#1F9CC9"]
+              },
+              "id": "this.id",
+              "data": [
+                {
+                  "name": "id",
+                  "value": 1
+                },
+                {
+                  "name": "time",
+                  "value": "10"
+                },
+                {
+                  "name": "lat",
+                  "value": "40"
+                },
+                {
+                  "name": "lng",
+                  "value": "100.20"
+                },
+              ],
+              "datamappers": [
+                {
+                  "Fieldname": "value",
+                  "Fieldtype": "num",
+                  "Mapfrom": null,
+                  "Alias": null
+                },
+                {
+                  "Fieldname": "name",
+                  "Fieldtype": "string",
+                  "Mapfrom": null,
+                  "Alias": null
+                }
+              ],
+              "button": {
+                "method": "startanalyzedata",
+                "title": "Apply"
+              },
+              "mapperdatas": null
+            }
+          }
+          else if(that.layoutObj['config'][d]['chartType']=="TextChart"){
+            tempBaseData = {
+              "Config": {
+                "title": "柱状图"
+              },
+              "style": {
+                "color": ["#1F9CC9"]
+              },
+              "id": "this.id",
+              "data": [
+                {
+                  "name": "id",
+                  "value": 1
+                },
+                {
+                  "name": "time",
+                  "value": "10"
+                },
+                {
+                  "name": "lat",
+                  "value": "40"
+                },
+                {
+                  "name": "lng",
+                  "value": "100.20"
+                },
+              ],
+              "datamappers": [
+                {
+                  "Fieldname": "value",
+                  "Fieldtype": "num",
+                  "Mapfrom": null,
+                  "Alias": null
+                },
+                {
+                  "Fieldname": "name",
+                  "Fieldtype": "string",
+                  "Mapfrom": null,
+                  "Alias": null
+                }
+              ],
+              "button": {
+                "method": "startanalyzedata",
+                "title": "Apply"
+              },
+              "mapperdatas": null
+            }
+          }
+          else{
+            tempBaseData = {
+              "Config": {
+                "title": "柱状图"
+              },
+              "style": {
+                "color": ["#1F9CC9"]
+              },
+              "id": "this.id",
+              "data": [
+                {
+                  "name": "id",
+                  "value": 1
+                },
+                {
+                  "name": "time",
+                  "value": "10"
+                },
+                {
+                  "name": "lat",
+                  "value": "40"
+                },
+                {
+                  "name": "lng",
+                  "value": "100.20"
+                },
+              ],
+              "datamappers": [
+                {
+                  "Fieldname": "value",
+                  "Fieldtype": "num",
+                  "Mapfrom": null,
+                  "Alias": null
+                },
+                {
+                  "Fieldname": "name",
+                  "Fieldtype": "string",
+                  "Mapfrom": null,
+                  "Alias": null
+                }
+              ],
+              "button": {
+                "method": "startanalyzedata",
+                "title": "Apply"
+              },
+              "mapperdatas": null
+            }
+          }
+          that.$store.state.chartArray.push({id:id.toString(),baseData:tempBaseData})
+          id += 1;
+        })
+        console.log(that.$store.state.chartArray);
+      },
+      deep:true
+    },
     baseData: {
       handler(newVal) {
         console.log('basedata改变')
         // this.$store.commit("commitPropsData", newVal);
-        console.log(this.baseData['style']['color'])
+        console.log(this.baseData['Style']['Color'])
         // this.$store.state.chartArray.push(1)
         console.log(this.$store.state.chartArray)
+        console.log(this.baseData);
         this.$emit('reGenerateChart',this.baseData);
+        this.$store.state.newBaseData = this.baseData;
+        // try{
+        //
+        // }catch (e) {
+        //   console.log("graphview未打开")
+        // }
       },
       deep: true
     },
@@ -660,6 +682,7 @@ export default {
     //   },
     //   deep: true
     // },
+    // selectChartID有graphview改变，此时更改setting里面显示的值
     selectChartId: {
       handler(newVal){
         console.log('settting-watch-newVal',newVal);
@@ -668,84 +691,84 @@ export default {
         } else {
           console.log('图表配置')
           // this.baseData = this.$store.state.chartArray[newVal].baseData
-          this.baseData = this.$store.state.chartArray[newVal].baseData
+          this.baseData = this.$store.state.newBaseData
         }
       }
 
     }
   },
   methods: {
-    getLayoutObj(m){
-      this.layoutObj = m;
-      console.log("layout",this.layoutObj)
-      console.log("layoutObj改变")
-      let chartObj = {
-        "chartA":0,
-        "chartB":1,
-        "chartC":2,
-        "chartD":3,
-      }
-      let that = this
-      let charts = Object.keys(that.layoutObj["config"])
-      console.log(charts);
-      // debugger;
-      // console.log(this.$store.state.chartArray['1']);
-      charts.forEach(function(d){
-        let tempBaseData = {}
-        if(that.layoutObj['config'][d]['chartType']=="TextChart") {
-          tempBaseData = {
-            "Config": {
-              "title": "柱状图"
-            },
-            "style": {
-              "color": ["#1F9CC9"]
-            },
-            "id": "this.id",
-            // "data": [
-            //   {
-            //     "name": "id",
-            //     "value": 1
-            //   },
-            //   {
-            //     "name": "time",
-            //     "value": "10"
-            //   },
-            //   {
-            //     "name": "lat",
-            //     "value": "40"
-            //   },
-            //   {
-            //     "name": "lng",
-            //     "value": "100.20"
-            //   },
-            // ],
-            // "datamappers": [
-            //   {
-            //     "Fieldname": "value",
-            //     "Fieldtype": "num",
-            //     "Mapfrom": null,
-            //     "Alias": null
-            //   },
-            //   {
-            //     "Fieldname": "name",
-            //     "Fieldtype": "string",
-            //     "Mapfrom": null,
-            //     "Alias": null
-            //   }
-            // ],
-            "button": {
-              "method": "startanalyzedata",
-              "title": "Apply"
-            },
-            "mapperdatas": null
-          }
-          console.log(that.$store.state.chartArray[chartObj[d].toString()]);
-          that.$store.state.chartArray[chartObj[d].toString()]['baseData'] = tempBaseData
-        }
-      })
-      console.log(that.$store.state.chartArray["1"]);
-      console.log(that.$store.state.chartArray);
-    },
+    // getLayoutObj(m){
+    //   this.layoutObj = m;
+    //   console.log("layout",this.layoutObj)
+    //   console.log("layoutObj改变")
+    //   let chartObj = {
+    //     "chartA":0,
+    //     "chartB":1,
+    //     "chartC":2,
+    //     "chartD":3,
+    //   }
+    //   let that = this
+    //   let charts = Object.keys(that.layoutObj["config"])
+    //   console.log(charts);
+    //   // debugger;
+    //   // console.log(this.$store.state.chartArray['1']);
+    //   charts.forEach(function(d){
+    //     let tempBaseData = {}
+    //     if(that.layoutObj['config'][d]['chartType']=="TextChart") {
+    //       tempBaseData = {
+    //         "Config": {
+    //           "Title": "柱状图"
+    //         },
+    //         "Style": {
+    //           "Color": ["#1F9CC9"]
+    //         },
+    //         "id": "this.id",
+    //         // "data": [
+    //         //   {
+    //         //     "name": "id",
+    //         //     "value": 1
+    //         //   },
+    //         //   {
+    //         //     "name": "time",
+    //         //     "value": "10"
+    //         //   },
+    //         //   {
+    //         //     "name": "lat",
+    //         //     "value": "40"
+    //         //   },
+    //         //   {
+    //         //     "name": "lng",
+    //         //     "value": "100.20"
+    //         //   },
+    //         // ],
+    //         // "datamappers": [
+    //         //   {
+    //         //     "Fieldname": "value",
+    //         //     "Fieldtype": "num",
+    //         //     "Mapfrom": null,
+    //         //     "Alias": null
+    //         //   },
+    //         //   {
+    //         //     "Fieldname": "name",
+    //         //     "Fieldtype": "string",
+    //         //     "Mapfrom": null,
+    //         //     "Alias": null
+    //         //   }
+    //         // ],
+    //         "button": {
+    //           "method": "startanalyzedata",
+    //           "title": "Apply"
+    //         },
+    //         "mapperdatas": null
+    //       }
+    //       console.log(that.$store.state.chartArray[chartObj[d].toString()]);
+    //       that.$store.state.chartArray[chartObj[d].toString()]['baseData'] = tempBaseData
+    //     }
+    //   })
+    //   console.log(that.$store.state.chartArray["1"]);
+    //   console.log(that.$store.state.chartArray);
+    // },
     getModularInfo(m){
       console.log(m);
       let that = this
@@ -756,11 +779,11 @@ export default {
       console.log(this.layoutObj['config']['data']['values'].slice(0, 5));
       this.baseData={
         "Config": {
-          "title": this.layoutObj['config']['layer'][0]['mark']['type']
+          "Title": this.layoutObj['config']['layer'][0]['mark']['type']
         },
-        "style": {
-          "color": [this.layoutObj['config']['layer'][0]['mark']['fill']],
-          "stroke":[this.layoutObj['config']['layer'][0]['mark']['stroke']]
+        "Style": {
+          "Color": [this.layoutObj['config']['layer'][0]['mark']['fill']],
+          "Stroke":[this.layoutObj['config']['layer'][0]['mark']['stroke']]
         },
         "id": this.layoutObj['config']['title']['text'],
         // "data": this.layoutObj['config']['data']['values'].slice(0,5),
@@ -802,7 +825,7 @@ export default {
       else return "x";
     },
     collapseShow(key) {
-      return (key == "Config" ||key == "style" ||(key == "data" && this.baseData.data.length != 0)||key == " " ||key == "datamappers");
+      return (key=="Text"||key == "Config" ||key == "Style" ||(key == "data" && this.baseData.data.length != 0)||key == " " ||key == "datamappers");
     }
   }
 };
@@ -828,5 +851,8 @@ export default {
 }
 .el-color-picker__panel{
   z-index: 200000!important;
+}
+.el-collapse-item__wrap{
+  padding-left: 20px!important;
 }
 </style>

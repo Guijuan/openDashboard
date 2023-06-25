@@ -4,7 +4,7 @@
       System Preview
     </div>
     <el-container v-on:dblclick="getData">
-      <el-main @click.native="getData">
+      <el-main @dblclick.native="getData">
               <grid-layout class="gridLayout"
                            :layout.sync="ttlayout"
                            v-if="!(typeof ttlayout==='undefined')"
@@ -26,7 +26,7 @@
                   :h="item.h"
                   :i="item.i"
                   :id="item.i"
-                  @click.native.stop="getData(item.i)"
+                  @dblclick.native.stop="getData(item.i)"
                   @resized="resizeEvent"
                   @move="moveEvent"
                 >
@@ -37,6 +37,13 @@
                     :id="item.name"
                     :container="item.name"
                     ></component>
+                  <component
+                    v-if="item.component=='WordHighlight'"
+                    :text="getWordText"
+                    :is="item.component"
+                    :id="item.name"
+                    :container="item.name"
+                  ></component>
                   <div
                     v-if="item.component==null"
                     :id="item.name"></div>
@@ -59,9 +66,12 @@ import * as d3 from "d3";
 import VueGridLayout from 'vue-grid-layout';
 import SettingSide from '../Settingside/SettingSide'
 import { mapGetters } from "vuex";
+import WordHighlight from "../../common/DataListBar/WordHighlight";
 export default{
   data() {
     return {
+      wordChartName:null,
+      // wordText:"Globally, as of 3:20pm CEST, 14 June 2023, there have been 767,984,989 confirmed cases of COVID-19, including 6,943,390 deaths, reported to WHO. As of 12 June 2023, a total of 13,397,334,282 vaccine doses have been administered",
       mapName:null,
       generateBool:false,
       select_text_flag:false,
@@ -126,7 +136,9 @@ export default{
   computed:{
     // ...mapGetters(['layout'])
     ...mapGetters({getChartArray: 'getChartArray'}),
-    ...mapGetters({getChartArray: 'getMapData_2'})
+    ...mapGetters({getMapData_2: 'getMapData_2'}),
+    ...mapGetters({getNewBaseData:'getNewBaseData'}),
+    ...mapGetters({getWordText:'getWordText'}),
   },
   components: {
     //图表组件
@@ -137,9 +149,23 @@ export default{
     GridLayout:VueGridLayout.GridLayout,
     GridItem:VueGridLayout.GridItem,
     SettingSide,
-    Map
+    Map,
+    WordHighlight
   },
   watch:{
+    getNewBaseData:{
+      handler(newVal){
+        let that = this;
+        that.ttlayout.forEach(function (d) {
+          if(d.i==100||d.i==200){
+            // that.reGenerateGraphBySize(d.i,300,100)
+          }else {
+            that.reGenerateGraphByStyle_2(newVal)
+          }
+        })
+      },
+      deep:true
+    },
     ttlayout:{
       handler(newVal){
         let that = this;
@@ -147,11 +173,24 @@ export default{
         if(that.generateBool==false){
           setTimeout(()=>{
             console.log(document.getElementById("A-Chart-0"))
+            console.log("初始化")
             that.ttlayout.forEach(function (d) {
-              if(d.i==100||d.i==200){
-                that.reGenerateGraphBySize(d.i,300,100)
-              }else {
-                that.reGenerateGraphBySize(d.i,300,100)
+              // let width = document.getElementById(d.name).parentNode.clientWidth
+              // let height = document.getElementById(d.name).parentNode.clientHeight
+             if(d.i==100){
+               // let width = document.getElementById("select").parentNode.clientWidth
+               // let height = document.getElementById("select").parentNode.clientHeight
+               that.reGenerateGraphBySize(d.i,400,400)
+              }
+             else if(d.i==300){
+               that.wordChartName = d.name
+               document.getElementById(d.name).style.backgroundColor="white"
+               document.getElementById(d.name).style.fontSize = "2.5em"
+             }
+             else {
+               let width = document.getElementById(d.name).parentNode.clientWidth
+               let height = document.getElementById(d.name).parentNode.clientHeight
+                that.reGenerateGraphBySize(d.i,width-10,height-10)
               }
             })
           },1000)
@@ -254,7 +293,6 @@ export default{
         }
       }
       console.log(name);
-      debugger;
       if(name=="select"){
         let x = this.getTranslate(document.getElementById(i),'x')
         let y = this.getTranslate(document.getElementById(i),'y')
@@ -271,7 +309,6 @@ export default{
         name = name.slice(2,);
         let x = this.getTranslate(document.getElementById(i),'x')
         let y = this.getTranslate(document.getElementById(i),'y')
-        debugger;
         that.$store.state.model_config_text[name]['data']['x'] = x
         that.$store.state.model_config_text[name]['data']['y'] = y
       }
@@ -292,6 +329,7 @@ export default{
     },
     // 选中焦点时的触发事件，之后要改变setting状态栏
     getData(id){
+      let that = this
       console.log('getData')
       let re = /^[0-9]+.?[0-9]*/; //判断字符串是否为数字//判断正整数/[1−9]+[0−9]∗]∗/
       if(!re.test(id)){
@@ -301,57 +339,103 @@ export default{
         // console.log(this.$store.state.selectChartId)
       }else{
         // console.log('带参数的')
+        console.log(id);
         this.$store.commit('changeSelectId',id);
-        // this.selectChart = this.$store.state.chartArray[id]
-        this.selectChart = {
-          "baseData": {
-            "MetaConfig": {
-              "title": "降雨量"
+        console.log(this.layoutObj);
+        // 根据ID值获取layoutObj数据中选中图的数据
+        if(id==300){
+          let charts = Object.keys(that.layoutObj["config"])
+          charts.forEach(function (d) {
+            if(that.layoutObj["config"][d]["chartType"] == "WordHighlight"){
+              that.$store.state.newBaseData = {
+                "Config": {
+                  "Title": that.layoutObj['config'][d]["data"]['layer'][0]['mark']['type']
+                },
+                "Style": {
+                  "Color": [that.layoutObj['config'][d]["data"]['layer'][0]['mark']['fill']],
+                  "Stroke":[that.layoutObj['config'][d]["data"]['layer'][0]['mark']['stroke']]
+                },
+                "id": that.layoutObj['config'][d]["data"]['title']['text'],
+                "Text":{
+                  "text":that.wordText,
+                },
+                " ": {
+                  "method": "startanalyzedata",
+                  "title": "Apply"
+                },
+                "mapperdatas": null
+              };
+            }
+          })
+        }else{
+          let ChartId = `Chart-${id}`;
+          this.$store.state.newBaseData = {
+            "Config": {
+              "Title": this.layoutObj['config'][ChartId]["data"]['layer'][0]['mark']['type']
             },
-            "style": {
-              "color": ["#69C0FF"]
+            "Style": {
+              "Color": [this.layoutObj['config'][ChartId]["data"]['layer'][0]['mark']['fill']],
+              "Stroke":[this.layoutObj['config'][ChartId]["data"]['layer'][0]['mark']['stroke']]
             },
-            "id": "this.id",
-            "data": [
-              {
-                "name": "Mon",
-                "value": "10"
-              },
-              {
-                "name": "Tue",
-                "value": "706"
-              },
-              {
-                "name": "Wed",
-                "value": "239"
-              },
-              {
-                "name": "Thu",
-                "value": 172
-              }
-            ],
-            "datamappers": [
-              {
-                "Fieldname": "value",
-                "Fieldtype": "num",
-                "Mapfrom": null,
-                "Alias": null
-              },
-              {
-                "Fieldname": "name",
-                "Fieldtype": "string",
-                "Mapfrom": null,
-                "Alias": null
-              }
-            ],
-            "button": {
+            "id": this.layoutObj['config'][ChartId]["data"]['title']['text'],
+            " ": {
               "method": "startanalyzedata",
               "title": "Apply"
             },
             "mapperdatas": null
-          }
+          };
         }
-        console.log('selectChart',this.selectChart);
+
+        // // this.selectChart = this.$store.state.chartArray[id]
+        // this.selectChart = {
+        //   "baseData": {
+        //     "MetaConfig": {
+        //       "title": "降雨量"
+        //     },
+        //     "style": {
+        //       "color": ["#69C0FF"]
+        //     },
+        //     "id": "this.id",
+        //     "data": [
+        //       {
+        //         "name": "Mon",
+        //         "value": "10"
+        //       },
+        //       {
+        //         "name": "Tue",
+        //         "value": "706"
+        //       },
+        //       {
+        //         "name": "Wed",
+        //         "value": "239"
+        //       },
+        //       {
+        //         "name": "Thu",
+        //         "value": 172
+        //       }
+        //     ],
+        //     "datamappers": [
+        //       {
+        //         "Fieldname": "value",
+        //         "Fieldtype": "num",
+        //         "Mapfrom": null,
+        //         "Alias": null
+        //       },
+        //       {
+        //         "Fieldname": "name",
+        //         "Fieldtype": "string",
+        //         "Mapfrom": null,
+        //         "Alias": null
+        //       }
+        //     ],
+        //     "button": {
+        //       "method": "startanalyzedata",
+        //       "title": "Apply"
+        //     },
+        //     "mapperdatas": null
+        //   }
+        // }
+        // console.log('selectChart',this.selectChart);
       }
     },
     callReDraw(id,newVal) {
@@ -447,6 +531,7 @@ export default{
     createSelect(width=200,height=400,select,data){
       let selectName = select.split(' ')[0]
       // 创建下拉框元素
+      debugger
       const select1 = document.createElement('select');
 
       select1.innerHTML = `
@@ -464,7 +549,6 @@ export default{
       //加入change事件
       let that = this;
       select1.addEventListener('change',function (event) {
-        debugger;
         that.select1Option = event.target.value;
         console.log(that.select1Option);
         let div1 = document.getElementById("div1");
@@ -531,12 +615,17 @@ export default{
       let that = this
       let charts = Object.keys(that.layoutObj["config"])
       // 构造ttlayout
-      this.$refs.setting.getLayoutObj(this.layoutObj);
+      // this.$refs.setting.getLayoutObj(this.layoutObj);
       console.log('generateGraph',charts);
       // for(let i=0;i<charts.length;i++){
       //   that.ttlayout[i]["component"] = "DA"
       // }
       that.ttlayout=[]
+      that.selectCard = false;
+      that.generateBool = false;
+      if(document.getElementById("select")!=null){
+        // document.getElementById("select").remove();
+      }
       charts.forEach(function(d){
         // 构造ttlayout
         if(that.layoutObj['config'][d]['chartType']=='Map'){
@@ -557,19 +646,26 @@ export default{
           let len = that.ttlayout.length
           if(Object.keys(that.$store.state.mapData_2).length!=null){
             if(document.getElementById("select")==null){
+              // 100是选择器，200是文字
               that.ttlayout.push({"x":(len)*2+2,"y":0,"w":4,"h":4,"i":100, static: false, name:`select`,component:null})
-              that.ttlayout.push({"x":(len+1)*2+2,"y":0,"w":4,"h":4,"i":200, static: false, name:`WHOText`,component:null})
+              // that.ttlayout.push({"x":(len+1)*2+2,"y":0,"w":4,"h":4,"i":200, static: false, name:`WHOText`,component:null})
+              // try{
+              //   that.createSelect();
+              // }catch (e) {
+              //
+              // }
               // this.createSelect();
             }
           }
         }
-        else if(that.layoutObj['config'][d]['chartType']=="TextChart"){
-          vegaEmbed("#" + d, that.layoutObj["config"][d]["data"])
+        else if(that.layoutObj['config'][d]['chartType']=="WordHighlight"){
+          // vegaEmbed("#" + d, that.layoutObj["config"][d]["data"])
+          that.ttlayout.push({"x":charts.indexOf(d)*2+2,"y":0,"w":4,"h":4,"i":300, static: false, name:`A-${d}`,component:"WordHighlight"})
         }
         else{
           that.ttlayout.push({"x":charts.indexOf(d)*2+2,"y":0,"w":4,"h":4,"i":charts.indexOf(d).toString(), static: false, name:`A-${d}`,component:null})
           console.log(that.layoutObj["config"][d]["data"]);
-          that.layoutObj["config"][d]["data"]['layer'][0]['mark']['fill'] = color
+          // that.layoutObj["config"][d]["data"]['layer'][0]['mark']['fill'] = color
           vegaEmbed("#" + `A-${d}`, that.layoutObj["config"][d]["data"])
         }
       })
@@ -581,6 +677,7 @@ export default{
       //   that.reGenerateGraphBySize(d.i,500,500)
       // })
     },
+    // 废弃
     reGenerateGraphByStyle(newVal){
       let that = this
       let i = 0
@@ -599,7 +696,33 @@ export default{
         i = i + 1
       })
       console.log('config---------------1',this.$store.state.model_config_text)
-
+    },
+    reGenerateGraphByStyle_2(newVal){
+      let that = this;
+      // 参数准备
+      let chartID = `Chart-${that.$store.state.selectChartId}`;
+      let name = that.ttlayout[that.$store.state.selectChartId]["name"];
+      let color = newVal["Style"]["Color"][0]
+      that.layoutObj["config"][chartID]["data"]["layer"][0]["mark"]["fill"] = color
+      // 重绘
+      vegaEmbed("#" + name,that.layoutObj["config"][chartID]["data"])
+      // 无用
+      // let i = 0
+      // let charts = Object.keys(that.layoutObj["config"])
+      // //  Layout-0
+      // let table = {0:'chartA',1:'chartB',2:'chartC',3:'chartD'}
+      // console.log(newVal);
+      // console.log('generateGraph',charts);
+      // console.log('config',this.$store.state.model_config_text)
+      // charts.forEach(function(d){
+      //   console.log(that.layoutObj["config"][d]["data"]);
+      //   console.log(newVal[i]['baseData']['style']['color'][0]);
+      //   that.layoutObj["config"][d]["data"]['layer'][0]['mark']['fill'] = newVal[i]['baseData']['style']['color'][0]
+      //   that.$store.state.model_config_text['Layout-0'][table[i]]['data']['layer'][0]['mark']['fill'] = newVal[i]['baseData']['style']['color'][0]
+      //   vegaEmbed(`#A-${name}`, that.layoutObj["config"][d]["data"])
+      //   i = i + 1
+      // })
+      // console.log('config---------------1',this.$store.state.model_config_text)
     },
     reGenerateGraphBySize(i,width,height){
       let that = this
@@ -614,8 +737,10 @@ export default{
       let _ref = "MapChart"
       let x = this.getTranslate(document.getElementById(i),'x')
       let y = this.getTranslate(document.getElementById(i),'y')
+      console.log(that.ttlayout)
       console.log(i);
       if(i==100){
+        // this.createSelect(width,height,that.$store.state.mapData_2.select,that.$store.state.mapData_2.data.values);
         if(this.selectCard==false){
           this.createSelect(width,height,that.$store.state.mapData_2.select,that.$store.state.mapData_2.data.values);
           this.selectCard=true;
@@ -646,6 +771,11 @@ export default{
           this.setWHOText(width,height);
           this.selectText = true;
         }
+      }
+      else if(i==300){
+        let select_div = document.getElementById(that.wordChartName)
+        select_div.style.width = `${width}px`
+        select_div.style.height = `${height}px`
       }
       else {
         for(let item of this.ttlayout){
@@ -686,6 +816,7 @@ export default{
         // console.log('reGenerateGraphBySize---重绘');
         let data = this.layoutObj["config"][name]["data"]
         this.setConfig(data)
+        console.log(data)
         vegaEmbed(`#A-${name}`, data).then(res=>{
             this.addChartEvent(res.view, name)
         })
@@ -741,9 +872,10 @@ export default{
       if (result.layer[0].encoding.stacked) {
         result.layer[0].encoding.sacles = {
           "name": "color",
-          "type": "ordinal",
-          "domain": {"field": result.layer[0].encoding.stacked.field, "sort": true},
-          "range": "category"
+          "type": "nominal",
+          // "domain": {"field": result.layer[0].encoding.stacked.field, "sort": true},
+          "domain":['AFRO','AMRO','EMRO','EURO','Other','SEARO','WPRO'],
+          "range": ['#c9d75e','#c12592','#ffbb30','#5200ae','#27baa0','#0a71d5','#d86422']
         }
         result.layer[0].encoding.fill = {"scale": "color", "field": result.layer[0].encoding.stacked.field}
       }

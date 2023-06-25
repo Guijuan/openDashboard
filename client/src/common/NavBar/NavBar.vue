@@ -4,6 +4,9 @@
       <vs-navbar-title style="color:white;">
         FlowDashboard
       </vs-navbar-title>
+<!--      <vs-navbar-item index="0" style="color:white; padding-left:5px">-->
+<!--        <a href="http://localhost:8080/home">Home</a>-->
+<!--      </vs-navbar-item>-->
       <vs-navbar-item index="0" style="color:white; padding-left:5px">
         <a href="http://localhost:8080/home">Data</a>
       </vs-navbar-item>
@@ -14,33 +17,45 @@
         <a href="http://localhost:8080/blue">Editor</a>
       </vs-navbar-item>
     </div>
+
+
     <vs-spacer></vs-spacer>
-    <vs-button @click="colorPanelState=true" class='tool_button' radius color="#1473e6" type="filled"
-               icon="star"></vs-button>
-    <vs-popup class="color-panel" :active.sync="colorPanelState" >
-      <div class="panel-content">
-        <div>
-          <vs-divider>Vis Palette</vs-divider>
-          <h4>Color</h4>
-          <div style="display: flex;">
-            <div class="color-item" v-for="(item,index) in preDefineColor" :key="index" :style="{background:item}"></div>
-          </div>
-          <vs-divider></vs-divider>
+    <vs-dropdown class="color-panel"  vs-custom-content vs-trigger-click>
+    <vs-button class='tool_button' radius color="#1473e6" type="filled"
+               icon="star" size="small" ></vs-button>
+      <vs-dropdown-menu class="loginx">
+      <div style="height: 350px;width: 250px">
+        <p style="height: 20px;font-size: 15px;text-align: center;background: #2c3e50;color: #FFFFFF">Vis Palette</p>
+        <h4>Color</h4>
+        <div style="padding-left: 10px;margin-bottom: 2.5rem">
           <h4>Background</h4>
-          <vs-divider></vs-divider>
-          <h4>Other</h4>
-          <vs-button color="#1473e6">Use In My Design</vs-button>
-        </div>
-        <div>
-          <vs-divider>Visual Forms</vs-divider>
-          <h3>gridPanel</h3>
-          <div style="display: flex;margin-bottom: 10px">
-            <div class="color-item" v-for="(item,index) in preDefineGrid" style="width: auto" :key="index">{{item}}</div>
+          <div style="display: flex;height: 60px;padding: 5px;border: 1px solid;
+          background: #f2f2f2;border-radius: 5px;flex-flow: wrap;">
+            <div class="color-item" v-for="(item,index) in preDefineColor" :key="index"
+                 :style="{background:item.color,opacity:item.select?1:0.5}"
+                 @click="visPaletteSetting(item, 1)"></div>
           </div>
-          <vs-button color="#1473e6">Use In My Design</vs-button>
+          <h4>Other</h4>
+          <div style="display: flex;margin-bottom: 0.5rem;height: 60px;padding: 5px;border: 1px solid;
+          background: #f2f2f2;border-radius: 5px;flex-flow: wrap;">
+            <div class="color-item" v-for="(item,index) in []" :key="index" :style="{background:item.color,opacity:item.select?1:0.5}"
+                 @click="visPaletteSetting(item, 2)"></div>
+          </div>
+          <vs-button style="width: 150px;height: 30px;position: absolute;right: 10px;" color="success" @click="pushSet(1)">Use In My Design</vs-button>
+        </div>
+        <h4>Visual Forms</h4>
+        <div style="padding-left: 10px;height: 80px">
+          <div style="display: flex;margin-bottom: 0.5rem;height: 60px;border: 1px solid;padding: 5px;
+          background: #f2f2f2;border-radius: 5px;flex-flow: wrap;">
+            <div class="color-item" v-for="(item,index) in preDefineGrid"
+                 :style="{width:'auto',opacity: item.select?1:0.5}" :key="index"
+                 @click="visPaletteSetting(item, 3)">{{item.chart}}</div>
+          </div>
+          <vs-button style="width: 150px;height: 30px;position: absolute;right: 10px" color="success" @click="pushSet(2)">Use In My Design</vs-button>
         </div>
       </div>
-    </vs-popup>
+      </vs-dropdown-menu>
+    </vs-dropdown>
     <vs-navbar-item index="2" style="color:white; padding-left:5px">
       <a href="http://localhost:8080/blue">About</a>
     </vs-navbar-item>
@@ -51,11 +66,40 @@ export default {
   name: "NavBar",
   data: function () {
     return {
-      colorPanelState:false,
-      gridPanelState:false,
-
-      preDefineColor:['red', 'green', 'blue','write'],
-      preDefineGrid:['templateA','templateB']
+      preDefineColor:[{'color':'#d90013',"select":false},
+        {'color':'#1f77b4',"select":false},
+        {'color':'#e7ba52', "select":false},
+        {'color':'#9467bd', "select":false}],
+      preDefineGrid:[{"chart":'templateA', "select":false},{"chart":'templateB', "select":false}],
+      colors:[],
+      others:[],
+      forms:[],
+    }
+  },
+  methods:{
+    visPaletteSetting(item, type){
+      item.select = !item.select
+      if(item.select == true){
+        switch (type){
+          case 1:this.colors.push(item.color);break
+          case 2:this.others.push(item.color);break
+          case 3:this.forms.push(item.chart);break
+        }
+      }else {
+        switch (type){
+          case 1:this.colors = this.colors.filter(e=>{return e!==item.color});break
+          case 2:this.others = this.others.filter(e=>{return e!=item.color});break
+          case 3:this.forms = this.forms.filter(e=>{return e!=item.chart});break
+        }
+      }
+      console.log(this.colors)
+    },
+    pushSet(type){
+      switch (type){
+        case 1:this.$store.state.preChartStyle.visPalette.Color.Background = this.colors;
+          this.$store.state.preChartStyle.visPalette.Color.Other = this.others;break;
+        case 2:this.$store.state.preChartStyle.visualForms = this.forms
+      }
     }
   }
 }
@@ -90,11 +134,7 @@ li {
   box-shadow: 1px 1px;
   border-radius: 3px;
 }
-
-.con-vs-popup .vs-popup{
-  width: 300px;
-}
-.vs-button{
-  width: 100%;
+.vs-popup{
+  width: 20%;
 }
 </style>
