@@ -270,7 +270,7 @@
     "type": "Chart",
     "maker": "point"
   },
-  "TEXT": {
+  "Text": {
     "inPorts": [
       {
         "name": "x",

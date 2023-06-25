@@ -66,7 +66,7 @@ import * as d3 from "d3";
 import VueGridLayout from 'vue-grid-layout';
 import SettingSide from '../Settingside/SettingSide'
 import { mapGetters } from "vuex";
-import WordHighlight from "../../common/DataListBar/WordHighlight";
+import WordHighlight from "../../common/DataListBar/Text";
 export default{
   data() {
     return {
