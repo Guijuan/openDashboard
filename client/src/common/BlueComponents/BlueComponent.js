@@ -360,11 +360,6 @@ export default class BlueComponent {
       .attr('size', 1)
       .on('change', function(){
         that.filterAttributeName = d3.select(this).property('value')
-        // return d3.select(this).property('value')
-        // if(that.$store.state.mapData_2!=null){
-        //   that.$store.state.mapData_2["select"] = d3.select(this).property('value')
-        // }
-        // console.log(that.$store.state.mapData_2)
       })
       .selectAll("option")
       .data(d=>d.options)
@@ -796,9 +791,6 @@ export default class BlueComponent {
 
     let binsChart = showPanel
       .append('g')
-      // .attr('transform', function(d){
-      // //    return 'translate(' + that.width * 0.1 + ',0' + ')'
-      /// })
       .selectAll('bins')
       .data(bins_array)
       .enter()
