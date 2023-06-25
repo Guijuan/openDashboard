@@ -346,7 +346,7 @@ export default{
         if(id==300){
           let charts = Object.keys(that.layoutObj["config"])
           charts.forEach(function (d) {
-            if(that.layoutObj["config"][d]["chartType"] == "WordHighlight"){
+            if(that.layoutObj["config"][d]["chartType"] == "Text"){
               that.$store.state.newBaseData = {
                 "Config": {
                   "Title": that.layoutObj['config'][d]["data"]['layer'][0]['mark']['type']
@@ -658,7 +658,7 @@ export default{
             }
           }
         }
-        else if(that.layoutObj['config'][d]['chartType']=="WordHighlight"){
+        else if(that.layoutObj['config'][d]['chartType']=="Text"){
           // vegaEmbed("#" + d, that.layoutObj["config"][d]["data"])
           that.ttlayout.push({"x":charts.indexOf(d)*2+2,"y":0,"w":4,"h":4,"i":300, static: false, name:`A-${d}`,component:"WordHighlight"})
         }

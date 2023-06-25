@@ -678,7 +678,7 @@ export default {
         vegaEmbed("#canvas", result, {theme: "default", mode: 'vega-lite'})
         this.$refs['settings'].getModularInfo({"config": result, "layoutname": meta["id"]});
       }
-      this.notifications({"title": meta.type, "text": "Generate success~", "color": 'rgb(31,116,225)'})
+      // this.notifications({"title": meta.type, "text": "Generate success~", "color": 'rgb(31,116,225)'})
     },
 
     reGenerateChart(baseData) {
@@ -714,7 +714,7 @@ export default {
         vegaEmbed("#canvas", result, {theme: "default", mode: 'vega-lite'})
         // this.$refs['settings'].getModularInfo({"config": result, "layoutname": this.meta["id"]});
       }
-      this.notifications({"title": this.selectMeta.type, "text": "Generate success~", "color": 'rgb(31,116,225)'})
+      // this.notifications({"title": this.selectMeta.type, "text": "Generate success~", "color": 'rgb(31,116,225)'})
 
     },
 
