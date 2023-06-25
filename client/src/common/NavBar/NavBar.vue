@@ -4,9 +4,6 @@
       <vs-navbar-title style="color:white;">
         FlowDashboard
       </vs-navbar-title>
-<!--      <vs-navbar-item index="0" style="color:white; padding-left:5px">-->
-<!--        <a href="http://localhost:8080/home">Home</a>-->
-<!--      </vs-navbar-item>-->
       <vs-navbar-item index="0" style="color:white; padding-left:5px">
         <a href="http://localhost:8080/home">Data</a>
       </vs-navbar-item>
@@ -17,8 +14,6 @@
         <a href="http://localhost:8080/blue">Editor</a>
       </vs-navbar-item>
     </div>
-
-
     <vs-spacer></vs-spacer>
     <vs-button @click="colorPanelState=true" class='tool_button' radius color="#1473e6" type="filled"
                icon="star"></vs-button>
@@ -34,15 +29,15 @@
           <h4>Background</h4>
           <vs-divider></vs-divider>
           <h4>Other</h4>
-          <vs-button>Use In My Design</vs-button>
+          <vs-button color="#1473e6">Use In My Design</vs-button>
         </div>
         <div>
           <vs-divider>Visual Forms</vs-divider>
           <h3>gridPanel</h3>
-          <div style="display: flex;">
+          <div style="display: flex;margin-bottom: 10px">
             <div class="color-item" v-for="(item,index) in preDefineGrid" style="width: auto" :key="index">{{item}}</div>
           </div>
-          <vs-button>Use In My Design</vs-button>
+          <vs-button color="#1473e6">Use In My Design</vs-button>
         </div>
       </div>
     </vs-popup>
@@ -95,7 +90,11 @@ li {
   box-shadow: 1px 1px;
   border-radius: 3px;
 }
-.vs-popup{
-  width: 20%;
+
+.con-vs-popup .vs-popup{
+  width: 300px;
+}
+.vs-button{
+  width: 100%;
 }
 </style>
