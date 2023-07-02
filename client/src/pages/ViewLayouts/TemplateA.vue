@@ -869,16 +869,18 @@ export default{
     setConfig(result){
       result.layer[0]['selection'] = {"pts": {"type": "single", "encodings": ["y"]}}
       result.layer[0]['encoding']["opacity"] = {"condition": {"selection": "pts", "value": 1}, "value": "0.3"}
-      if (result.layer[0].encoding.stacked) {
-        result.layer[0].encoding.sacles = {
-          "name": "color",
-          "type": "nominal",
-          // "domain": {"field": result.layer[0].encoding.stacked.field, "sort": true},
-          "domain":['AFRO','AMRO','EMRO','EURO','Other','SEARO','WPRO'],
-          "range": ['#c9d75e','#c12592','#ffbb30','#5200ae','#27baa0','#0a71d5','#d86422']
-        }
-        result.layer[0].encoding.fill = {"scale": "color", "field": result.layer[0].encoding.stacked.field}
-      }
+      // if (result.layer[0].encoding.stacked) {
+      //   result.layer[0].encoding.sacles = {
+      //     "name": "color",
+      //     "type": "nominal",
+      //     // "domain": {"field": result.layer[0].encoding.stacked.field, "sort": true},
+      //
+      //   }
+        result.layer[0].encoding.fill = {"scale": {
+            "domain":['AFRO','AMRO','EMRO','EURO','Other','SEARO','WPRO'],
+            "range": ['#c8d65b','#c12592','#b0832c','#5200ae','#00ae8f','#0a71d5','#d86422']
+          }, "field": "region"}
+      // }
     },
     addChartEvent(view, name){
       let that = this

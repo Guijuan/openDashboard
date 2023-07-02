@@ -162,6 +162,7 @@ import hotMap from "../../assets/visualization.vg1.json"
 import dotMap from "../../assets/visualization.vg.json"
 import dataPanel from "../../common/DataListBar/DataPanel";
 import CompositeModel from "../../common/BlueComponents/ompositeModel";
+import {log} from "vega";
 
 export default {
   name: "blue-editor",
@@ -215,7 +216,8 @@ export default {
         "Chart": "#967ADC",
         "Caculator": "#37BC9B",
         "Layout": "#37BC22",
-        "Data": "#F6BB42"
+        "Data": "#F6BB42",
+        "Filter":"#5a9bd5"
       },
 
       //gallery
@@ -450,7 +452,7 @@ export default {
             x = d.parentX + d.x,
             y = d.parentY + d.y,
             sourceid = params.id;
-
+          console.log(coverType)
           let line = (that.drawingLine = new BlueprintLine(
             that.container,
             params.name,
@@ -1055,12 +1057,28 @@ export default {
           }
         })
       }
+      console.log(_target)
       if (_target.parent === 'Filter') {
         that.blueComponents.forEach(item => {
           if (item.id === _target.id) {
             item.filterAttrs.push(_source.name)
             item.filterSource = _source.parentid
             let vegaModel = that.vegaObjectObj[_source.parentid]
+            //定制设置
+            if (vegaModel) {
+              vegaModel.isFilterSource = true
+            }
+            let panel = document.querySelector('#filterSettingPanel')
+            if (panel) item.drawSettingPanel()
+          }
+        })
+      }
+      if(_target.text == "Select"){
+        that.blueComponents.forEach(item => {
+          if (item.id === _source.id) {
+            item.filterAttrs.push(_target.name)
+            item.filterSource = _target.parentid
+            let vegaModel = that.vegaObjectObj[_target.parentid]
             //定制设置
             if (vegaModel) {
               vegaModel.isFilterSource = true

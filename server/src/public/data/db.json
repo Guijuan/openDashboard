@@ -200321,7 +200321,7 @@
       "Deaths - newly reported in last 24 hours":0
     }
   ],
-  "WHO-COVID-19-global-time-series-data":[{"id": 21, "date": "2020-01", "cases": 0, "region": "AFRO"},
+  "COVID-19 case time series":[{"id": 21, "date": "2020-01", "cases": 0, "region": "AFRO"},
  {"id": 21, "date": "2020-02", "cases": 2, "region": "AFRO"},
  {"id": 21, "date": "2020-03", "cases": 4042, "region": "AFRO"},
  {"id": 21, "date": "2020-04", "cases": 20931, "region": "AFRO"},
@@ -200608,7 +200608,7 @@
  {"id": 21, "date": "2023-03", "cases": 917719, "region": "WPRO"},
  {"id": 21, "date": "2023-04", "cases": 929102, "region": "WPRO"},
  {"id": 21, "date": "2023-05", "cases": 16174, "region": "WPRO"}],
-     "regionCase":[{"id": "20", "region": "AFRO", "cases": 9525097},
+     "COVID-19 region cases":[{"id": "20", "region": "AFRO", "cases": 9525097},
      {"id": "20", "region": "AMRO", "cases": 192441131},
      {"id": "20", "region": "EMRO", "cases": 23352192},
      {"id": "20", "region": "EURO", "cases": 275974801},
