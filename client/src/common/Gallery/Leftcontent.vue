@@ -7,12 +7,12 @@
       @click="selectclick(index)"
     >
       <el-tooltip  placement="top"  effect="light">
-        <div slot="content" ref='content' style="max-width:300px;">
-          <span>Chart Type:</span>{{getChartType(index)}}<br>
+        <div slot="content" ref='content' style="max-width:300px;" class = "all">
+          <span>Publisher:</span>{{getPublisher(index)}}<br>
           <span>Publisher Type:</span>{{getPublisherType(index)}}<br>
-          <!-- <span>context:</span>{{getContext(index)}}<br> -->
-          <a :href="getOriginal(index)" target="_blank" >原始网站   </a>
-          <a :href="getNew(index) " target="_blank" >最新归档网站</a><br>
+           <span>Visual Forms:</span>{{getChartType(index)}}<br>
+          <span class = "website"><a :href="getOriginal(index)" target="_blank" >Link to website,</a></span>
+          <span class = "website"><a :href="getNew(index) " target="_blank" > Link to archive</a><br></span>
           
           </div>
       <img :src="require('../../papers_img/' + index + '.jpg')" :id="genId(index)" class="imgTool" />
@@ -20,11 +20,12 @@
     </div>
   </div>
 </template>
-  
+
   <script>
 import data from "../../../static/covid_data_e.json";
 import layout from "../../../static/covid_data_layout.json";
 import dashboardWebList  from "../../../static/dashboardWebList.json"
+import Publishers from "../../../static/publisher.json";
 import { mapState } from "vuex";
 import {themeColor} from "../ColorExtraction/colorExtraction";
 export default {
@@ -50,50 +51,48 @@ export default {
   methods: {
     
     getOriginal(index) {
-      // console.log(index)
-      // console.log(dashboardWebList.length)
       if(index <= dashboardWebList.length)
         return dashboardWebList[index].originalWeb;
       else
         return "无"
-},
+    },
 
-getNew(index) {
-  if(index <= dashboardWebList.length)
-       return dashboardWebList[index].newWeb;
-      else
-        return "无"
+    getNew(index) {
+       if(index <= dashboardWebList.length)
+           return dashboardWebList[index].newWeb;
+       else
+            return "无"
   
-},
+    },
     genId(index) {
       return "img" + index
     },
-    getChartType(index){
-      return data[index]['Visual Forms'] +"\n" ;
+    getChartType(index){ 
+      let dat = data[index]['VisualForms'].replace("Encoding:","")
+      return dat.replace(/\//g,",")+"\n" ;
     },
     getPublisherType(index){
-      return data[index]['publisher-name'] +"\n"
+      return data[index]['publisher-type'] +"\n"
     },
     getContext(index){
       return data[index]['context']
     },
-    // selectclick(index) {
-    // console.log()
-    //   let senddata = [];
-    //   let layoutlist = [];
-    //   layoutlist.push(layout[index]);
-    //   senddata.push(data[index]["Visual Forms"].split(","));
-    //   senddata.push(layoutlist);
-    //   this.$store.commit("getimgkey", senddata);
-    // },
+    getPublisher(index){
+      if(index <= Publishers.length)
+        return Publishers[index]['publisher-name']
+        else
+        return null
+    },
+    
+   
       selectclick(index) {
     
-      //   console.log(data[index]["图形类"].split(','));
       let senddata = [];
       let layoutlist = [];
-
       layoutlist.push(layout[index]);
-      senddata.push(data[index]["Visual Forms"].split(","));
+      let visform = data[index]["VisualForms"].split(':')
+      senddata.push(visform[1].split('/'));
+      
       //生成默认的颜色数组
       // let defaultColor = new Array(senddata[0].length).fill("#ffffff")
       //通过id获取img对象
@@ -102,7 +101,6 @@ getNew(index) {
       let colors = themeColor(img)
       colors = colors.map(color => "#" + ((1 << 24) + (color[0] << 16) + (color[1] << 8) + color[2]).toString(16).slice(1))
       senddata.push(colors)
-      senddata.push(layoutlist);
       // console.log(senddata);
       this.$store.commit("getimgkey", senddata);
     },
@@ -137,7 +135,16 @@ img{
     box-shadow: 2px 2px 2px rgba(0,0,0,.5);
 }
 a,span{
-  color:steelblue
+  color:steelblue;
+  line-height: 1.4;
+  font-family:'Times New Roman';
+}
+.all{
+   font-family:'Times New Roman';
+   font-size:18px;
+}
+.website{
+  float: left;
 }
 
 </style>

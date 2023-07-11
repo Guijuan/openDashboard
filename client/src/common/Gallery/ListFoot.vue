@@ -26,7 +26,7 @@ export default {
 <style scoped>
 .Listfooter {
   display: flex;
-  height: 90%;
+  height: 92%;
   /* background-image: url(../image/world_cup_main.png);
    */
   background-color: azure;

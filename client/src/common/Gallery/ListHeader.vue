@@ -97,7 +97,6 @@ export default {
   mounted() {
     let key = Object.getOwnPropertyNames(data);
     this.$store.commit("getcovidkey", key)
-    
     this.init();
   },
   methods: {
