@@ -103,6 +103,7 @@ export default {
   /* background-color: rgb(11, 86, 61, 1); */
   margin-right: 0.5vw;
   position: relative;
+  overflow: auto;
 }
 .chart {
   flex: 1;

@@ -1,6 +1,6 @@
 <template>
   <div id="blue-editor" style="overflow: hidden">
-    <NavBar></NavBar>
+    <NavBar @addChart="addChart"></NavBar>
     <div class='toolbar' style='position:absolute;top:45px;right:2%'>
       <vs-button v-on:click="undoAction" class='tool_button' radius color="#1473e6" type="filled"
                  icon="undo" :disabled="blueComponents.length==0"></vs-button>
@@ -231,6 +231,8 @@ export default {
       chartTypes: [],
       chartsColor: [],
 
+      galleryChart:[],
+
       component: null,
       CompositeCom: false,
       dataPanelData: [[{title: '感染数', color: '#967adc', data: '526184', desc: ''},
@@ -250,13 +252,13 @@ export default {
     SettingSide
   },
   computed: {
-    galleryChart: function () {
-      let type = this.$store.getters.getGalleryCharts
-      let color = this.$store.getters.getGalleryColor
-      let data = type.map((item, i) =>
-        ({type: item, color: color[i]}))
-      return data
-    }
+    // galleryChart: function () {
+    //   let type = this.$store.getters.getGalleryCharts
+    //   let color = this.$store.getters.getGalleryColor
+    //   let data = type.map((item, i) =>
+    //     ({type: item, color: color[i]}))
+    //   return data
+    // }
   },
   created() {
     //
@@ -424,6 +426,7 @@ export default {
     },
     //create a new component to canvas which need a component type and a unique name
     createNewComponent(name, color) {
+      console.log(name)
       let that = this,
         property = null,
         _com = null;
@@ -752,7 +755,7 @@ export default {
       if (this.galleryChart.length > 0) {
         this.cleanPanel()
         this.galleryChart.forEach(item => {
-          this.createNewComponent(this.chartMap[item.type], item.color)
+          this.createNewComponent(this.chartMap[item], "#ffffff")
         })
       }
     },
@@ -1606,6 +1609,10 @@ export default {
         this.stepLoction += 1
         this.remove(com)
       }
+    },
+    addChart(chart){
+      this.galleryChart.push(chart)
+      this.initChartComponent()
     },
     /*
     author:GH

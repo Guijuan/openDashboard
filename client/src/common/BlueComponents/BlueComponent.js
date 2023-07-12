@@ -373,11 +373,12 @@ export default class BlueComponent {
     let that = this
     this.container
       .append('rect')
-      .attr('width', 100)
+      .attr('width', 110)
       .attr('height', 30)
       .attr('x', this.width-140)
       .attr('y', 40)
       .attr('fill', '#f2f2f2')
+      .style('border-radius', '5px')
       .on('mouseenter', function (e, d){
         let elem = d3.select(this)
         elem.attr('stroke', '#828d96')
@@ -391,7 +392,7 @@ export default class BlueComponent {
         that.drawSettingPanel()
       })
     this.container.append('text')
-      .attr('x', 60)
+      .attr('x', 80)
       .attr('y', 60)
       .text('Setting')
       .attr('id', 'filterText')

@@ -49,7 +49,7 @@
           background: #f2f2f2;border-radius: 5px;flex-flow: wrap;">
             <div class="color-item" v-for="(item,index) in preDefineGrid"
                  :style="{width:'auto',opacity: item.select?1:0.5}" :key="index"
-                 @click="visPaletteSetting(item, 3)">{{item.chart}}</div>
+                 @click="addChart(item.chart)">{{item.chart}}</div>
           </div>
           <vs-button style="width: 150px;height: 30px;position: absolute;right: 10px" color="success" @click="pushSet(2)">Use In My Design</vs-button>
         </div>
@@ -66,14 +66,26 @@ export default {
   name: "NavBar",
   data: function () {
     return {
-      preDefineColor:[{'color':'#d90013',"select":false},
-        {'color':'#1f77b4',"select":false},
-        {'color':'#e7ba52', "select":false},
-        {'color':'#9467bd', "select":false}],
-      preDefineGrid:[{"chart":'templateA', "select":false},{"chart":'templateB', "select":false}],
+      // preDefineColor:[{'color':'#d90013',"select":false},
+      //   {'color':'#1f77b4',"select":false},
+      //   {'color':'#e7ba52', "select":false},
+      //   {'color':'#9467bd', "select":false}],
+      // preDefineGrid:[{"chart":'templateA', "select":false},{"chart":'templateB', "select":false}],
       colors:[],
       others:[],
       forms:[],
+    }
+  },
+  computed:{
+    preDefineColor:function (){
+      return this.$store.state.chartsColor.map(item=>{
+        return {color:item, select:false}
+      })
+    },
+    preDefineGrid:function (){
+      return this.$store.state.chartTypes.map(item=>{
+        return {chart:item, select:false}
+      })
     }
   },
   methods:{
@@ -93,6 +105,10 @@ export default {
         }
       }
       console.log(this.colors)
+    },
+    addChart(chart){
+      console.log(chart)
+      this.$emit('addChart', chart)
     },
     pushSet(type){
       switch (type){
