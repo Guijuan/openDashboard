@@ -32,7 +32,12 @@
               size="mini"
               v-if="value.hasOwnProperty('Color')"
             ></el-input>
-            <el-color-picker v-model="val[i]" size="mini" v-if="value.hasOwnProperty('Color')"></el-color-picker>
+            <el-color-picker
+              v-model="val[i]"
+              size="mini"
+              v-if="value.hasOwnProperty('Color')"
+              :predefine="preColor"
+            ></el-color-picker>
           </div>
         </div>
         <div v-if="key =='Text'">
@@ -125,6 +130,9 @@ export default {
   name: "settingside",
   data() {
     return {
+      colorIndex:0,
+      preColor:[],
+      blueColor:["#007092","#008ebc","#00ace3","#54cbf2","#95dcf4","#ffedc1","#b6b6b6"],
       layoutObj:null,
       baseData: {
         Config: {
@@ -496,8 +504,19 @@ export default {
     // ...mapGetters({ storeBaseData: "getPropsData" }),
     ...mapGetters({ isClick: "getIsActive" }),
     ...mapGetters({ selectChartId: "getSelectChartId"}),
+    ...mapGetters({getPreChartStyle:"getPreChartStyle"})
   },
   watch: {
+    getPreChartStyle:{
+      handler(newVal){
+        debugger;
+        this.preColor = this.$store.state.preChartStyle.visPalette.Color.Background;
+        // this.preColor = ["#00ace3","#54cbf2","#95dcf4","#ffedc1","#b6b6b6"]
+        // this.colorIndex++
+        console.log(this.preColor);
+      },
+      deep:true,
+    },
     layoutObj:{
       handler(newVal){
         console.log("layoutObj改变")
@@ -698,6 +717,9 @@ export default {
     }
   },
   methods: {
+    ColorSelect(){
+      console.log("颜色选中")
+    },
     // getLayoutObj(m){
     //   this.layoutObj = m;
     //   console.log("layout",this.layoutObj)
