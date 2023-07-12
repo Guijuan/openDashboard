@@ -190,7 +190,7 @@
       }]
   },
   {
-    "name": "csse_covid",
+    "name": "CSSE-COVID",
     "dimensions": [
       {
         "index": 0,
