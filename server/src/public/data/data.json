@@ -188,5 +188,123 @@
         "checked": false,
         "color": "#202020"
       }]
+  },
+  {
+    "name": "csse_covid",
+    "dimensions": [
+      {
+        "index": 0,
+        "name": "FIPS",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      },
+      {
+        "index": 1,
+        "name": "Admin2",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      },
+      {
+        "index": 2,
+        "name": "Province_State",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      },
+      {
+        "index": 3,
+        "name": "Country_Region",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      },
+      {
+        "index": 4,
+        "name": "Last_Update",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      },
+      {
+        "index": 5,
+        "name": "Lat",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      },
+      {
+        "index": 6,
+        "name": "Long_",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      },
+      {
+        "index": 7,
+        "name": "Confirmed",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      },
+      {
+        "index": 8,
+        "name": "Deaths",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      },
+      {
+        "index": 9,
+        "name": "Recovered",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      },
+      {
+        "index": 10,
+        "name": "Active",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      },
+      {
+        "index": 11,
+        "name": "Combined_Key",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      },
+      {
+        "index": 12,
+        "name": "Incident_Rate",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      },
+      {
+        "index": 13,
+        "name": "Case_Fatality_Ratio",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020"
+      }
+    ],
+    "length":4011
   }
 ]

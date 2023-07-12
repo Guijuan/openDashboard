@@ -658,6 +658,7 @@ export default {
         this.component = () => import(`../../common/DataListBar/${meta.type}`)
       } else {
         this.CompositeCom = false
+        debugger;
         let result = this.vegaObjectObj[meta["id"]].getOutputForced();
         console.log(result)
         if (result.layer[0].encoding.stacked) {
