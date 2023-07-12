@@ -80,20 +80,8 @@
         "type": "in"
       },
       {
-        "name": "stacked",
-        "text": "Stacked",
-        "attr": "encoding",
-        "type": "in"
-      },
-      {
         "name": "color",
         "text": "Fill",
-        "attr": "encoding",
-        "type": "in"
-      },
-      {
-        "name": "row",
-        "text": "Row",
         "attr": "encoding",
         "type": "in"
       },
@@ -575,6 +563,34 @@
     "type": "Filter"
   },
   "Select": {
+    "inPorts": [
+      {
+        "name": "select_1",
+        "text": "select_1",
+        "attr": "filter",
+        "type": "in"
+      }
+    ],
+    "sletectPorts": [
+      {
+        "name": "attr_select",
+        "text": "select_attr",
+        "attr": "filter",
+        "type": "out",
+        "options": []
+      }
+    ],
+    "outPorts": [
+      {
+        "name": "output",
+        "text": "",
+        "attr": "field",
+        "type": "out"
+      }
+    ],
+    "type": "Filter"
+  },
+  "Explore": {
     "inPorts": [
       {
         "name": "select_1",

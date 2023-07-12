@@ -297,7 +297,8 @@ export default class BlueComponent {
       .attr('fill', 'white')
       .attr('font-size', '14')
       .text(function (d) {
-        return d.text
+        let str = d.text
+        return str.charAt(0).toUpperCase()+str.slice(1)
       })
   }
 
@@ -338,7 +339,8 @@ export default class BlueComponent {
       .attr('fill', 'white')
       .attr('font-size', '14')
       .text(function (d) {
-        return d.text
+        let str = d.text
+        return str.charAt(0).toUpperCase()+str.slice(1)
       })
   }
 
@@ -478,7 +480,8 @@ export default class BlueComponent {
       .attr('y', 20)
       .attr("text-anchor", "middle")
       .attr('fill', 'white')
-      .text(this.name.toUpperCase())
+      .text(this.name)
+      // .text(this.name.toUpperCase())
 
     let lineGenerator = d3.line()
       .x(d => d.x)
