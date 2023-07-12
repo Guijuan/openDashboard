@@ -297,7 +297,8 @@ export default class BlueComponent {
       .attr('fill', 'white')
       .attr('font-size', '14')
       .text(function (d) {
-        return d.text
+        let str = d.text
+        return str.charAt(0).toUpperCase()+str.slice(1)
       })
   }
 
@@ -338,7 +339,8 @@ export default class BlueComponent {
       .attr('fill', 'white')
       .attr('font-size', '14')
       .text(function (d) {
-        return d.text
+        let str = d.text
+        return str.charAt(0).toUpperCase()+str.slice(1)
       })
   }
 
@@ -373,11 +375,12 @@ export default class BlueComponent {
     let that = this
     this.container
       .append('rect')
-      .attr('width', 100)
+      .attr('width', 110)
       .attr('height', 30)
       .attr('x', this.width-140)
       .attr('y', 40)
       .attr('fill', '#f2f2f2')
+      .style('border-radius', '5px')
       .on('mouseenter', function (e, d){
         let elem = d3.select(this)
         elem.attr('stroke', '#828d96')
@@ -391,9 +394,9 @@ export default class BlueComponent {
         that.drawSettingPanel()
       })
     this.container.append('text')
-      .attr('x', 60)
+      .attr('x', 80)
       .attr('y', 60)
-      .text('设置属性')
+      .text('Setting')
       .attr('id', 'filterText')
   }
   drawSettingPanel(){
@@ -425,7 +428,7 @@ export default class BlueComponent {
       </div>
       <hr />
       <div id="filterDom"></div>
-      <button style="margin-top: 10px" id="filterSubmit">确定</button>
+      <button style="margin-top: 10px" id="filterSubmit">Confirm</button>
     </div>
     `
     that.filterType = 'range'
@@ -477,7 +480,8 @@ export default class BlueComponent {
       .attr('y', 20)
       .attr("text-anchor", "middle")
       .attr('fill', 'white')
-      .text(this.name.toUpperCase())
+      .text(this.name)
+      // .text(this.name.toUpperCase())
 
     let lineGenerator = d3.line()
       .x(d => d.x)

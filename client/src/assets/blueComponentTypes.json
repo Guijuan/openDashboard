@@ -27,7 +27,8 @@
     "name": "Interactions",
     "childrens": [
       "Filter",
-      "Select"
+      "Select",
+      "Explore"
     ],
     "color": "#37BC22"
   },

@@ -140,7 +140,7 @@
     "length":238
   },
   {
-    "name":"WHO-COVID-19-global-time-series-data",
+    "name":"COVID-19 case time series",
     "dimensions":[
       {
         "index": 0,
@@ -170,7 +170,7 @@
     "length":238
   },
   {
-    "name":"regionCase",
+    "name":"COVID-19 region cases",
     "dimensions":[
       {
         "index": 0,

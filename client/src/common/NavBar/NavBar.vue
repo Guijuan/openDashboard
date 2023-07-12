@@ -24,24 +24,17 @@
     <vs-button class='tool_button' radius color="#1473e6" type="filled"
                icon="star" size="small" ></vs-button>
       <vs-dropdown-menu class="loginx">
-      <div style="height: 350px;width: 250px">
+      <div style="height: 280px;width: 250px">
         <p style="height: 20px;font-size: 15px;text-align: center;background: #2c3e50;color: #FFFFFF">Vis Palette</p>
         <h4>Color</h4>
         <div style="padding-left: 10px;margin-bottom: 2.5rem">
-          <h4>Background</h4>
           <div style="display: flex;height: 60px;padding: 5px;border: 1px solid;
           background: #f2f2f2;border-radius: 5px;flex-flow: wrap;">
             <div class="color-item" v-for="(item,index) in preDefineColor" :key="index"
                  :style="{background:item.color,opacity:item.select?1:0.5}"
                  @click="visPaletteSetting(item, 1)"></div>
           </div>
-          <h4>Other</h4>
-          <div style="display: flex;margin-bottom: 0.5rem;height: 60px;padding: 5px;border: 1px solid;
-          background: #f2f2f2;border-radius: 5px;flex-flow: wrap;">
-            <div class="color-item" v-for="(item,index) in []" :key="index" :style="{background:item.color,opacity:item.select?1:0.5}"
-                 @click="visPaletteSetting(item, 2)"></div>
-          </div>
-          <vs-button style="width: 150px;height: 30px;position: absolute;right: 10px;" color="success" @click="pushSet(1)">Use In My Design</vs-button>
+          <vs-button style="width: 150px;height: 30px;position: absolute;right: 10px;margin-top: 0.5rem" color="success" @click="pushSet(1)">Use In My Design</vs-button>
         </div>
         <h4>Visual Forms</h4>
         <div style="padding-left: 10px;height: 80px">
@@ -49,7 +42,7 @@
           background: #f2f2f2;border-radius: 5px;flex-flow: wrap;">
             <div class="color-item" v-for="(item,index) in preDefineGrid"
                  :style="{width:'auto',opacity: item.select?1:0.5}" :key="index"
-                 @click="visPaletteSetting(item, 3)">{{item.chart}}</div>
+                 @click="addChart(item.chart)">{{item.chart}}</div>
           </div>
           <vs-button style="width: 150px;height: 30px;position: absolute;right: 10px" color="success" @click="pushSet(2)">Use In My Design</vs-button>
         </div>
@@ -66,14 +59,21 @@ export default {
   name: "NavBar",
   data: function () {
     return {
-      preDefineColor:[{'color':'#d90013',"select":false},
-        {'color':'#1f77b4',"select":false},
-        {'color':'#e7ba52', "select":false},
-        {'color':'#9467bd', "select":false}],
-      preDefineGrid:[{"chart":'templateA', "select":false},{"chart":'templateB', "select":false}],
       colors:[],
       others:[],
       forms:[],
+    }
+  },
+  computed:{
+    preDefineColor:function (){
+      return this.$store.state.chartsColor.map(item=>{
+        return {color:item, select:false}
+      })
+    },
+    preDefineGrid:function (){
+      return this.$store.state.chartTypes.map(item=>{
+        return {chart:item, select:false}
+      })
     }
   },
   methods:{
@@ -93,6 +93,10 @@ export default {
         }
       }
       console.log(this.colors)
+    },
+    addChart(chart){
+      console.log(chart)
+      this.$emit('addChart', chart)
     },
     pushSet(type){
       switch (type){

@@ -1,6 +1,6 @@
 <template>
   <div id="blue-editor" style="overflow: hidden">
-    <NavBar></NavBar>
+    <NavBar @addChart="addChart"></NavBar>
     <div class='toolbar' style='position:absolute;top:45px;right:2%'>
       <vs-button v-on:click="undoAction" class='tool_button' radius color="#1473e6" type="filled"
                  icon="undo" :disabled="blueComponents.length==0"></vs-button>
@@ -15,13 +15,13 @@
       <vs-button v-on:click="downloadSetting" class='tool_button' radius color="#1473e6" type="filled"
                  icon="cloud_download"></vs-button>
     </div>
-    <vs-row style="height:1075px">
+    <vs-row style="height:95vh">
       <!--整个高度为10-->
       <vs-col id='data_list_container' vs-justify="left" vs-align="top" vs-w="2"
-              style="max-height:1080px;overflow-y:scroll;box-shadow:0 2px 12px 0 rgba(0,0,0, 0.1);">
+              style="box-shadow:0 2px 12px 0 rgba(0,0,0, 0.1);">
         <!--该列放置数据和操作-->
         <!--数据列-->
-        <div style="height: 90vh;overflow: auto">
+        <div style="height:95vh;overflow: auto;">
           <vs-divider border-style="solid" color="dark">DATASET</vs-divider>
           <vs-row vs-h="5" style="display:block">
             <div id='data_list'>
@@ -162,6 +162,7 @@ import hotMap from "../../assets/visualization.vg1.json"
 import dotMap from "../../assets/visualization.vg.json"
 import dataPanel from "../../common/DataListBar/DataPanel";
 import CompositeModel from "../../common/BlueComponents/ompositeModel";
+import {log} from "vega";
 
 export default {
   name: "blue-editor",
@@ -215,7 +216,8 @@ export default {
         "Chart": "#967ADC",
         "Caculator": "#37BC9B",
         "Layout": "#37BC22",
-        "Data": "#F6BB42"
+        "Data": "#F6BB42",
+        "Filter":"#5a9bd5"
       },
 
       //gallery
@@ -228,6 +230,8 @@ export default {
       },
       chartTypes: [],
       chartsColor: [],
+
+      galleryChart:[],
 
       component: null,
       CompositeCom: false,
@@ -248,13 +252,13 @@ export default {
     SettingSide
   },
   computed: {
-    galleryChart: function () {
-      let type = this.$store.getters.getGalleryCharts
-      let color = this.$store.getters.getGalleryColor
-      let data = type.map((item, i) =>
-        ({type: item, color: color[i]}))
-      return data
-    }
+    // galleryChart: function () {
+    //   let type = this.$store.getters.getGalleryCharts
+    //   let color = this.$store.getters.getGalleryColor
+    //   let data = type.map((item, i) =>
+    //     ({type: item, color: color[i]}))
+    //   return data
+    // }
   },
   created() {
     //
@@ -422,6 +426,7 @@ export default {
     },
     //create a new component to canvas which need a component type and a unique name
     createNewComponent(name, color) {
+      console.log(name)
       let that = this,
         property = null,
         _com = null;
@@ -450,7 +455,7 @@ export default {
             x = d.parentX + d.x,
             y = d.parentY + d.y,
             sourceid = params.id;
-
+          console.log(coverType)
           let line = (that.drawingLine = new BlueprintLine(
             that.container,
             params.name,
@@ -751,7 +756,7 @@ export default {
       if (this.galleryChart.length > 0) {
         this.cleanPanel()
         this.galleryChart.forEach(item => {
-          this.createNewComponent(this.chartMap[item.type], item.color)
+          this.createNewComponent(this.chartMap[item], "#ffffff")
         })
       }
     },
@@ -1056,12 +1061,28 @@ export default {
           }
         })
       }
+      console.log(_target)
       if (_target.parent === 'Filter') {
         that.blueComponents.forEach(item => {
           if (item.id === _target.id) {
             item.filterAttrs.push(_source.name)
             item.filterSource = _source.parentid
             let vegaModel = that.vegaObjectObj[_source.parentid]
+            //定制设置
+            if (vegaModel) {
+              vegaModel.isFilterSource = true
+            }
+            let panel = document.querySelector('#filterSettingPanel')
+            if (panel) item.drawSettingPanel()
+          }
+        })
+      }
+      if(_target.text == "Select"){
+        that.blueComponents.forEach(item => {
+          if (item.id === _source.id) {
+            item.filterAttrs.push(_target.name)
+            item.filterSource = _target.parentid
+            let vegaModel = that.vegaObjectObj[_target.parentid]
             //定制设置
             if (vegaModel) {
               vegaModel.isFilterSource = true
@@ -1589,6 +1610,10 @@ export default {
         this.stepLoction += 1
         this.remove(com)
       }
+    },
+    addChart(chart){
+      this.galleryChart.push(chart)
+      this.initChartComponent()
     },
     /*
     author:GH

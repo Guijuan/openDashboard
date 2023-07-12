@@ -1,0 +1,830 @@
+[
+    {
+     "ID": 1,
+     "publisher-name": "Queensland Government"
+    },
+    {
+     "ID": 2,
+     "publisher-name": "Ampop Media"
+    },
+    {
+     "ID": 3,
+     "publisher-name": "Anthony Macali"
+    },
+    {
+     "ID": 4,
+     "publisher-name": "Juliette O'Brien"
+    },
+    {
+     "ID": 6,
+     "publisher-name": "Australian Government, Department of Health"
+    },
+    {
+     "ID": 9,
+     "publisher-name": "Bundesministerium für Soziales, Gesundheit, Pflege und Konsumentenschutz"
+    },
+    {
+     "ID": 10,
+     "publisher-name": "Ministry of Health of Belarus"
+    },
+    {
+     "ID": 15,
+     "publisher-name": "Esri Canada"
+    },
+    {
+     "ID": 16,
+     "publisher-name": "Government of Canada"
+    },
+    {
+     "ID": 17,
+     "publisher-name": "Jean-Paul R. Soucy and Isha Berry"
+    },
+    {
+     "ID": 18,
+     "publisher-name": "Canadian Broadcasting Corporation"
+    },
+    {
+     "ID": 19,
+     "publisher-name": "Noah Little"
+    },
+    {
+     "ID": 20,
+     "publisher-name": "Government of Alberta"
+    },
+    {
+     "ID": 21,
+     "publisher-name": "Provincial Health Services Authority, BC Center for Disease Control"
+    },
+    {
+     "ID": 29,
+     "publisher-name": "HowsMyFlattening"
+    },
+    {
+     "ID": 30,
+     "publisher-name": "Ontario Agency for Health Protection and Promotion"
+    },
+    {
+     "ID": 31,
+     "publisher-name": "Government of Ontario"
+    },
+    {
+     "ID": 32,
+     "publisher-name": "Ottawa Public Health"
+    },
+    {
+     "ID": 34,
+     "publisher-name": "Government of Quebec"
+    },
+    {
+     "ID": 36,
+     "publisher-name": "Government of Saskatchewan"
+    },
+    {
+     "ID": 37,
+     "publisher-name": "City of Toronto"
+    },
+    {
+     "ID": 39,
+     "publisher-name": "Government of Yukon"
+    },
+    {
+     "ID": 41,
+     "publisher-name": "Tencent Holdings Ltd"
+    },
+    {
+     "ID": 42,
+     "publisher-name": "NetEase"
+    },
+    {
+     "ID": 43,
+     "publisher-name": "DXY"
+    },
+    {
+     "ID": 44,
+     "publisher-name": "Chinese Center for Disease Control and Prevention"
+    },
+    {
+     "ID": 45,
+     "publisher-name": "Sina News"
+    },
+    {
+     "ID": 46,
+     "publisher-name": "Baidu Inc."
+    },
+    {
+     "ID": 54,
+     "publisher-name": "Danish Health Authority"
+    },
+    {
+     "ID": 55,
+     "publisher-name": "Koroonakaart"
+    },
+    {
+     "ID": 56,
+     "publisher-name": "Finnish Institute for Health and Welfare "
+    },
+    {
+     "ID": 57,
+     "publisher-name": "Government of France"
+    },
+    {
+     "ID": 58,
+     "publisher-name": "Santé Publique France"
+    },
+    {
+     "ID": 59,
+     "publisher-name": "Politologue.com"
+    },
+    {
+     "ID": 60,
+     "publisher-name": "Robert Koch-Institut"
+    },
+    {
+     "ID": 61,
+     "publisher-name": "Berliner Morgenpost"
+    },
+    {
+     "ID": 62,
+     "publisher-name": "Bayerisches Landesamt für Gesundheit und Lebensmittelsicherheit"
+    },
+    {
+     "ID": 63,
+     "publisher-name": "City of Hamburg"
+    },
+    {
+     "ID": 65,
+     "publisher-name": "Development Bureau, Lands Department, Smart City Consortium"
+    },
+    {
+     "ID": 66,
+     "publisher-name": "Government of Hungary"
+    },
+    {
+     "ID": 67,
+     "publisher-name": "Government of Indonesia"
+    },
+    {
+     "ID": 68,
+     "publisher-name": "KawalCOVID19"
+    },
+    {
+     "ID": 69,
+     "publisher-name": "Government of Central Java"
+    },
+    {
+     "ID": 70,
+     "publisher-name": "Government of Ireland"
+    },
+    {
+     "ID": 72,
+     "publisher-name": "Italian National Institute of Health"
+    },
+    {
+     "ID": 77,
+     "publisher-name": "The Luxembourg Government"
+    },
+    {
+     "ID": 78,
+     "publisher-name": "Government of Malaysia"
+    },
+    {
+     "ID": 80,
+     "publisher-name": "Government of Mexico"
+    },
+    {
+     "ID": 82,
+     "publisher-name": "Ministry of Health of Mexico City"
+    },
+    {
+     "ID": 83,
+     "publisher-name": "Public Health Institute of Montenegro"
+    },
+    {
+     "ID": 85,
+     "publisher-name": "National Institute for Public Health and the Environment "
+    },
+    {
+     "ID": 86,
+     "publisher-name": "The Netherlands Institute for Health Services Research "
+    },
+    {
+     "ID": 87,
+     "publisher-name": "Rijksoverheid"
+    },
+    {
+     "ID": 89,
+     "publisher-name": "New Zealand Ministry of Health – Manatū Hauora"
+    },
+    {
+     "ID": 90,
+     "publisher-name": "Stats NZ"
+    },
+    {
+     "ID": 92,
+     "publisher-name": "Norwegian Institute of Public Health"
+    },
+    {
+     "ID": 97,
+     "publisher-name": "Code for Romania"
+    },
+    {
+     "ID": 98,
+     "publisher-name": "Romanian Ministry of Interior"
+    },
+    {
+     "ID": 99,
+     "publisher-name": "Ministry of Health of Russian Federation and Federal Service for Supervision of Consumer Rights Protection and Human Well-Being"
+    },
+    {
+     "ID": 100,
+     "publisher-name": "Ministry of Health of Russian Federationv"
+    },
+    {
+     "ID": 101,
+     "publisher-name": "Ministry of Health"
+    },
+    {
+     "ID": 102,
+     "publisher-name": "Serbian Ministry of Health and the Institute of Public Health of Serbia “Dr Milan Jovanovic Batut”"
+    },
+    {
+     "ID": 103,
+     "publisher-name": "Ministry of Health of the Slovak Republic"
+    },
+    {
+     "ID": 108,
+     "publisher-name": "Ministry of Health of Singapore"
+    },
+    {
+     "ID": 109,
+     "publisher-name": "Corona Board"
+    },
+    {
+     "ID": 111,
+     "publisher-name": "Corporación de Radio y Televisión Española"
+    },
+    {
+     "ID": 115,
+     "publisher-name": "Bundesamt für Gesundheit BAG"
+    },
+    {
+     "ID": 117,
+     "publisher-name": "Taiwan CDC"
+    },
+    {
+     "ID": 121,
+     "publisher-name": "Public Health England"
+    },
+    {
+     "ID": 125,
+     "publisher-name": "COVID Act Now"
+    },
+    {
+     "ID": 127,
+     "publisher-name": "Colorado Department of Public Health and Environment"
+    },
+    {
+     "ID": 129,
+     "publisher-name": "Maryland Department of Health"
+    },
+    {
+     "ID": 130,
+     "publisher-name": "New York State"
+    },
+    {
+     "ID": 131,
+     "publisher-name": "NYC Health Department"
+    },
+    {
+     "ID": 133,
+     "publisher-name": "Washington State Department of Health"
+    },
+    {
+     "ID": 135,
+     "publisher-name": "WHO Regional Office for Africa"
+    },
+    {
+     "ID": 136,
+     "publisher-name": "WHO Regional Office for Europe"
+    },
+    {
+     "ID": 138,
+     "publisher-name": "WHO Regional Office for Western Pacific"
+    },
+    {
+     "ID": 139,
+     "publisher-name": "Avi Schiffmann"
+    },
+    {
+     "ID": 140,
+     "publisher-name": "Hari Krishna"
+    },
+    {
+     "ID": 141,
+     "publisher-name": "1Point3Acres"
+    },
+    {
+     "ID": 142,
+     "publisher-name": "Institute for Healthcare Improvement"
+    },
+    {
+     "ID": 144,
+     "publisher-name": "Johns Hopkins University"
+    },
+    {
+     "ID": 145,
+     "publisher-name": "Corona Tracker"
+    },
+    {
+     "ID": 147,
+     "publisher-name": "Edward Parker"
+    },
+    {
+     "ID": 148,
+     "publisher-name": "Financial Times"
+    },
+    {
+     "ID": 152,
+     "publisher-name": "Worldometer"
+    },
+    {
+     "ID": 155,
+     "publisher-name": "University of Oxford"
+    },
+    {
+     "ID": 157,
+     "publisher-name": "WHO"
+    },
+    {
+     "ID": 158,
+     "publisher-name": "Yandex"
+    },
+    {
+     "ID": 159,
+     "publisher-name": "Radio Ozodi"
+    },
+    {
+     "ID": 161,
+     "publisher-name": "Biocomplexity Insitutute, University of Virginia"
+    },
+    {
+     "ID": 164,
+     "publisher-name": "DC Government"
+    },
+    {
+     "ID": 165,
+     "publisher-name": "Personal Project"
+    },
+    {
+     "ID": 167,
+     "publisher-name": "Penn state"
+    },
+    {
+     "ID": 168,
+     "publisher-name": "Deleware.gov"
+    },
+    {
+     "ID": 169,
+     "publisher-name": "McKinsey & Co."
+    },
+    {
+     "ID": 170,
+     "publisher-name": "City of Chicago"
+    },
+    {
+     "ID": 171,
+     "publisher-name": "National Geographic"
+    },
+    {
+     "ID": 172,
+     "publisher-name": "Visual Action"
+    },
+    {
+     "ID": 173,
+     "publisher-name": "NY"
+    },
+    {
+     "ID": 175,
+     "publisher-name": "Johns Hopkins CSSE"
+    },
+    {
+     "ID": 176,
+     "publisher-name": "Politico"
+    },
+    {
+     "ID": 178,
+     "publisher-name": "Johns Hopkins CSSE"
+    },
+    {
+     "ID": 179,
+     "publisher-name": "Times Free Press"
+    },
+    {
+     "ID": 180,
+     "publisher-name": "Prince George's County MD"
+    },
+    {
+     "ID": 182,
+     "publisher-name": "Government of British Columbia"
+    },
+    {
+     "ID": 183,
+     "publisher-name": "University of Maryland"
+    },
+    {
+     "ID": 184,
+     "publisher-name": "Iraqi Ministry of Health"
+    },
+    {
+     "ID": 185,
+     "publisher-name": "Iraqi Ministry of Health"
+    },
+    {
+     "ID": 186,
+     "publisher-name": "John Coene"
+    },
+    {
+     "ID": 188,
+     "publisher-name": "ESRI"
+    },
+    {
+     "ID": 190,
+     "publisher-name": "IntelWorks @pin0li"
+    },
+    {
+     "ID": 191,
+     "publisher-name": "Navid Mamoon,Gabriel Rasskin"
+    },
+    {
+     "ID": 193,
+     "publisher-name": "Gabriel Goh"
+    },
+    {
+     "ID": 194,
+     "publisher-name": "Personal Project"
+    },
+    {
+     "ID": 195,
+     "publisher-name": "Shubhram Pandey@Parexel"
+    },
+    {
+     "ID": 196,
+     "publisher-name": "Healthmap"
+    },
+    {
+     "ID": 198,
+     "publisher-name": "Akash Mukherjee,vivek Aithal"
+    },
+    {
+     "ID": 199,
+     "publisher-name": "Columbia University"
+    },
+    {
+     "ID": 200,
+     "publisher-name": "Carnegie Mellon University"
+    },
+    {
+     "ID": 201,
+     "publisher-name": "DOMO"
+    },
+    {
+     "ID": 202,
+     "publisher-name": "Govt of Canada"
+    },
+    {
+     "ID": 203,
+     "publisher-name": "Dimitris Bertsimas"
+    },
+    {
+     "ID": 205,
+     "publisher-name": "CDC"
+    },
+    {
+     "ID": 208,
+     "publisher-name": "Iowa State University and Peking University"
+    },
+    {
+     "ID": 218,
+     "publisher-name": "Department of health"
+    },
+    {
+     "ID": 219,
+     "publisher-name": "Indiana COVID-19 Home Dashboard"
+    },
+    {
+     "ID": 220,
+     "publisher-name": "North Carolina COVID-19 Dashboard"
+    },
+    {
+     "ID": 221,
+     "publisher-name": "An official website of the City of Chicago"
+    },
+    {
+     "ID": 222,
+     "publisher-name": "LA County Daily COVID-19 Data"
+    },
+    {
+     "ID": 223,
+     "publisher-name": "COVID-19 Market Dashboard"
+    },
+    {
+     "ID": 224,
+     "publisher-name": "COVID-19 Response"
+    },
+    {
+     "ID": 225,
+     "publisher-name": "UNIVERSITY OF WISCONSIN-MADISON"
+    },
+    {
+     "ID": 226,
+     "publisher-name": "COVID-19 Data Dashboard Overview"
+    },
+    {
+     "ID": 227,
+     "publisher-name": "COVID-19 public dashboard"
+    },
+    {
+     "ID": 228,
+     "publisher-name": "COVID-19 Dashboard"
+    },
+    {
+     "ID": 229,
+     "publisher-name": "Dashboard"
+    },
+    {
+     "ID": 230,
+     "publisher-name": "COVID-19 Dashboard"
+    },
+    {
+     "ID": 231,
+     "publisher-name": "UC Davis COVID-19 Dashboard"
+    },
+    {
+     "ID": 232,
+     "publisher-name": "COVID-19 Dashboard"
+    },
+    {
+     "ID": 233,
+     "publisher-name": "Communicable Disease Dashboard"
+    },
+    {
+     "ID": 234,
+     "publisher-name": "COVID Dashboard"
+    },
+    {
+     "ID": 235,
+     "publisher-name": "Oklahoma Schools COVID-19 Prevention Program"
+    },
+    {
+     "ID": 236,
+     "publisher-name": "Emory University COVID-19 Dashboard"
+    },
+    {
+     "ID": 237,
+     "publisher-name": "COVID-19 Dashboard"
+    },
+    {
+     "ID": 238,
+     "publisher-name": "University of Nevada, Reno"
+    },
+    {
+     "ID": 239,
+     "publisher-name": "The City of San Antonio"
+    },
+    {
+     "ID": 240,
+     "publisher-name": "THE UNIVERSITY OF ARIZONA"
+    },
+    {
+     "ID": 241,
+     "publisher-name": "Nevada Department of Health and Human Services"
+    },
+    {
+     "ID": 242,
+     "publisher-name": "Brown School of Public Health"
+    },
+    {
+     "ID": 243,
+     "publisher-name": "Tableau Public"
+    },
+    {
+     "ID": 244,
+     "publisher-name": "HOUSTON INDEPENDENT SCHOOL DISTRICT"
+    },
+    {
+     "ID": 245,
+     "publisher-name": "State of Hawaii, Department of Health"
+    },
+    {
+     "ID": 246,
+     "publisher-name": "WHA"
+    },
+    {
+     "ID": 247,
+     "publisher-name": "Yale University"
+    },
+    {
+     "ID": 248,
+     "publisher-name": "Ohio State University"
+    },
+    {
+     "ID": 249,
+     "publisher-name": "Appalachian District Health Department"
+    },
+    {
+     "ID": 250,
+     "publisher-name": "University of Virginia"
+    },
+    {
+     "ID": 251,
+     "publisher-name": "University of Pennsylvania"
+    },
+    {
+     "ID": 252,
+     "publisher-name": "University of Wisconsin-Stevens Point"
+    },
+    {
+     "ID": 253,
+     "publisher-name": "University of Colorado Boulder"
+    },
+    {
+     "ID": 254,
+     "publisher-name": "Sciensano"
+    },
+    {
+     "ID": 255,
+     "publisher-name": "Irvine Unifled School District"
+    },
+    {
+     "ID": 256,
+     "publisher-name": "Lehigh University"
+    },
+    {
+     "ID": 257,
+     "publisher-name": "Regenstrief Institute"
+    },
+    {
+     "ID": 258,
+     "publisher-name": "OAKLAND COUNTY MICHIGAN"
+    },
+    {
+     "ID": 259,
+     "publisher-name": "WHATCOM COUNTY HEALTH DEPARTMENT"
+    },
+    {
+     "ID": 260,
+     "publisher-name": "Virginia Polytechnic Institute and State University"
+    },
+    {
+     "ID": 261,
+     "publisher-name": "ROUND ROCK INDEPENDENT SCHOOL DISTRICT"
+    },
+    {
+     "ID": 262,
+     "publisher-name": "worldomater"
+    },
+    {
+     "ID": 263,
+     "publisher-name": "ALAMEDA COUNTY HEALTH CARE SERVICES AGENCY PUBLIC HEALTH DEPARTMENT"
+    },
+    {
+     "ID": 264,
+     "publisher-name": "Michigan"
+    },
+    {
+     "ID": 266,
+     "publisher-name": "Northwestern university"
+    },
+    {
+     "ID": 267,
+     "publisher-name": "ITHACA COLLEGE"
+    },
+    {
+     "ID": 269,
+     "publisher-name": "NORTH KANSAS CITY SCHOOLS"
+    },
+    {
+     "ID": 270,
+     "publisher-name": "Navajo Department of Health"
+    },
+    {
+     "ID": 271,
+     "publisher-name": "Saline County Kansas"
+    },
+    {
+     "ID": 272,
+     "publisher-name": "Government of South Australia"
+    },
+    {
+     "ID": 273,
+     "publisher-name": "UIHI"
+    },
+    {
+     "ID": 274,
+     "publisher-name": "MOUNT NITTANY HEALTH"
+    },
+    {
+     "ID": 275,
+     "publisher-name": "Plum Grove Jr High"
+    },
+    {
+     "ID": 276,
+     "publisher-name": "Oakpark Elementary School District 97"
+    },
+    {
+     "ID": 277,
+     "publisher-name": "KQED"
+    },
+    {
+     "ID": 278,
+     "publisher-name": "SanDiegoCounty.gov"
+    },
+    {
+     "ID": 279,
+     "publisher-name": "covid19.sanantonio.gov"
+    },
+    {
+     "ID": 280,
+     "publisher-name": "SAN MATEO COUNTY HEALTH"
+    },
+    {
+     "ID": 7,
+     "publisher-name": "Queensland Government"
+    },
+    {
+     "ID": 12,
+     "publisher-name": "Government of the Federation of Bosnia and Herzegovina"
+    },
+    {
+     "ID": 13,
+     "publisher-name": "Ministry of Health of Brazil "
+    },
+    {
+     "ID": 14,
+     "publisher-name": "Portal GEO "
+    },
+    {
+     "ID": 25,
+     "publisher-name": "Government of Newfoundland and Labrador"
+    },
+    {
+     "ID": 27,
+     "publisher-name": "Government of Nova Scotia "
+    },
+    {
+     "ID": 52,
+     "publisher-name": "Government of the Republic of Croatia"
+    },
+    {
+     "ID": 104,
+     "publisher-name": "Covid-19 Tracker Slovenia"
+    },
+    {
+     "ID": 110,
+     "publisher-name": "National Center of Epidemiology"
+    },
+    {
+     "ID": 123,
+     "publisher-name": "Centres for Disease Control and Prevention"
+    },
+    {
+     "ID": 124,
+     "publisher-name": "The Atlantic Monthly Group"
+    },
+    {
+     "ID": 149,
+     "publisher-name": "Humanistic GIS Lab at University of Washington"
+    },
+    {
+     "ID": 154,
+     "publisher-name": "Prof. Wade Fagen-Ulmschneider"
+    },
+    {
+     "ID": 189,
+     "publisher-name": "Antoine Soetewey"
+    },
+    {
+     "ID": 192,
+     "publisher-name": "Personal Project"
+    },
+    {
+     "ID": 204,
+     "publisher-name": "Personal Project"
+    },
+    {
+     "ID": 206,
+     "publisher-name": "MGH Institute for Technology Assessment and Harvard Medical Schoo etc."
+    },
+    {
+     "ID": 302,
+     "publisher-name": "The COVID-NMA initiative"
+    },
+    {
+     "ID": 303,
+     "publisher-name": "Universidade Federal do Rio Grande do Sul"
+    },
+    {
+     "ID": 304,
+     "publisher-name": "SeroTracker"
+    }
+   ]

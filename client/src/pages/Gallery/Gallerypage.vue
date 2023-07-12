@@ -1,17 +1,14 @@
 <template>
     <div id="gallery">
       <NavBar></NavBar>
-      <ListHeader/>
+      <!-- <ListHeader/> -->
       <ListFoot/>   
     </div>
   </template>
-  
   <script>
-
   import ListFoot from "../../common/Gallery/ListFoot.vue";
   import ListHeader from "../../common/Gallery/ListHeader.vue";
   import NavBar from "../../common/NavBar/NavBar"
-  
   export default {
     name: 'Gallery',
     components: {
@@ -21,7 +18,6 @@
     }
   }
   </script>
-  
   <style>
   body, html {
       height: 100vh;  

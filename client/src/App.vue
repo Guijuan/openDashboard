@@ -32,25 +32,24 @@ export default {
 
 <style>
 #app {
+  position: absolute;
   font-family: 'Times New Roman';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   width: 100%;
   height: 100%;
-  min-height:800px;
-
+  /*min-height:800px;*/
 }
 
 body{
-
-  position: absolute;
+  /*position: absolute;*/
   width: 99.5%;
   height: 99.5%;
   min-height:800px;
   background: #ffffff
 }
-body .vs-table colgroup.gutter{
-    display: table-cell!important;
-}
+/*body .vs-table colgroup.gutter{*/
+/*    display: table-cell!important;*/
+/*}*/
 </style>
 
