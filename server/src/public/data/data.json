@@ -211,7 +211,7 @@
       {
         "index": 2,
         "name": "Province_State",
-        "type": "quantitative",
+        "type": "ordinal",
         "isSelected": false,
         "checked": false,
         "color": "#202020"

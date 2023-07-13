@@ -1052,7 +1052,7 @@ export default {
       let _target = connect.target
 
       //判断是否为过滤
-      if (_target.parent === 'AttributeF' || _target.parent === 'Select') {
+      if (_target.parent === 'AttributeF' || _target.parent === 'Explore' || _target.parent === 'Select') {
         that.blueComponents.forEach(item => {
           if (item.id == _target.id) {
             item.sletectPorts[0].options.push(_source.name)
@@ -1077,7 +1077,7 @@ export default {
           }
         })
       }
-      if(_target.text == "Select"){
+      if(_target.text == "Explore" || _target.text == "Select"){
         that.blueComponents.forEach(item => {
           if (item.id === _source.id) {
             item.filterAttrs.push(_target.name)
@@ -1321,10 +1321,12 @@ export default {
         that.select_2 = _source.name
       }
       //数据转移
-      if (_source.parent === 'Select' && _target.parentid.includes('Chart')) {
+      if (_source.parent === 'Explore' && _target.parentid.includes('Chart')) {
         console.log(that.select_1, that.select_2)
         that.vegaObjectObj[_target['parentid']].select_1 = that.select_1
         that.vegaObjectObj[_target['parentid']].select_2 = that.select_2
+        that.vegaObjectObj[_target['parentid']].selectType = _source.parent
+        that.$store.state.mapSelectType = _source.parent
         let attrF = that.blueComponents.filter(item => {
           return item.id === _source.parentid
         })
@@ -1332,6 +1334,23 @@ export default {
         console.log(attrF[0]["filterAttributeName"]);
         console.log(attrF_name);
         that.$store.state.mapData_2 = {"select": attrF_name, "data": that.vegaObjectObj[_target['parentid']].data.data}
+        // let vegaModel = that.vegaObjectObj[_target['parentid']]
+        // console.log(vegaModel)
+      }
+
+      if (_source.parent === 'Select' && _target.parentid.includes('Chart')) {
+        // console.log(that.select_1, that.select_2)
+        // that.vegaObjectObj[_target['parentid']].select_1 = that.select_1
+        // that.vegaObjectObj[_target['parentid']].select_2 = that.select_2
+        that.vegaObjectObj[_target['parentid']].selectType = _source.parent
+        that.$store.state.mapSelectType = _source.parent
+        let attrF = that.blueComponents.filter(item => {
+          return item.id === _source.parentid
+        })
+        let attrF_name = attrF[0]["filterAttributeName"]
+        console.log(attrF[0]["filterAttributeName"]);
+        console.log(attrF_name);
+        that.$store.state.mapData_2 = {"select_2": attrF_name, "data": that.vegaObjectObj[_target['parentid']].data.data}
         // let vegaModel = that.vegaObjectObj[_target['parentid']]
         // console.log(vegaModel)
       }
