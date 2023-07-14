@@ -188,8 +188,9 @@ export default{
               }
              else if(d.i==300){
                that.wordChartName = d.name
-               document.getElementById(d.name).style.backgroundColor="white"
+               document.getElementById(d.name).style.backgroundColor="#2B2B2B"
                document.getElementById(d.name).style.fontSize = "2.5em"
+               document.getElementById(d.name).style.color = "#ffffff"
              }
              else {
                let width = document.getElementById(d.name).parentNode.clientWidth
@@ -1243,7 +1244,17 @@ p{
   margin:5px;
   border-bottom:solid 1px #d6d6d6;
 }
-
+#300{
+  display: flex;
+  padding: 10px;
+  width: 100%;
+  min-width: 300px;
+  height: 100%;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);
+  font-size:1em;
+  background-color: #2B2B2B!important;
+  color: white!important;
+}
 </style>
 
 

@@ -92,7 +92,7 @@ const store = new Vuex.Store({
       },
       visualForms:[]
     },
-    wordText:"Globally, as of 3:20pm CEST, 14 June 2023, there have been 767,984,989 confirmed cases of COVID-19, including 6,943,390 deaths, reported to WHO. As of 12 June 2023, a total of 13,397,334,282 vaccine doses have been administered",
+    wordText:"COVID-19 Dashboard,Total Cases 5,044,718;Total Deaths 36,967;Total Vaccine Doses Administered 72,585,073;28-Day Cases 5,906;28-Day Deaths 21;28-Day Vaccine Doses Administered 31,888",
     mapSelectType:""
   },
   mutations: {
