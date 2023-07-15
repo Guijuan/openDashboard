@@ -1050,62 +1050,22 @@ export default {
       let connect = con.getConnectInfo()
       let _source = connect.source
       let _target = connect.target
+      // if(_target.text == "Selection"){
+      //   that.blueComponents.forEach(item => {
+      //     if (item.id === _source.id) {
+      //       item.filterAttrs.push(_target.name)
+      //       item.filterSource = _target.parentid
+      //       let vegaModel = that.vegaObjectObj[_target.parentid]
+      //       //定制设置
+      //       if (vegaModel) {
+      //         vegaModel.isFilterSource = true
+      //       }
+      //       let panel = document.querySelector('#filterSettingPanel')
+      //       if (panel) item.drawSettingPanel()
+      //     }
+      //   })
+      // }
 
-      //判断是否为过滤
-      if (_target.parent === 'AttributeF' || _target.parent === 'Select') {
-        that.blueComponents.forEach(item => {
-          if (item.id == _target.id) {
-            item.sletectPorts[0].options.push(_source.name)
-            item.drawSelector()
-            console.log(item);
-          }
-        })
-      }
-      console.log(_target)
-      if (_target.parent === 'Filter') {
-        that.blueComponents.forEach(item => {
-          if (item.id === _target.id) {
-            item.filterAttrs.push(_source.name)
-            item.filterSource = _source.parentid
-            let vegaModel = that.vegaObjectObj[_source.parentid]
-            //定制设置
-            if (vegaModel) {
-              vegaModel.isFilterSource = true
-            }
-            let panel = document.querySelector('#filterSettingPanel')
-            if (panel) item.drawSettingPanel()
-          }
-        })
-      }
-      if(_target.text == "Select"){
-        that.blueComponents.forEach(item => {
-          if (item.id === _source.id) {
-            item.filterAttrs.push(_target.name)
-            item.filterSource = _target.parentid
-            let vegaModel = that.vegaObjectObj[_target.parentid]
-            //定制设置
-            if (vegaModel) {
-              vegaModel.isFilterSource = true
-            }
-            let panel = document.querySelector('#filterSettingPanel')
-            if (panel) item.drawSettingPanel()
-          }
-        })
-      }
-      if (_source.parent === "Filter") {
-        that.blueComponents.forEach(item => {
-          if (item.id === _source.parentid) {
-            let source  = item.filterSource
-            let sourceTarget = that.vegaObjectObj[source]
-            sourceTarget.filterTarget = _target.parentid
-            sourceTarget.filterType = item.filterType
-            sourceTarget.filterAttr = item.filterAttributeName
-            let teagetChart = that.vegaObjectObj[ _target.parentid]
-            teagetChart = JSON.parse(JSON.stringify(teagetChart))
-            sourceTarget.filterTargetData = teagetChart
-          }
-        })
-      }
       let componentGraph = new Array()
       //two dimensional matrix of storage blueprint connection logic
 
@@ -1293,24 +1253,12 @@ export default {
         })
       })
       //设置属性到对应的chart中
-      if (_target.parentid.includes('Chart') && _source.parent == 'AttributeF') {
-        let attrF = that.blueComponents.filter(item => {
-          return item.id === _source.parentid
-        })[0] || []
-        let vegaModel = that.vegaObjectObj[_target['parentid']]
-        vegaModel.filterAttr = attrF.filterAttributeName
-      }
-      //属性过滤
-      // if ("parentid" in _source) {
-      //   if (_source.parentid.includes('Chart') && _target.parent === 'Filter') {
-      //     that.blueComponents.forEach(item => {
-      //       if (item.id == _target.id) {
-      //         item.filterAttributeName = that.vegaObjectObj[_source.parentid].filterAttr
-      //         item.filterAttributeData = that.vegaObjectObj[_source.parentid].data
-      //         item.drawSlider()
-      //       }
-      //     })
-      //   }
+      // if (_target.parentid.includes('Chart') && _source.parent == 'AttributeF') {
+      //   let attrF = that.blueComponents.filter(item => {
+      //     return item.id === _source.parentid
+      //   })[0] || []
+      //   let vegaModel = that.vegaObjectObj[_target['parentid']]
+      //   vegaModel.filterAttr = attrF.filterAttributeName
       // }
 
       // 设置select组件
@@ -1335,7 +1283,39 @@ export default {
         // let vegaModel = that.vegaObjectObj[_target['parentid']]
         // console.log(vegaModel)
       }
-      console.log(this.vegaObjectObj)
+
+      if (_source.parent === "Filter" && _target.parentid.includes('Chart')) {
+        that.blueComponents.forEach(item => {
+          if (item.id === _source.parentid) {
+            let source  = item.filterSource
+            let sourceTarget = that.vegaObjectObj[source]
+            sourceTarget.filterStyle = item.filterStyle
+            sourceTarget.filterTarget = _target.parentid
+            sourceTarget.filterType = item.filterType
+            sourceTarget.filterAttr = item.filterAttributeName
+            let teagetChart = that.vegaObjectObj[ _target.parentid]
+            console.log(teagetChart)
+            // teagetChart.filterStyle = item.filterStyle
+            // teagetChart = JSON.parse(JSON.stringify(teagetChart))
+            // sourceTarget.filterTargetData = teagetChart
+          }
+        })
+      }
+      if (_target.parent === 'Filter' && _source.parentid.includes('Chart')) {
+          that.blueComponents.forEach(item => {
+            if (item.id === _target.id) {
+              let vegaModel = that.vegaObjectObj[_source.parentid]
+              let data = vegaModel.data.data.values
+              let attrs = Object.keys(data[0])
+              item.filterAttrs = attrs
+              item.filterSource = _source.parentid
+              item.sourceData = data
+              vegaModel.isFilterSource = true
+              let panel = document.querySelector('#filterSettingPanel')
+              if (panel) item.drawSettingPanel()
+            }
+          })
+      }
     },
     notifications(message) {
       this.$vs.notify({
@@ -1366,13 +1346,13 @@ export default {
         }
         // that.$refs[_ref].getModularInfo({"config": that.chartLayoutObj[key[0]], "layoutname": key[0]})
         // config:chartA:{},layoutname:Layout-0
-        Object.keys(this.vegaObjectObj).forEach(item=>{
-          if(this.vegaObjectObj[item].isFilterSource){
-            let target = this.vegaObjectObj[item].filterTarget
-            this.vegaObjectObj[target] = this.vegaObjectObj[item].filterTargetData
-            console.log(this.vegaObjectObj[item])
-          }
-        })
+        // Object.keys(this.vegaObjectObj).forEach(item=>{
+        //   if(this.vegaObjectObj[item].isFilterSource){
+        //     let target = this.vegaObjectObj[item].filterTarget
+        //     this.vegaObjectObj[target] = this.vegaObjectObj[item].filterTargetData
+        //     // console.log(this.vegaObjectObj[item])
+        //   }
+        // })
         that.$refs[_ref].getModularInfo({"config": this.vegaObjectObj, "layoutname": 'Layout-0'})
         console.log(this.vegaObjectObj);
         that.model_config_text = JSON.parse(JSON.stringify(that.vegaObjectObj))

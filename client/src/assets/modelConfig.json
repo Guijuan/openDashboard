@@ -96,7 +96,7 @@
     "outPorts": [
       {
         "name": "out",
-        "text": "Select",
+        "text": "Selection",
         "attr": "field",
         "type": "out",
         "multiple": true
@@ -148,7 +148,7 @@
     "outPorts": [
       {
         "name": "out",
-        "text": "Select",
+        "text": "Selection",
         "attr": "field",
         "type": "out"
       }
@@ -521,40 +521,24 @@
   "Filter": {
     "inPorts": [
       {
-        "name": "dimension",
-        "text": "",
-        "attr": "filter",
-        "type": "in",
-        "multiple": true
-      },
-      {
-        "name": "filter_in",
-        "text": "",
+        "name": "in",
+        "text": "in",
         "attr": "Filter",
         "type": "in"
       }
     ],
     "slidePorts": [
       {
-        "name": "filter_out",
+        "name": "out",
         "text": "Output",
         "attr": "filter",
         "type": "out"
       }
     ],
-    "sletectPorts": [
-      {
-        "name": "attr_select",
-        "text": "select_attr",
-        "attr": "filter",
-        "type": "out",
-        "options": []
-      }
-    ],
     "outPorts": [
       {
         "name":"filter_out",
-        "text": "filter_out",
+        "text": "out",
         "attr": "filed",
         "type": "out",
         "multiple": true

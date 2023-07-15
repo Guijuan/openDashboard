@@ -815,8 +815,7 @@ export default{
         // // console.log('reSize---------------config---------------1',this.$store.state.model_config_text)
         // console.log('reGenerateGraphBySize---重绘');
         let data = this.layoutObj["config"][name]["data"]
-        this.setConfig(data)
-        console.log(data)
+        this.setConfig(data, this.layoutObj["config"][name].filterStyle)
         vegaEmbed(`#A-${name}`, data).then(res=>{
             this.addChartEvent(res.view, name)
         })
@@ -866,21 +865,15 @@ export default{
         return cases;
       }
     },
-    setConfig(result){
+    setConfig(result, style){
       result.layer[0]['selection'] = {"pts": {"type": "single", "encodings": ["y"]}}
       result.layer[0]['encoding']["opacity"] = {"condition": {"selection": "pts", "value": 1}, "value": "0.3"}
-      // if (result.layer[0].encoding.stacked) {
-      //   result.layer[0].encoding.sacles = {
-      //     "name": "color",
-      //     "type": "nominal",
-      //     // "domain": {"field": result.layer[0].encoding.stacked.field, "sort": true},
-      //
-      //   }
+      if(style){
         result.layer[0].encoding.fill = {"scale": {
             "domain":['AFRO','AMRO','EMRO','EURO','Other','SEARO','WPRO'],
             "range": ['#c8d65b','#c12592','#b0832c','#5200ae','#00ae8f','#0a71d5','#d86422']
           }, "field": "region"}
-      // }
+      }
     },
     addChartEvent(view, name){
       let that = this
