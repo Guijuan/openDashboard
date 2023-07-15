@@ -70,7 +70,11 @@ import WordHighlight from "../../common/DataListBar/Text";
 export default{
   data() {
     return {
+      covidSourceData:null,
+      csse_select_name:null,
       wordChartName:null,
+      example_3_charts:[],
+      example_3_select:"US",
       // wordText:"Globally, as of 3:20pm CEST, 14 June 2023, there have been 767,984,989 confirmed cases of COVID-19, including 6,943,390 deaths, reported to WHO. As of 12 June 2023, a total of 13,397,334,282 vaccine doses have been administered",
       mapName:null,
       generateBool:false,
@@ -531,7 +535,6 @@ export default{
     createSelect(width=200,height=400,select,data){
       let selectName = select.split(' ')[0]
       // 创建下拉框元素
-      debugger
       const select1 = document.createElement('select');
 
       select1.innerHTML = `
@@ -611,6 +614,81 @@ export default{
       formContainer.style.width=`${width}px`;
       formContainer.style.height=`${height}px`;
     },
+    createSelect2(width=200,height=400,data){
+      let that = this;
+      let data2 = data.slice(0,100)
+      //创建csse选项卡
+      let csse_div = document.createElement("div")
+      csse_div.setAttribute("id","csse_div")
+      // 创建每个单独选项
+      for(let item of data2){
+        let item_div = document.createElement("div")
+        item_div.setAttribute("class","item_csse_div")
+        item_div.setAttribute("id",`${item["Country_Region"]}-${item["Province_State"]}`)
+        // 创建文本内容
+        // p1数据处理
+        let p1 = document.createElement("p")
+        let p1_strong = document.createElement("strong")
+        let p1_strong_span = document.createElement("span")
+        p1_strong_span.innerHTML = `${item["Country_Region"]}-${item["Province_State"]}`
+        p1_strong_span.style.fontSize="16px";
+        p1_strong_span.style.color="#FFFFFF"
+        p1.appendChild(p1_strong)
+        p1_strong.appendChild(p1_strong_span)
+
+        // p2数据处理
+        let p2 = document.createElement("p")
+        let p2_span1 = document.createElement("span")
+        p2_span1.innerHTML = "Day: "
+        p2_span1.style.color = "#d6d6d6"
+
+        let p2_strong = document.createElement("strong")
+        let p2_strong_span1 = document.createElement("span")
+        let p2_strong_span2 = document.createElement("span")
+        p2_strong_span1.innerHTML = item["Confirmed"]
+        p2_strong_span1.style.color = "#ff0000"
+        p2_strong_span2.innerHTML = `|${item["Deaths"]}`
+        p2_strong_span2.style.color = "#ffffff"
+        p2.appendChild(p2_span1)
+        p2.appendChild(p2_strong)
+        p2_strong.appendChild(p2_strong_span1)
+        p2_strong.appendChild(p2_strong_span2)
+
+        // 为div添加点击事件
+        item_div.addEventListener("click",function(e){
+          try{
+            console.log(that.csse_select_name);
+            document.getElementById(that.csse_select_name).style.boxShadow = ""
+          }catch (e) {
+
+          }
+          that.csse_select_name = this.id
+          let div = document.getElementById(this.id)
+          console.log(div)
+          //box-shadow:inset 8px 0 0 0 blue;
+          this.style.boxShadow = "inset 8px 0 0 0 #009AF2"
+          that.example_3_select = this.id.split('-')[0]
+          // 重新绘制
+          for(let d of that.example_3_charts){
+            debugger;
+            that.layoutObj["config"][d]["data"]["data"]["values"] = that.covidSourceData.filter(item => {
+              return item["Country_Region"] == that.example_3_select
+            })
+            vegaEmbed("#" + `A-${d}`, that.layoutObj["config"][d]["data"])
+          }
+        })
+        // 添加
+        item_div.appendChild(p1)
+        item_div.appendChild(p2)
+        csse_div.appendChild(item_div)
+      }
+
+      // 插入
+      const formContainer = document.getElementById('select');
+      csse_div.style.width="200px"
+      csse_div.style.height="200px"
+      formContainer.appendChild(csse_div);
+    },
     generateGraph(color='#1F9CC9'){
       let that = this
       let charts = Object.keys(that.layoutObj["config"])
@@ -663,10 +741,34 @@ export default{
           that.ttlayout.push({"x":charts.indexOf(d)*2+2,"y":0,"w":4,"h":4,"i":300, static: false, name:`A-${d}`,component:"WordHighlight"})
         }
         else{
-          that.ttlayout.push({"x":charts.indexOf(d)*2+2,"y":0,"w":4,"h":4,"i":charts.indexOf(d).toString(), static: false, name:`A-${d}`,component:null})
+          that.covidSourceData = [...that.layoutObj["config"][d]["data"]["data"]["values"]]
+          // console.log(that.covidSourceData.filter(item => {
+          //   return item["Country_Region"] == "China"
+          // }));
+          that.layoutObj["config"][d]["data"]["data"]["values"] = that.covidSourceData.filter(item => {
+            return item["Country_Region"] == that.example_3_select
+          })
+          // that.ttlayout.push({"x":charts.indexOf(d)*2+2,"y":0,"w":4,"h":4,"i":charts.indexOf(d).toString(), static: false, name:`A-${d}`,component:null})
           console.log(that.layoutObj["config"][d]["data"]);
           // that.layoutObj["config"][d]["data"]['layer'][0]['mark']['fill'] = color
+          that.layoutObj["config"][d]["data"]["layer"]["0"]["encoding"]["x"]["axis"]={
+            "labels": false,
+            "labelColor": "#ffffff",
+            "domainColor":"#ffffff",
+            "titleColor":"#ffffff"
+          }
+          that.layoutObj["config"][d]["data"]["layer"]["0"]["encoding"]["y"]["axis"]={
+            "labelColor": "#ffffff",
+            "domainColor":"#ffffff",
+            "titleColor":"#ffffff"
+          }
+          that.layoutObj["config"][d]["data"]["background"] = "#2B2B2B"
+          that.layoutObj["config"][d]["data"]['title']["color"] = "#ffffff"
+          console.log(that.layoutObj["config"][d]["data"]);
+          that.ttlayout.push({"x":charts.indexOf(d)*2+2,"y":0,"w":4,"h":4,"i":charts.indexOf(d).toString(), static: false, name:`A-${d}`,component:null})
           vegaEmbed("#" + `A-${d}`, that.layoutObj["config"][d]["data"])
+          that.example_3_charts.push(d)
+          console.log(that.example_3_charts);
         }
       })
       console.log(that.ttlayout)
@@ -741,22 +843,49 @@ export default{
       console.log(i);
       if(i==100){
         // this.createSelect(width,height,that.$store.state.mapData_2.select,that.$store.state.mapData_2.data.values);
-        if(this.selectCard==false){
-          this.createSelect(width,height,that.$store.state.mapData_2.select,that.$store.state.mapData_2.data.values);
-          this.selectCard=true;
-          that.$store.state.model_config_text[that.mapName]["select_chart"]['width'] = `${width}px`;
-          that.$store.state.model_config_text[that.mapName]["select_chart"]['height'] = `${height}px`;
-          that.$store.state.model_config_text[that.mapName]["select_chart"]["x"] = x
-          that.$store.state.model_config_text[that.mapName]["select_chart"]["y"] = y
+        if(that.$store.state.mapSelectType=="Select"){
+          console.log("Select")
+          if(this.selectCard == false){
+            debugger;
+            that.createSelect2(width,height,that.$store.state.mapData_2.data.values)
+            this.selectCard=true;
+            that.$store.state.model_config_text[that.mapName]["select_chart"]['width'] = `${width}px`;
+            that.$store.state.model_config_text[that.mapName]["select_chart"]['height'] = `${height}px`;
+            that.$store.state.model_config_text[that.mapName]["select_chart"]["x"] = x
+            that.$store.state.model_config_text[that.mapName]["select_chart"]["y"] = y
+          }else{
+            let select_div = document.getElementById("select")
+            let csse_div = document.getElementById("csse_div")
+
+            select_div.style.width = `${width}px`;
+            select_div.style.height = `${height}px`
+            csse_div.style.width = `${width}px`;
+            csse_div.style.height = `${height}px`
+
+            that.$store.state.model_config_text[that.mapName]["select_chart"]['width'] = `${width}px`;
+            that.$store.state.model_config_text[that.mapName]["select_chart"]['height'] = `${height}px`;
+            that.$store.state.model_config_text[that.mapName]["select_chart"]["x"] = x
+            that.$store.state.model_config_text[that.mapName]["select_chart"]["y"] = y
+          }
         }
-        else {
-          let select_div = document.getElementById("select")
-          select_div.style.width = `${width}px`;
-          select_div.style.height = `${height}px`
-          that.$store.state.model_config_text[that.mapName]["select_chart"]['width'] = `${width}px`;
-          that.$store.state.model_config_text[that.mapName]["select_chart"]['height'] = `${height}px`;
-          that.$store.state.model_config_text[that.mapName]["select_chart"]["x"] = x
-          that.$store.state.model_config_text[that.mapName]["select_chart"]["y"] = y
+        else{
+          if(this.selectCard==false){
+            this.createSelect(width,height,that.$store.state.mapData_2.select,that.$store.state.mapData_2.data.values);
+            this.selectCard=true;
+            that.$store.state.model_config_text[that.mapName]["select_chart"]['width'] = `${width}px`;
+            that.$store.state.model_config_text[that.mapName]["select_chart"]['height'] = `${height}px`;
+            that.$store.state.model_config_text[that.mapName]["select_chart"]["x"] = x
+            that.$store.state.model_config_text[that.mapName]["select_chart"]["y"] = y
+          }
+          else {
+            let select_div = document.getElementById("select")
+            select_div.style.width = `${width}px`;
+            select_div.style.height = `${height}px`
+            that.$store.state.model_config_text[that.mapName]["select_chart"]['width'] = `${width}px`;
+            that.$store.state.model_config_text[that.mapName]["select_chart"]['height'] = `${height}px`;
+            that.$store.state.model_config_text[that.mapName]["select_chart"]["x"] = x
+            that.$store.state.model_config_text[that.mapName]["select_chart"]["y"] = y
+          }
         }
       }
       else if(i==200){
@@ -815,7 +944,8 @@ export default{
         // // console.log('reSize---------------config---------------1',this.$store.state.model_config_text)
         // console.log('reGenerateGraphBySize---重绘');
         let data = this.layoutObj["config"][name]["data"]
-        this.setConfig(data, this.layoutObj["config"][name].filterStyle)
+        this.setConfig(data)
+        console.log(data)
         vegaEmbed(`#A-${name}`, data).then(res=>{
             this.addChartEvent(res.view, name)
         })
@@ -865,15 +995,21 @@ export default{
         return cases;
       }
     },
-    setConfig(result, style){
+    setConfig(result){
       result.layer[0]['selection'] = {"pts": {"type": "single", "encodings": ["y"]}}
       result.layer[0]['encoding']["opacity"] = {"condition": {"selection": "pts", "value": 1}, "value": "0.3"}
-      if(style){
-        result.layer[0].encoding.fill = {"scale": {
-            "domain":['AFRO','AMRO','EMRO','EURO','Other','SEARO','WPRO'],
-            "range": ['#c8d65b','#c12592','#b0832c','#5200ae','#00ae8f','#0a71d5','#d86422']
-          }, "field": "region"}
-      }
+      // if (result.layer[0].encoding.stacked) {
+      //   result.layer[0].encoding.sacles = {
+      //     "name": "color",
+      //     "type": "nominal",
+      //     // "domain": {"field": result.layer[0].encoding.stacked.field, "sort": true},
+      //
+      //   }
+      //   result.layer[0].encoding.fill = {"scale": {
+      //       "domain":['AFRO','AMRO','EMRO','EURO','Other','SEARO','WPRO'],
+      //       "range": ['#c8d65b','#c12592','#b0832c','#5200ae','#00ae8f','#0a71d5','#d86422']
+      //     }, "field": "region"}
+      // }
     },
     addChartEvent(view, name){
       let that = this
@@ -1071,7 +1207,9 @@ export default{
   font-size:1.5em;
 }
 p{
-  text-align:center
+  text-align:center;
+  margin: 0px;
+  margin-left: 10px;
 }
 .blue {
   color: blue;
@@ -1095,6 +1233,17 @@ p{
 .WHO-text{
   font-size: 2em;
 }
+#csse_div{
+  display:flex;
+  flex-direction:column;
+  overflow:auto;
+  background-color: #2B2B2B;
+}
+.item_csse_div{
+  margin:5px;
+  border-bottom:solid 1px #d6d6d6;
+}
+
 </style>
 
 

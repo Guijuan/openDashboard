@@ -10,17 +10,32 @@ export default {
     return {
       blueColor:["#007092","#008ebc","#00ace3","#54cbf2","#95dcf4","#ffedc1","#b6b6b6"],
       redColor:["#994414","#bb551b","#d86422","#e08d5e","#e2a786","#ffedc1","#b6b6b6"],
-      mapObj: null
+      mapObj: null,
+      pointData:[]
     }
   },
   props:{
     container:null
   },
   mounted() {
+    let that = this
     // console.log(this.getMapData)
     console.log(this.getMapData_2)
     if("select" in this.getMapData_2){
       this.createMap2()
+    }
+    else if("select_2" in this.getMapData_2){
+      for(let item of that.getMapData_2["data"]["values"]){
+        that.pointData.push({
+          "type":"Feature",
+          "properties":{},
+          "geometry":{
+            "type":"Point",
+            "coordinates":[item["Long_"],item["Lat"]]
+          }
+        })
+      }
+      this.createMap3()
     }
     else {
       this.createMap()
@@ -213,10 +228,50 @@ export default {
         );
       });
     },
+    createMap3(){
+      console.log("createMap3")
+      let that = this
+      console.log(that.getMapData_2);
+      console.log(that.pointData);
+      mapboxgl.accessToken = this.mapToken
+      this.map = new mapboxgl.Map({
+        container: this.container,
+        // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+        style: 'mapbox://styles/mapbox/dark-v11',
+        center: [12, 50],
+        zoom: 7.2
+      });
+      this.map.on('load', () => {
+        this.map.addSource('points', {
+          'type': 'geojson',
+          'data':{
+            'type':'FeatureCollection',
+            'features':that.pointData
+          }
+        });
+        this.map.addLayer({
+          'id': 'circle',
+          'type': 'circle',
+          'source': 'points',
+          'paint': {
+            'circle-color': '#C00808',
+            'circle-radius': 8,
+            'circle-stroke-width': 0,
+            // 'circle-stroke-color': '#ffffff'
+          }
+        });
+      })
+    },
     reCreate(){
       console.log("remove")
       this.map.remove();
-      this.createMap2();
+      if("select" in this.getMapData_2){
+        this.createMap2()
+      }
+      else if ("select_2" in this.getMapData_2){
+        this.createMap3();
+      }
+
     },
     reSizeMap(){
       console.log(document.getElementById(this.container).parentNode);
