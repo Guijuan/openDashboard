@@ -34,9 +34,10 @@ export default class BlueComponent {
     this.filterAttributeName='' //
     this.filterString = ""
     this.filterType='=='
+    this.sourceData = []
     this.filterSource = null
     this.filterTarget = null
-
+    this.filterStyle = {}
 
     for (let key in options) {
       //deep copy
@@ -286,8 +287,8 @@ export default class BlueComponent {
           return d.y
         }
       })
-      .attr('width', 12)
-      .attr('height', 12)
+      .attr('width', 10)
+      .attr('height', 10)
 
     this.container
       .selectAll('portname')
@@ -332,8 +333,8 @@ export default class BlueComponent {
         d.y = 20 + (i + 1) * 30
         return d.y
       })
-      .attr('width', 12)
-      .attr('height', 12)
+      .attr('width', 10)
+      .attr('height', 10)
 
     this.container
       .selectAll('portname')
@@ -343,7 +344,7 @@ export default class BlueComponent {
       .attr('class', 'portname')
       .attr("text-anchor", "end")
       .attr('alignment-baseline', 'central')
-      .attr('x', this.width - 30)
+      .attr('x', this.width - 25)
       .attr('y', function (d, i) {
         return d.y+5
       })
@@ -386,12 +387,12 @@ export default class BlueComponent {
     let that = this
     this.container
       .append('rect')
-      .attr('width', 110)
+      .attr('width', 50)
       .attr('height', 30)
-      .attr('x', this.width-140)
+      .attr('x', this.width-120)
       .attr('y', 40)
       .attr('fill', '#f2f2f2')
-      .style('border-radius', '5px')
+      .style('border-radius', '10px')
       .on('mouseenter', function (e, d){
         let elem = d3.select(this)
         elem.attr('stroke', '#828d96')
@@ -405,10 +406,11 @@ export default class BlueComponent {
         that.drawSettingPanel()
       })
     this.container.append('text')
-      .attr('x', 80)
+      .attr('x', 70)
       .attr('y', 60)
       .text('Setting')
       .attr('id', 'filterText')
+      .style('pointer-events', 'none')
   }
   drawSettingPanel(){
     let that = this
@@ -417,16 +419,13 @@ export default class BlueComponent {
     width: 200px;position: absolute;right: 10px;height: auto;
     padding: 10px;border-radius:5px;background: lightgrey">
       <svg onclick="document.getElementById('filterSettingPanel').remove()"
-      style="position: absolute;right: 5px;top: 5px" t="1685000663031" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2385" width="20" height="20"><path d="M312.13091 310.48787a46.545021 46.545021 0 0 1 65.814659 0l133.816935 133.933298 133.58421-133.351485a46.312296 46.312296 0 0 1 65.628479 0 45.381395 45.381395 0 0 1-0.9309 64.813942l-133.11876 133.77039 133.11876 133.118759a46.545021 46.545021 0 0 1 0 65.81466 45.497758 45.497758 0 0 1-64.930304-1.023991l-133.11876-132.653309-133.118759 133.910025a46.568293 46.568293 0 1 1-65.931022-65.81466L446.36675 509.677287l-134.23584-133.49112a46.545021 46.545021 0 0 1 0-65.698297zM511.995229 1023.999767a508.248355 508.248355 0 0 1-293.349994-93.299494 46.405386 46.405386 0 0 1-34.21059-44.68322l-0.418905-4.305414a46.405386 46.405386 0 0 1 80.592703-31.557525 420.534263 420.534263 0 1 0-132.653309-160.161416l-7.540293 7.540293a46.545021 46.545021 0 0 1 29.02082 43.077417l0.442178 4.328687a46.428658 46.428658 0 0 1-91.088606 12.776608A511.995229 511.995229 0 1 1 511.995229 1023.999767z" fill="#d81e06" p-id="2386"></path></svg>
+      style="position: absolute;right: 5px;top: 5px" t="1685000663031" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2385" width="20" height="20"><path d="M312.13091 310.48787a46.545021 46.545021 0 0 1 65.814659 0l133.816935 133.933298 133.58421-133.351485a46.312296 46.312296 0 0 1 65.628479 0 45.381395 45.381395 0 0 1-0.9309 64.813942l-133.11876 133.77039 133.11876 133.118759a46.545021 46.545021 0 0 1 0 65.81466 45.497758 45.497758 0 0 1-64.930304-1.023991l-133.11876-132.653309-133.118759 133.910025a46.568293 46.568293 0 1 1-65.931022-65.81466L446.36675 509.677287l-134.23584-133.49112a46.545021 46.545021 0 0 1 0-65.698297zM511.995229 1023.999767a508.248355 508.248355 0 0 1-293.349994-93.299494 46.405386 46.405386 0 0 1-34.21059-44.68322l-0.418905-4.305414a46.405386 46.405386 0 0 1 80.592703-31.557525 420.534263 420.534263 0 1 0-132.653309-160.161416l-7.540293 7.540293a46.545021 46.545021 0 0 1 29.02082 43.077417l0.442178 4.328687a46.428658 46.428658 0 0 1-91.088606 12.776608A511.995229 511.995229 0 1 1 511.995229 1023.999767z" fill="#d81e06" p-id="2386"></path>
+      </svg>
+      <h3>Selections</h3>
+      <hr/>
       <div style="display: flex;flex-direction: column">
         <span>Column</span>
         <div class="column-selector"></div>
-      </div>
-      <div style="display: flex;flex-direction: column">
-        <span>Color</span>
-        <input type="color" id="attr-color"></input>
-        <span>Opacity</span>
-        <input id="attr-opacity"></input>
       </div>
       <div style="display: flex;flex-direction: column">
         <span>Filter Type</span>
@@ -437,14 +436,52 @@ export default class BlueComponent {
           <option value="equalTo">equalTo</option>
         </select>
       </div>
+      <h3 style="margin-top: 10px">Applications</h3>
+      <hr/>
+      <div style="display: flex;flex-direction: column">
+        <div style="display: flex;margin-right: 1rem;margin-bottom: 5px">
+          <span>Selected Fill</span>
+          <input type="color" id="color_selected" value="#ffffff"></input>
+        </div>
+        <div  style="display: flex;margin-right: 1rem;margin-bottom: 5px">
+          <span>Unselected Fill</span>
+          <div id="unselected_colors_box">
+           <input  type="color" id="color_unselected"></input>
+          </div>
+        </div>
+         <div style="display: flex;margin-right: 1rem;">
+          <span>Opacity</span>
+          <input id="attr-opacity" style="width: 50px" value="0.3"></input>
+        </div>
+      </div>
       <hr />
       <div id="filterDom"></div>
       <button style="margin-top: 10px" id="filterSubmit">Confirm</button>
     </div>
     `
+
     that.filterType = 'range'
     d3.select('#preview').append('div')
       .html(html)
+    function createColorElem(num){
+      let dom = document.getElementById('unselected_colors_box')
+      dom.innerHTML = ""
+      let colorDiv = document.createElement('div')
+      colorDiv.style.backgroundColor = '#f2f2f2'
+      colorDiv.style.borderRadius = '5px'
+      colorDiv.style.flexFlow = "wrap"
+      let colors = ['#c8d65b','#c12592','#b0832c','#5200ae','#00ae8f','#0a71d5','#d86422']
+      for(let i=0;i<num;i++){
+        let colorEle = document.createElement('input')
+        colorEle.setAttribute('type', 'color')
+        colorEle.style.width = '20px'
+        colorEle.style.height = '20px'
+        colorEle.setAttribute('class','unselected_color')
+        colorEle.setAttribute('value', colors[i])
+        colorDiv.appendChild(colorEle)
+      }
+      dom.appendChild(colorDiv)
+    }
     d3.select('#filterType').on('change', function(e){
       let select = d3.select(this)
       let selected = select.property('value')
@@ -462,9 +499,18 @@ export default class BlueComponent {
       let filter = {}
       d3.select('#filterSubmit')
         .on('click', function(e) {
+          let colors = document.getElementsByClassName('unselected_color')
+          colors = [...colors]
+          let ccs = colors.map(function(item){return item.value})
+          that.filterStyle.unselected = ccs
+          let secColor = document.getElementById('color_selected')
+          that.filterStyle.selected = secColor.value
+          let opacity = document.getElementById('attr-opacity')
+          that.filterStyle.opacity = opacity.value
           d3.select('#filterSettingPanel').remove()
         })
     })
+
     //动态添加select元素
     let selectEle = document.createElement('select')
     this.filterAttributeName = this.filterAttrs[0]||""
@@ -478,7 +524,18 @@ export default class BlueComponent {
     document.querySelector('.column-selector').appendChild(selectEle)
     selectEle.addEventListener('change', function (){
       that.filterAttributeName = this.value
+      const groupedStudents = that.sourceData.reduce((result, t) => {
+        const grade = t[that.filterAttributeName];
+        if (!result[grade]) {
+          result[grade] = []; // 创建新的数组用于存放分组后的对象
+        }
+        result[grade].push(t); // 将对象添加到相应的组中
+        return result;
+      }, {});
+      let keys = Object.keys(groupedStudents)
+      createColorElem(keys.length)
     })
+
   }
 
   drawTitle() {
