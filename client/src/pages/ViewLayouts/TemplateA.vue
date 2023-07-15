@@ -1107,7 +1107,8 @@ export default{
         // // console.log('reSize---------------config---------------1',this.$store.state.model_config_text)
         // console.log('reGenerateGraphBySize---重绘');
         let data = this.layoutObj["config"][name]["data"]
-        this.setConfig(data)
+        let hasStyle =  this.layoutObj["config"][name].filterStyle
+        this.setConfig(data, hasStyle)
         console.log(data)
         vegaEmbed(`#A-${name}`, data).then(res=>{
             this.addChartEvent(res.view, name)
@@ -1158,9 +1159,16 @@ export default{
         return cases;
       }
     },
-    setConfig(result){
+    setConfig(result, hasStyle){
       result.layer[0]['selection'] = {"pts": {"type": "single", "encodings": ["y"]}}
       result.layer[0]['encoding']["opacity"] = {"condition": {"selection": "pts", "value": 1}, "value": "0.3"}
+      if(hasStyle){
+        result.layer[0]['encoding']["opacity"] = {"condition": {"selection": "pts", "value": 1}, "value": hasStyle.opacity}
+        result.layer[0]['encoding']["fill"] = {"condition": {"selection": "pts", "value": hasStyle.selected}}
+        result.layer[0].encoding.fill = {"scale": {
+            "domain":['AFRO','AMRO','EMRO','EURO','Other','SEARO','WPRO'],
+            "range": hasStyle.unselected}, "field": "region"}
+      }
       // if (result.layer[0].encoding.stacked) {
       //   result.layer[0].encoding.sacles = {
       //     "name": "color",
