@@ -982,6 +982,9 @@ export default {
       if(target.parent == "Text"){
         this.vegaObjectObj[vegaObjKey]['chartType'] = 'Text';
       }
+      if(target.parent == "CTable"){
+        this.vegaObjectObj[vegaObjKey]['chartType'] = 'CTable';
+      }
       if (target.parent == 'TextChart') {
         this.vegaObjectObj[vegaObjKey]['chartType'] = 'TextChart';
         let data = this.vegaObjectObj[vegaObjKey].getMapData();

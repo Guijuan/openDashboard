@@ -42,7 +42,7 @@
     "inPorts": [
       {
         "name": "x",
-        "text": "Cols",
+        "text": "Data",
         "attr": "encoding",
         "type": "in",
         "multiple": true
@@ -58,7 +58,7 @@
     "outPorts": [
       {
         "name": "out",
-        "text": "selection",
+        "text": "Select",
         "attr": "field",
         "type": "out"
       }

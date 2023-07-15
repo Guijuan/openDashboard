@@ -814,25 +814,119 @@ export default{
           // console.log(that.covidSourceData.filter(item => {
           //   return item["Country_Region"] == "China"
           // }));
-          that.layoutObj["config"][d]["data"]["data"]["values"] = that.covidSourceData.filter(item => {
-            return item["Country_Region"] == that.example_3_select
-          })
+          // that.layoutObj["config"][d]["data"]["data"]["values"] = that.covidSourceData.filter(item => {
+          //   return item["Country_Region"] == that.example_3_select
+          // })
           // that.ttlayout.push({"x":charts.indexOf(d)*2+2,"y":0,"w":4,"h":4,"i":charts.indexOf(d).toString(), static: false, name:`A-${d}`,component:null})
           console.log(that.layoutObj["config"][d]["data"]);
-          // that.layoutObj["config"][d]["data"]['layer'][0]['mark']['fill'] = color
-          that.layoutObj["config"][d]["data"]["layer"]["0"]["encoding"]["x"]["axis"]={
-            "labels": false,
-            "labelColor": "#ffffff",
-            "domainColor":"#ffffff",
-            "titleColor":"#ffffff"
+          try{
+            // that.layoutObj["config"][d]["data"]['layer'][0]['mark']['fill'] = color
+            that.layoutObj["config"][d]["data"]["layer"]["0"]["encoding"]["x"]["axis"]={
+              "labels": false,
+              "labelColor": "#ffffff",
+              "domainColor":"#ffffff",
+              "titleColor":"#ffffff"
+            }
+            that.layoutObj["config"][d]["data"]["layer"]["0"]["encoding"]["y"]["axis"]={
+              "labelColor": "#ffffff",
+              "domainColor":"#ffffff",
+              "titleColor":"#ffffff"
+            }
+            that.layoutObj["config"][d]["data"]["background"] = "#2B2B2B"
+            that.layoutObj["config"][d]["data"]['title']["color"] = "#ffffff"
+            console.log(that.layoutObj["config"][d]["data"]);
+          }catch (e) {
+
           }
-          that.layoutObj["config"][d]["data"]["layer"]["0"]["encoding"]["y"]["axis"]={
-            "labelColor": "#ffffff",
-            "domainColor":"#ffffff",
-            "titleColor":"#ffffff"
+          if(that.layoutObj["config"][d]["chartType"]=="CTable"){
+            // 数据重新处理
+            that.layoutObj["config"][d]["data"]["data"]["values"] = that.layoutObj["config"][d]["data"]["data"]["values"].slice(0,100)
+            let item_data = []
+            for(let i=0;i<that.layoutObj["config"][d]["data"]["data"]["values"].length;i++){
+              // that.layoutObj["config"][d]["data"]["data"]["values"][i]["type"] = "Deaths"
+              debugger;
+              let item_data_row_1 = {}
+              console.log(that.layoutObj["config"][d]["data"]["data"]["values"][i]["Country_Region"]);
+              item_data_row_1["Country_Region"] = that.layoutObj["config"][d]["data"]["data"]["values"][i]["Country_Region"]
+              item_data_row_1["types"] = "Deaths"
+              item_data_row_1["Value"] = Number(that.layoutObj["config"][d]["data"]["data"]["values"][i]["Deaths"])
+
+              let item_data_row_2 = {}
+              item_data_row_2["Country_Region"] = that.layoutObj["config"][d]["data"]["data"]["values"][i]["Country_Region"]
+              item_data_row_2["types"] = "Confirmed"
+              item_data_row_2["Value"] = that.layoutObj["config"][d]["data"]["data"]["values"][i]["Confirmed"]
+
+              let item_data_row_3 = {}
+              item_data_row_3["Country_Region"] = that.layoutObj["config"][d]["data"]["data"]["values"][i]["Country_Region"]
+              item_data_row_3["types"] = "Recovered"
+              item_data_row_3["Value"] = that.layoutObj["config"][d]["data"]["data"]["values"][i]["Recovered"]
+
+              item_data.push(item_data_row_1)
+              item_data.push(item_data_row_2)
+              item_data.push(item_data_row_3)
+            }
+            that.layoutObj["config"][d]["data"]["data"]["values"] = item_data
+            // that.layoutObj["config"][d]["data"]["data"]["values"] = [
+            //   {"types": "Deaths", "Country_Region": "US", "Value": 50,"sdad":123},
+            //   {"types": "Deaths", "Country_Region": "UkS", "Value": 70,"sdad":123}
+            // ]
+            // that.layoutObj["config"][d]["data"]["data"]["values"] =[
+            //   {"Column": "Deaths", "Row": "US", "Value": 2201,"sdad":123},
+            //   {"Column": "Confirmed", "Row": "US1", "Value": 52513},
+            //   {"Column": "Recovered", "Row": "US2", "Value": 41727},
+            // ]
+            // 图形绘制
+            that.layoutObj["config"][d]["data"]["transform"] = [
+              {
+                "aggregate": [{"op": "sum", "field": "Value", "as": "total_value"}],
+                "groupby": ["Country_Region", "types"]
+              }
+            ]
+            that.layoutObj["config"][d]["data"]["$schema"] = "https://vega.github.io/schema/vega-lite/v5.json"
+            that.layoutObj["config"][d]["data"]["encoding"] = {
+              "y": {"field": "Country_Region", "type": "ordinal"},
+              "x": {"field": "types", "type": "ordinal"}
+            }
+
+            that.layoutObj["config"][d]["data"]["layer"] = [
+              {
+                "mark": "rect",
+                "encoding": {
+                  "color": {
+                    "field": "total_value",
+                    "type": "quantitative",
+                    "title": "Count of Records",
+                    "legend":null
+                  }
+                }
+              },
+              {
+                "mark": "text",
+                "encoding": {
+                  "text": {"field": "total_value", "type": "quantitative"},
+                  "color": {
+                    "condition": {"test": "datum['total_value'] < 40", "value": "black"},
+                    "value": "white"
+                  }
+                }
+              }
+            ]
+
+            // that.layoutObj["config"][d]["data"]["mark"] = {"type": "rect"}
+            // that.layoutObj["config"][d]["data"]["encoding"] = {
+            //   "x": {"field": "type", "type": "ordinal"},
+            //   "y": {"field": "Country_Region", "type": "ordinal"},
+            //   "color": {"field": "num", "type": "quantitative"},
+            //   "tooltip": [
+            //     {"field": "type", "type": "ordinal"},
+            //     {"field": "Country_Region", "type": "ordinal"},
+            //     {"field": "num", "type": "quantitative"}
+            //   ]
+            // }
+            that.layoutObj["config"][d]["data"]["config"] = {
+              "axis": {"grid": true, "tickBand": "extent"}
+            }
           }
-          that.layoutObj["config"][d]["data"]["background"] = "#2B2B2B"
-          that.layoutObj["config"][d]["data"]['title']["color"] = "#ffffff"
           console.log(that.layoutObj["config"][d]["data"]);
           that.ttlayout.push({"x":charts.indexOf(d)*2+2,"y":0,"w":4,"h":4,"i":charts.indexOf(d).toString(), static: false, name:`A-${d}`,component:null})
           vegaEmbed("#" + `A-${d}`, that.layoutObj["config"][d]["data"])
