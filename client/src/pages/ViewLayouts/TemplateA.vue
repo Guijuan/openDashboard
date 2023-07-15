@@ -615,48 +615,118 @@ export default{
       formContainer.style.width=`${width}px`;
       formContainer.style.height=`${height}px`;
     },
+    // 弃用
+    // createSelect2(width=200,height=400,data){
+    //   let that = this;
+    //   let data2 = data.slice(0,100)
+    //   //创建csse选项卡
+    //   let csse_div = document.createElement("div")
+    //   csse_div.setAttribute("id","csse_div")
+    //   // 创建每个单独选项
+    //   for(let item of data2){
+    //     let item_div = document.createElement("div")
+    //     item_div.setAttribute("class","item_csse_div")
+    //     item_div.setAttribute("id",`${item["Country_Region"]}-${item["Province_State"]}`)
+    //     // 创建文本内容
+    //     // p1数据处理
+    //     let p1 = document.createElement("p")
+    //     let p1_strong = document.createElement("strong")
+    //     let p1_strong_span = document.createElement("span")
+    //     p1_strong_span.innerHTML = `${item["Country_Region"]}-${item["Province_State"]}`
+    //     p1_strong_span.style.fontSize="16px";
+    //     p1_strong_span.style.color="#FFFFFF"
+    //     p1.appendChild(p1_strong)
+    //     p1_strong.appendChild(p1_strong_span)
+    //
+    //     // p2数据处理
+    //     let p2 = document.createElement("p")
+    //     let p2_span1 = document.createElement("span")
+    //     p2_span1.innerHTML = "Day: "
+    //     p2_span1.style.color = "#d6d6d6"
+    //
+    //     let p2_strong = document.createElement("strong")
+    //     let p2_strong_span1 = document.createElement("span")
+    //     let p2_strong_span2 = document.createElement("span")
+    //     p2_strong_span1.innerHTML = item["Confirmed"]
+    //     p2_strong_span1.style.color = "#ff0000"
+    //     p2_strong_span2.innerHTML = `|${item["Deaths"]}`
+    //     p2_strong_span2.style.color = "#ffffff"
+    //     p2.appendChild(p2_span1)
+    //     p2.appendChild(p2_strong)
+    //     p2_strong.appendChild(p2_strong_span1)
+    //     p2_strong.appendChild(p2_strong_span2)
+    //
+    //     // 为div添加点击事件
+    //     item_div.addEventListener("click",function(e){
+    //       try{
+    //         console.log(that.csse_select_name);
+    //         document.getElementById(that.csse_select_name).style.boxShadow = ""
+    //       }catch (e) {
+    //
+    //       }
+    //       that.csse_select_name = this.id
+    //       let div = document.getElementById(this.id)
+    //       console.log(div)
+    //       //box-shadow:inset 8px 0 0 0 blue;
+    //       this.style.boxShadow = "inset 8px 0 0 0 #009AF2"
+    //       that.example_3_select = this.id.split('-')[0]
+    //       // 重新绘制
+    //       for(let d of that.example_3_charts){
+    //         debugger;
+    //         that.layoutObj["config"][d]["data"]["data"]["values"] = that.covidSourceData.filter(item => {
+    //           return item["Country_Region"] == that.example_3_select
+    //         })
+    //         vegaEmbed("#" + `A-${d}`, that.layoutObj["config"][d]["data"])
+    //       }
+    //     })
+    //     // 添加
+    //     item_div.appendChild(p1)
+    //     item_div.appendChild(p2)
+    //     csse_div.appendChild(item_div)
+    //   }
+    //
+    //   // 插入
+    //   const formContainer = document.getElementById('select');
+    //   csse_div.style.width="200px"
+    //   csse_div.style.height="200px"
+    //   formContainer.appendChild(csse_div);
+    // },
     createSelect2(width=200,height=400,data){
       let that = this;
       let data2 = data.slice(0,100)
-      //创建csse选项卡
-      let csse_div = document.createElement("div")
-      csse_div.setAttribute("id","csse_div")
-      // 创建每个单独选项
+      // 创建表格
+      let table = document.createElement("table")
+      let thead = document.createElement("thead")
+      let tbody = document.createElement("tbody")
+
+      table.appendChild(thead)
+      table.appendChild(tbody)
+      // 添加表头
+      let row_1 = document.createElement("tr")
+      let head_1 = document.createElement("th")
+      let head_2 = document.createElement("th")
+      let head_3 = document.createElement("th")
+      head_1.innerHTML = "country-Province_State"
+      head_2.innerHTML = "Confirmed"
+      head_3.innerHTML = "Deaths"
+      row_1.appendChild(head_1)
+      row_1.appendChild(head_2)
+      row_1.appendChild(head_3)
+      thead.appendChild(row_1)
+
       for(let item of data2){
-        let item_div = document.createElement("div")
-        item_div.setAttribute("class","item_csse_div")
-        item_div.setAttribute("id",`${item["Country_Region"]}-${item["Province_State"]}`)
-        // 创建文本内容
-        // p1数据处理
-        let p1 = document.createElement("p")
-        let p1_strong = document.createElement("strong")
-        let p1_strong_span = document.createElement("span")
-        p1_strong_span.innerHTML = `${item["Country_Region"]}-${item["Province_State"]}`
-        p1_strong_span.style.fontSize="16px";
-        p1_strong_span.style.color="#FFFFFF"
-        p1.appendChild(p1_strong)
-        p1_strong.appendChild(p1_strong_span)
-
-        // p2数据处理
-        let p2 = document.createElement("p")
-        let p2_span1 = document.createElement("span")
-        p2_span1.innerHTML = "Day: "
-        p2_span1.style.color = "#d6d6d6"
-
-        let p2_strong = document.createElement("strong")
-        let p2_strong_span1 = document.createElement("span")
-        let p2_strong_span2 = document.createElement("span")
-        p2_strong_span1.innerHTML = item["Confirmed"]
-        p2_strong_span1.style.color = "#ff0000"
-        p2_strong_span2.innerHTML = `|${item["Deaths"]}`
-        p2_strong_span2.style.color = "#ffffff"
-        p2.appendChild(p2_span1)
-        p2.appendChild(p2_strong)
-        p2_strong.appendChild(p2_strong_span1)
-        p2_strong.appendChild(p2_strong_span2)
-
-        // 为div添加点击事件
-        item_div.addEventListener("click",function(e){
+        let row = document.createElement("tr")
+        let row_data_1 = document.createElement("td")
+        let row_data_2 = document.createElement("td")
+        let row_data_3 = document.createElement("td")
+        row_data_1.innerHTML = `${item["Country_Region"]}-${item["Province_State"]}`
+        row_data_2.innerHTML = item["Confirmed"]
+        row_data_3.innerHTML = item["Deaths"]
+        row.appendChild(row_data_1)
+        row.appendChild(row_data_2)
+        row.appendChild(row_data_3)
+        row.setAttribute("id",`${item["Country_Region"]}-${item["Province_State"]}`)
+        row.onclick = function(e){
           try{
             console.log(that.csse_select_name);
             document.getElementById(that.csse_select_name).style.boxShadow = ""
@@ -664,9 +734,6 @@ export default{
 
           }
           that.csse_select_name = this.id
-          let div = document.getElementById(this.id)
-          console.log(div)
-          //box-shadow:inset 8px 0 0 0 blue;
           this.style.boxShadow = "inset 8px 0 0 0 #009AF2"
           that.example_3_select = this.id.split('-')[0]
           // 重新绘制
@@ -677,18 +744,19 @@ export default{
             })
             vegaEmbed("#" + `A-${d}`, that.layoutObj["config"][d]["data"])
           }
-        })
-        // 添加
-        item_div.appendChild(p1)
-        item_div.appendChild(p2)
-        csse_div.appendChild(item_div)
+        }
+        tbody.appendChild(row)
       }
-
       // 插入
       const formContainer = document.getElementById('select');
-      csse_div.style.width="200px"
-      csse_div.style.height="200px"
-      formContainer.appendChild(csse_div);
+      let container_100 = document.getElementById("100")
+      let id_100_height = container_100.clientHeight
+      let id_100_width = container_100.clientWidth;
+
+      formContainer.style.height = `${id_100_height}px`
+      formContainer.style.width = `${id_100_width}px`
+      formContainer.style.overflow = "auto"
+      formContainer.appendChild(table);
     },
     generateGraph(color='#1F9CC9'){
       let that = this
@@ -1254,6 +1322,14 @@ p{
   font-size:1em;
   background-color: #2B2B2B!important;
   color: white!important;
+}
+table{
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+th, td{
+  padding: 10px 20px;
+  border: 1px solid #000;
 }
 </style>
 

@@ -42,9 +42,10 @@
     "inPorts": [
       {
         "name": "x",
-        "text": "data",
+        "text": "Cols",
         "attr": "encoding",
-        "type": "in"
+        "type": "in",
+        "multiple": true
       },
       {
         "name": "filter",
@@ -57,7 +58,7 @@
     "outPorts": [
       {
         "name": "out",
-        "text": "Select",
+        "text": "selection",
         "attr": "field",
         "type": "out"
       }

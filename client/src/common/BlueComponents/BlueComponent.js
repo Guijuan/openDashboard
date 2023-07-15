@@ -253,7 +253,6 @@ export default class BlueComponent {
         return d.y
       })
       .attr('r', 6)
-
     this.container
       .selectAll('port')
       .data(this.inPorts)
@@ -271,9 +270,21 @@ export default class BlueComponent {
         return d.x
       })
       .attr('y', function (d, i) {
-        d.y = cury-10 + (i + 1) * 30
-        cury = d.y
-        return d.y
+        if(that.container
+          .selectAll('port')
+          .data(that.inPorts)
+          .enter()
+          .filter(function(e){
+            if(!e.multiple) return true
+          })["_groups"][0].length==0){
+          d.y = 20 + (i + 1) * 30
+          cury = d.y
+          return d.y
+        }else{
+          d.y = cury-10 + (i + 1) * 30
+          cury = d.y
+          return d.y
+        }
       })
       .attr('width', 12)
       .attr('height', 12)
