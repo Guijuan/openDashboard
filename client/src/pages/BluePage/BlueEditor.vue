@@ -449,8 +449,9 @@ export default {
         //boundind the click event to the circles which represent the ports in component
         //after click the circle, there will new a line in canvas
         com.getAllCircles().on("click", function (d) {
+          //这儿可以设置线条的颜色
           let coverType = com.getType(),
-            coverColor = that.lineColor[coverType],
+            coverColor = d.text === 'Selection'?that.lineColor['Filter']:that.lineColor[coverType],
             params = com.getParmas(),
             x = d.parentX + d.x,
             y = d.parentY + d.y,
@@ -663,7 +664,6 @@ export default {
         this.component = () => import(`../../common/DataListBar/${meta.type}`)
       } else {
         this.CompositeCom = false
-        debugger;
         let result = this.vegaObjectObj[meta["id"]].getOutputForced();
         console.log(result)
         if (result.layer[0].encoding.stacked) {
@@ -1218,6 +1218,7 @@ export default {
       let connectionsDict = {}
 
       for (let i = 0; i < that.blueLines.length; i++) {
+        console.log(that.blueLines[i])
         let lineInfo = that.blueLines[i].getConnectInfo()
         let _name = lineInfo.sourceId + '_' + lineInfo.targetId
         if (!(_name in connectionsDict)) {
@@ -1545,21 +1546,20 @@ export default {
     },
     openFullScreen: function () {
       //el-icon-loading
-      const loading = this.$loading({
-        lock: true,
-        text: 'Loading',
-        spinner: 'el-icon-loading',
-        background: 'rgba(255, 255, 255, 1)'
-      });
-      setTimeout(() => {
-        loading.close();
-      }, 2000);
+      // const loading = this.$loading({
+      //   lock: true,
+      //   text: 'Loading',
+      //   spinner: 'el-icon-loading',
+      //   background: 'rgba(255, 255, 255, 1)'
+      // });
+      // setTimeout(() => {
+      //   loading.close();
+      // }, 2000);
     },
     downloadSetting: function () {
       let that = this
-      console.log(that.$store.state.model_config_text);
       let req = async function () {
-        let key = Object.keys(that.chartLayoutObj)
+        // let key = Object.keys(that.chartLayoutObj)
         let config = {
           "data": that.$store.state.model_config_text,
           "template":  "templateA"

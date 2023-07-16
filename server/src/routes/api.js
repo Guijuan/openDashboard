@@ -230,7 +230,6 @@ router.post('/downloadSetting', function(req, res) {
     let zipFileName = template + ".zip"
     let configJsonFile = "../server/src/download/app/" + template + "/config.json"
     let fileObj = req.body.data
-    console.log(fileObj);
     res.setHeader("Content-Type", "application/json");
 
     if(template == "templateA" || template == "templateB"){

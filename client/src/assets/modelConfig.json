@@ -532,7 +532,7 @@
       {
         "name": "out",
         "text": "Output",
-        "attr": "filter",
+        "attr": "Filter",
         "type": "out"
       }
     ],

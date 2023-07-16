@@ -9,7 +9,7 @@
 export default {
   name: 'App',
   created(){
-    this.openFullScreen()
+    // this.openFullScreen()
   },
   methods:{
     openFullScreen: function(){

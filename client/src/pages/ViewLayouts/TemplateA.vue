@@ -245,8 +245,8 @@ export default{
   },
   mounted(){
     let that = this;
-    console.log("template开始渲染")
-    console.log('this.$store.state.ttlayout',this.ttlayout);
+    // console.log("template开始渲染")
+    // console.log('this.$store.state.ttlayout',this.ttlayout);
     this.$store.commit("pushToTemplateData", {baseData: this.baseData, i: "template" });
     this.$store.commit("changeSelectId", "template");
     try{
@@ -329,7 +329,8 @@ export default{
       console.log('layoutObj',this.layoutObj)
       this.reGenerateGraphBySize(i,newWPx,newHPx)
       console.log(this.$refs);
-      this.$refs['MapChart'][0].reSizeMap();
+      debugger
+      // this.$refs['MapChart'][0].reSizeMap();
       // console.log(document.getElementById(this.container).parentNode);
     },
     // 选中焦点时的触发事件，之后要改变setting状态栏
@@ -1115,10 +1116,10 @@ export default{
         })
         console.log('generateGraph',that.layoutObj);
       }
-      console.log("that.$store.state.model_config_text",that.$store.state.model_config_text)
+      // console.log("that.$store.state.model_config_text",that.$store.state.model_config_text)
       // console.log(that.$store.state.model_config_text['Layout-0'][name]['data']['layer'][0]['height']);
       // console.log('reSize---------------config---------------1',this.$store.state.model_config_text)
-      console.log('reGenerateGraphBySize---重绘');
+      // console.log('reGenerateGraphBySize---重绘');
     },
     setWHOText(width,height){
       const textContainer = document.getElementById('WHOText');
@@ -1169,18 +1170,6 @@ export default{
             "domain":['AFRO','AMRO','EMRO','EURO','Other','SEARO','WPRO'],
             "range": hasStyle.unselected}, "field": "region"}
       }
-      // if (result.layer[0].encoding.stacked) {
-      //   result.layer[0].encoding.sacles = {
-      //     "name": "color",
-      //     "type": "nominal",
-      //     // "domain": {"field": result.layer[0].encoding.stacked.field, "sort": true},
-      //
-      //   }
-      //   result.layer[0].encoding.fill = {"scale": {
-      //       "domain":['AFRO','AMRO','EMRO','EURO','Other','SEARO','WPRO'],
-      //       "range": ['#c8d65b','#c12592','#b0832c','#5200ae','#00ae8f','#0a71d5','#d86422']
-      //     }, "field": "region"}
-      // }
     },
     addChartEvent(view, name){
       let that = this

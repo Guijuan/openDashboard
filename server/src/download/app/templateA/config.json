@@ -1,22 +1,22 @@
 {
   "Chart-0": {
     "data": {
-      "width": 403,
-      "height": 310,
+      "width": 507,
+      "height": 350,
       "layer": [
         {
           "encoding": {
             "x": {
-              "field": "cases",
-              "type": "quantitative"
-            },
-            "y": {
               "field": "region",
               "type": "ordinal"
+            },
+            "y": {
+              "field": "cases",
+              "type": "quantitative"
             }
           },
-          "width": 403,
-          "height": 403,
+          "width": 507,
+          "height": 507,
           "mark": {
             "type": "bar",
             "fill": "#FCCA46",
@@ -83,16 +83,16 @@
       "Barchart": {
         "encoding": {
           "x": {
-            "field": "cases",
-            "type": "quantitative"
-          },
-          "y": {
             "field": "region",
             "type": "ordinal"
+          },
+          "y": {
+            "field": "cases",
+            "type": "quantitative"
           }
         },
-        "width": 987,
-        "height": 244,
+        "width": 1185,
+        "height": 293,
         "mark": {
           "type": "bar",
           "fill": "#FCCA46",
@@ -107,8 +107,8 @@
     "isFilterSource": true,
     "filterTargetData": {
       "data": {
-        "width": 987,
-        "height": 244,
+        "width": 1185,
+        "height": 293,
         "layer": [
           {
             "encoding": {
@@ -120,13 +120,13 @@
                 "field": "cases",
                 "type": "quantitative"
               },
-              "stacked": {
+              "color": {
                 "field": "region",
                 "type": "ordinal"
               }
             },
-            "width": 987,
-            "height": 244,
+            "width": 1185,
+            "height": 293,
             "mark": {
               "type": "bar",
               "fill": "#FCCA46",
@@ -1885,13 +1885,13 @@
               "field": "cases",
               "type": "quantitative"
             },
-            "stacked": {
+            "color": {
               "field": "region",
               "type": "ordinal"
             }
           },
-          "width": 987,
-          "height": 244,
+          "width": 1185,
+          "height": 293,
           "mark": {
             "type": "bar",
             "fill": "#FCCA46",
@@ -1904,13 +1904,39 @@
       "filterTarget": "",
       "filterType": "",
       "isFilterSource": false,
-      "filterTargetData": null
+      "filterTargetData": null,
+      "filterStyle": {
+        "unselected": [
+          "#c8d65b",
+          "#c12592",
+          "#b0832c",
+          "#5200ae",
+          "#00ae8f",
+          "#0a71d5",
+          "#d86422"
+        ],
+        "selected": "#ffffff",
+        "opacity": "0.3"
+      }
+    },
+    "filterStyle": {
+      "unselected": [
+        "#c8d65b",
+        "#c12592",
+        "#b0832c",
+        "#5200ae",
+        "#00ae8f",
+        "#0a71d5",
+        "#d86422"
+      ],
+      "selected": "#ffffff",
+      "opacity": "0.3"
     }
   },
   "Chart-1": {
     "data": {
-      "width": 1127,
-      "height": 310,
+      "width": 1023,
+      "height": 350,
       "layer": [
         {
           "encoding": {
@@ -1922,13 +1948,13 @@
               "field": "cases",
               "type": "quantitative"
             },
-            "stacked": {
+            "color": {
               "field": "region",
               "type": "ordinal"
             }
           },
-          "width": 1127,
-          "height": 1127,
+          "width": 1023,
+          "height": 1023,
           "mark": {
             "type": "bar",
             "fill": "#FCCA46",
@@ -3674,7 +3700,7 @@
           }
         ]
       },
-      "x": 423,
+      "x": 527,
       "y": 10
     },
     "config": {},
@@ -3689,13 +3715,13 @@
             "field": "cases",
             "type": "quantitative"
           },
-          "stacked": {
+          "color": {
             "field": "region",
             "type": "ordinal"
           }
         },
-        "width": 987,
-        "height": 244,
+        "width": 1185,
+        "height": 293,
         "mark": {
           "type": "bar",
           "fill": "#FCCA46",
@@ -3708,6 +3734,19 @@
     "filterTarget": "",
     "filterType": "",
     "isFilterSource": false,
-    "filterTargetData": null
+    "filterTargetData": null,
+    "filterStyle": {
+      "unselected": [
+        "#c8d65b",
+        "#c12592",
+        "#b0832c",
+        "#5200ae",
+        "#00ae8f",
+        "#0a71d5",
+        "#d86422"
+      ],
+      "selected": "#ffffff",
+      "opacity": "0.3"
+    }
   }
 }

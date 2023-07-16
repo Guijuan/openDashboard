@@ -109,9 +109,48 @@ var app = new Vue({
 					}
 				}
 				else {
-					vegaEmbed("#" + d, that.layoutObj["config"][d]["data"])
+					that.setConfig(that.layoutObj["config"][d].data, that.layoutObj["config"][d].filterStyle)
+					vegaEmbed("#" + d, that.layoutObj["config"][d]["data"]).then(res=>{
+						that.addChartEvent(res.view, d)
+					})
 				}
 			})
+		},
+		addChartEvent(view, name){
+			let that = this
+			view.addSignalListener('pts', function (e, value) {
+				console.log(value)
+				let vegaModel = that.layoutObj["config"][name]['data']
+				console.log(vegaModel)
+				if(vegaModel.isFilterSource){
+					let target = vegaModel.filterTarget
+					let targetObj = that.layoutObj["config"][target]['data']
+					let data = targetObj.data
+					console.log(data)
+					data.layer[0]['encoding']['opacity']={"condition":{"test":`datum.region=='${value.region[0]}'`,"value":1}, "value":0.3}
+					let dom = document.getElementById(`#-${target}`)
+					dom.innerHTML = ""
+					vegaEmbed(`#-${target}`, data).then(res=>{
+						res.view.addEventListener('click', function (e){
+							console.log(e)
+							data.layer[0]['encoding']['opacity'] = {"condition":{"selection":"pts", "value":1}, "value":0.3}
+							vegaEmbed(`#A-${target}`, data)
+						})
+					})
+				}
+			})
+		},
+		setConfig(result, hasStyle){
+			result.layer[0]['selection'] = {"pts": {"type": "single", "encodings": ["y"]}}
+			result.layer[0]['encoding']["opacity"] = {"condition": {"selection": "pts", "value": 1}, "value": "0.3"}
+			console.log(result)
+			if(hasStyle){
+				result.layer[0]['encoding']["opacity"] = {"condition": {"selection": "pts", "value": 1}, "value": hasStyle.opacity}
+				result.layer[0]['encoding']["fill"] = {"condition": {"selection": "pts", "value": hasStyle.selected}}
+				result.layer[0].encoding.fill = {"scale": {
+						"domain":['AFRO','AMRO','EMRO','EURO','Other','SEARO','WPRO'],
+						"range": hasStyle.unselected}, "field": "region"}
+			}
 		},
 		createMap(container,data) {
 			// console.log(this.getMapData)

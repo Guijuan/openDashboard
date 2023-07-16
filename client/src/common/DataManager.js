@@ -43,7 +43,7 @@ export default class DataManager {
             }
         })
     }
-    
+
     static getDrawDataInfo (dataName) {
         let data = {
             'dataName': dataName
