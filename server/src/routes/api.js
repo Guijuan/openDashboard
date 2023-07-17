@@ -7,7 +7,7 @@ const jsonfile = require("jsonfile")
 
 const dataProcessFunc = require('../models/dataprocess');
 // const dataProcess = dataProcessFunc.dataProcess
-// const dataBuffer = dataProcessFunc.dataBuffer
+const dataBuffer = dataProcessFunc.dataBuffer
 // const fakeDataBaseProcess = dataProcessFunc.fakeDataBaseProcess
 // const dataInitFDB = dataProcessFunc.dataInitFDB
 const hDataBuffer = dataProcessFunc.hDataBuffer
@@ -196,32 +196,33 @@ router.post("/testdata", function(req, res, next){
 
 //TODO
 router.post("/getDrawData", function(req, res, next){
-    // let dataName = req.body.dataName
-    // res.setHeader("Content-Type", "application/json");
-    // //console.log(dataProcess.getDataFromDB())
-    // res.json(dataBuffer.getDrawData(dataName))
+    let dataName = req.body.dataName
+    res.setHeader("Content-Type", "application/json");
+    //console.log(dataProcess.getDataFromDB())
+    res.json(hDataBuffer.getDrawData(dataName))
 })
 //TODO
 router.post("/getDrawDataInfo", function(req, res, next){
-    // let dataName = req.body.dataName,
-    //     data = dataBuffer.getDrawData(dataName),
-    //     attrName = []
-    //
-    // data.forEach((d,i) => {
-    //     const temp = {
-    //         "index": i,
-    //         "name": d.name
-    //     }
-    //     attrName.push(temp)
-    // })
-    //
-    // res.setHeader("Content-Type", "application/json");
-    // //console.log(dataProcess.getDataFromDB())
-    // let obj = {
-    //     "length": data.length,
-    //     "attr": attrName
-    // }
-    // res.json(obj)
+    let dataName = req.body.dataName,
+        data = hDataBuffer.getDrawData(dataName),
+        attrName = []
+
+    data.forEach((d,i) => {
+        const temp = {
+            "index": i,
+            "name": d.name,
+            type:'quantitative'
+        }
+        attrName.push(temp)
+    })
+
+    res.setHeader("Content-Type", "application/json");
+    //console.log(dataProcess.getDataFromDB())
+    let obj = {
+        "length": data.length,
+        "attr": attrName
+    }
+    res.json(obj)
 })
 
 router.post('/downloadSetting', function(req, res) {
@@ -297,5 +298,4 @@ const storeDefaultData = function(){
 
 // dataPrepare(0) //switch prepare data function 0 DB 1 local
 // //storeDefaultData();
-
 module.exports = router;

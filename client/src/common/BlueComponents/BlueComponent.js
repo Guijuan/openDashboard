@@ -450,8 +450,12 @@ export default class BlueComponent {
           </div>
         </div>
          <div style="display: flex;margin-right: 1rem;">
-          <span>Opacity</span>
-          <input id="attr-opacity" style="width: 50px" value="0.3"></input>
+          <span>Selected Opacity</span>
+          <input id="attr-opacity1" style="width: 50px" value="1"></input>
+        </div>
+        <div style="display: flex;margin-right: 1rem;">
+          <span>Unselect Opacity</span>
+          <input id="attr-opacity2" style="width: 50px" value="1"></input>
         </div>
       </div>
       <hr />
@@ -505,8 +509,10 @@ export default class BlueComponent {
           that.filterStyle.unselected = ccs
           let secColor = document.getElementById('color_selected')
           that.filterStyle.selected = secColor.value
-          let opacity = document.getElementById('attr-opacity')
-          that.filterStyle.opacity = opacity.value
+          let opacity1 = document.getElementById('attr-opacity1')
+          that.filterStyle.opacity1 = opacity1.value
+          let opacity2 = document.getElementById('attr-opacity2')
+          that.filterStyle.opacity2 = opacity2.value
           d3.select('#filterSettingPanel').remove()
         })
     })
@@ -548,7 +554,7 @@ export default class BlueComponent {
       .attr('y', 20)
       .attr("text-anchor", "middle")
       .attr('fill', 'white')
-      .text(this.name)
+      .text(this.name === 'Filter'?'Select':this.name)
       // .text(this.name.toUpperCase())
 
     let lineGenerator = d3.line()

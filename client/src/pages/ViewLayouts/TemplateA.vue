@@ -500,7 +500,7 @@ export default{
       let that = this
       for(let key in that.layoutObj["config"]){
         //key chartA chartB
-        that.layoutObj["config"][key]["data"]["background"] = "#242E47"
+        that.layoutObj["config"][key]["data"]["background"] = '#ffffff'//"#242E47"
       }
     },
     setAxisColor(){
@@ -822,20 +822,20 @@ export default{
           console.log(that.layoutObj["config"][d]["data"]);
           try{
             // that.layoutObj["config"][d]["data"]['layer'][0]['mark']['fill'] = color
-            that.layoutObj["config"][d]["data"]["layer"]["0"]["encoding"]["x"]["axis"]={
-              "labels": false,
-              "labelColor": "#ffffff",
-              "domainColor":"#ffffff",
-              "titleColor":"#ffffff"
-            }
-            that.layoutObj["config"][d]["data"]["layer"]["0"]["encoding"]["y"]["axis"]={
-              "labelColor": "#ffffff",
-              "domainColor":"#ffffff",
-              "titleColor":"#ffffff"
-            }
-            that.layoutObj["config"][d]["data"]["background"] = "#2B2B2B"
-            that.layoutObj["config"][d]["data"]['title']["color"] = "#ffffff"
-            console.log(that.layoutObj["config"][d]["data"]);
+            // that.layoutObj["config"][d]["data"]["layer"]["0"]["encoding"]["x"]["axis"]={
+            //   "labels": false,
+            //   "labelColor": "#ffffff",
+            //   "domainColor":"#ffffff",
+            //   "titleColor":"#ffffff"
+            // }
+            // that.layoutObj["config"][d]["data"]["layer"]["0"]["encoding"]["y"]["axis"]={
+            //   "labelColor": "#ffffff",
+            //   "domainColor":"#ffffff",
+            //   "titleColor":"#ffffff"
+            // }
+            // that.layoutObj["config"][d]["data"]["background"] = "#2B2B2B"
+            // that.layoutObj["config"][d]["data"]['title']["color"] = "#ffffff"
+            // console.log(that.layoutObj["config"][d]["data"]);
           }catch (e) {
 
           }
@@ -1162,9 +1162,9 @@ export default{
     },
     setConfig(result, hasStyle){
       result.layer[0]['selection'] = {"pts": {"type": "single", "encodings": ["y"]}}
-      result.layer[0]['encoding']["opacity"] = {"condition": {"selection": "pts", "value": 1}, "value": "0.3"}
+      result.layer[0]['encoding']["opacity"] = {"condition": {"selection": "pts", "value": 1}, "value": 0.1}
       if(hasStyle){
-        result.layer[0]['encoding']["opacity"] = {"condition": {"selection": "pts", "value": 1}, "value": hasStyle.opacity}
+        result.layer[0]['encoding']["opacity"] = {"condition": {"selection": "pts", "value": hasStyle.opacity1}, "value": hasStyle.opacity2}
         result.layer[0]['encoding']["fill"] = {"condition": {"selection": "pts", "value": hasStyle.selected}}
         result.layer[0].encoding.fill = {"scale": {
             "domain":['AFRO','AMRO','EMRO','EURO','Other','SEARO','WPRO'],
@@ -1182,13 +1182,13 @@ export default{
           let targetObj = that.layoutObj["config"][target]
           let data = targetObj.data
           console.log(data)
-          data.layer[0]['encoding']['opacity']={"condition":{"test":`datum.region=='${value.region[0]}'`,"value":1}, "value":0.3}
+          data.layer[0]['encoding']['opacity']={"condition":{"test":`datum.region=='${value.region[0]}'`,"value":1}, "value":0.1}
           let dom = document.getElementById(`A-${target}`)
           dom.innerHTML = ""
           vegaEmbed(`#A-${target}`, data).then(res=>{
             res.view.addEventListener('click', function (e){
               console.log(e)
-              data.layer[0]['encoding']['opacity'] = {"condition":{"selection":"pts", "value":1}, "value":0.3}
+              data.layer[0]['encoding']['opacity'] = {"condition":{"selection":"pts", "value":1}, "value":0.1}
               vegaEmbed(`#A-${target}`, data)
             })
           })

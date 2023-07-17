@@ -796,8 +796,6 @@ export default {
       let that = this
       this.layoutObj = JSON.parse(JSON.stringify(m))
       console.log(this.layoutObj)
-      //this.calculateChartWH()
-      //this.setBackgroundColor()
       console.log(this.layoutObj['config']['data']['values'].slice(0, 5));
       this.baseData={
         "Config": {

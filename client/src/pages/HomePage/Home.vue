@@ -10,7 +10,7 @@
                 <data-previewer/>-->
             </vs-col>
 
-            <vs-col vs-w="10" vs-h="12" style="margin-left:1.5%;">
+            <vs-col vs-w="10" vs-h="12" style="margin-left:1.5%;;overflow: auto">
                 <DataTable></DataTable>
                 <DataPreview></DataPreview>
                 <!--

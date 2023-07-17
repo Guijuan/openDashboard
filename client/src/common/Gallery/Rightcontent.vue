@@ -1,12 +1,12 @@
 <template>
   <div class="Rightcontent">
-    
+
     <div class="choose">
       <vs-divider color="dark" >Navigation Bar</vs-divider>
       <div class="menu">
         <span>
           <h3>Navigation Bar</h3>
-        </span>     
+        </span>
       </div>
       <br>
       <el-row :gutter="20">
@@ -24,7 +24,7 @@
             ></el-option>
           </el-select>
           </div></el-col>
-      
+
       </el-row>
 
       <el-row :gutter="20">
@@ -42,8 +42,8 @@
         <el-button slot="reference">All</el-button>
       </el-popover>
           </div></el-col>
-        
-      
+
+
       </el-row>
       <el-row :gutter="20">
          <el-col :span="10"><div class="grid-content bg-purple">
@@ -61,16 +61,16 @@
       </el-popover>
           </div></el-col>
       </el-row>
-      
-
-      
 
 
 
-      
+
+
+
+
       <div class="buttom-span" @click="selectcontent"><span>Filter</span></div>
     </div>
-    
+
     <div class="chart">
       <vs-divider border-style="solid" color="dark" >Dashboard Details</vs-divider>
       <span class="first">
@@ -86,7 +86,7 @@
       >
         {{ item }}
       </div>
-      
+
     </div>
 
 
@@ -231,11 +231,13 @@ export default {
       });
     },
     addChart() {
-      this.selectIndex["chart"] = this.chart;
-      this.selectIndex["color"] = this.imgkey[1];
-      console.log(this.selectIndex)
-      this.$store.commit("galleryCharts", this.selectIndex);
-      
+      // this.selectIndex["chart"] = this.chart;
+      // this.selectIndex["color"] = this.imgkey[1];
+      console.log(this.chart)
+      this.$store.commit('galleryColor', this.imgkey[1])
+      this.$store.commit("galleryCharts", this.chart)
+      this.$router.replace('/blue')
+      // window.location.href = 'http://localhost:8080/blue'
     },
   },
 };
@@ -254,7 +256,7 @@ export default {
   position: relative;
   overflow: auto;
   background-color: white;
-  
+
 }
 .Rightcontent::-webkit-scrollbar {
   display: none; /* Chrome Safari */
@@ -273,7 +275,7 @@ export default {
 }
 .choose h3{
   margin-left: 1vw;
-  
+
 }
 .buttom-span {
   width: 120px;
@@ -310,7 +312,7 @@ export default {
   width: 100%;
   font-size: 16px;
   font-family: "Times New Roman";
-  
+
 }
 .colorboard h3{
   margin-left: 1vw;
@@ -367,7 +369,7 @@ p {
 .Color {
   background-color: rgb(142,170,255);
   color: #fff;
-  
+
 }
 .send {
   background-color: rgb(142,170,255);

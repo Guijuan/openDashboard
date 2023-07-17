@@ -48,7 +48,7 @@ var app = new Vue({
 					console.log(data[key]);
 					that.chartStyle[key]['width'] = data[key]['data']['layer'][0]['width'];
 					that.chartStyle[key]['height'] = data[key]['data']['layer'][0]['height'];
-					document.getElementById(key).style.transform = `translate3d(${data[key]['data']['x']}px,${data[key]['data']['y']}px,0px)`;
+					// document.getElementById(key).style.transform = `translate3d(${data[key]['data']['x']}px,${data[key]['data']['y']}px,0px)`;
 				}
 				that.getModularInfo({
 					"config": data,
@@ -120,23 +120,22 @@ var app = new Vue({
 			let that = this
 			view.addSignalListener('pts', function (e, value) {
 				console.log(value)
-				let vegaModel = that.layoutObj["config"][name]['data']
+				let vegaModel = that.layoutObj["config"][name]
 				console.log(vegaModel)
 				if(vegaModel.isFilterSource){
 					let target = vegaModel.filterTarget
-					let targetObj = that.layoutObj["config"][target]['data']
+					let targetObj = that.layoutObj["config"][target]
 					let data = targetObj.data
-					console.log(data)
 					data.layer[0]['encoding']['opacity']={"condition":{"test":`datum.region=='${value.region[0]}'`,"value":1}, "value":0.3}
-					let dom = document.getElementById(`#-${target}`)
-					dom.innerHTML = ""
-					vegaEmbed(`#-${target}`, data).then(res=>{
-						res.view.addEventListener('click', function (e){
-							console.log(e)
-							data.layer[0]['encoding']['opacity'] = {"condition":{"selection":"pts", "value":1}, "value":0.3}
-							vegaEmbed(`#A-${target}`, data)
+					// let dom = document.getElementById(`#${target}`)
+					vegaEmbed(`#${target}`, data)
+						.then(res=>{
+							res.view.addEventListener('click', function (e){
+								console.log(e)
+								data.layer[0]['encoding']['opacity'] = {"condition":{"selection":"pts", "value":1}, "value":0.3}
+								vegaEmbed(`#${target}`, data)
+							})
 						})
-					})
 				}
 			})
 		},

@@ -31,7 +31,7 @@
     "publisher-type": "Organization",
     "context": "Publisher Type:Organization,geo-level:national,contient:Oceania,independent website:yes,targeted user:unspecified,content-type:epidemic information/vaccine/test",
     "Data": "Data:Geo/Time/Numerical,Task Abstration:more info/filter/distribution/predict",
-    "VisualForms": "Encoding:Number Card/Table/Bar/Line/Icons",
+    "VisualForms": "Encoding:Bar",
     "Algorithms": "Algorithms:"
   },
   "9": {

@@ -57,14 +57,14 @@
                 <vs-collapse-item style="background:rgb(142,170,255); border-radius:10px">
                   <div slot="header"
                        style="color:white; border-left:white solid 2px; padding-left:10px; font-size:15px">
-                    {{ item.name }}
+                    {{ item.name}}
                   </div>
                   <vs-list :key="index" v-for="(meta, index) in item.childrens">
                     <vs-button style="width:80%; justify-content: left; margin-left:10%" color="rgb(167,189,255)"
                                type="filled"
                                v-on:click="createNewComponent(meta)"
                                icon="add_circle">
-                      {{ meta }}
+                      {{ meta==="Filter"?'Select':(meta==='Select'?'Filter':meta) }}
                     </vs-button>
                     <vs-divider></vs-divider>
                   </vs-list>
@@ -679,8 +679,6 @@ export default {
           result.layer[0]['selection'] = {"pts": {"type": "single", "encodings": ["y"]}}
           result.layer[0]['encoding']["opacity"] = {"condition": {"selection": "pts", "value": 1}, "value": "0.3"}
         }
-        console.log(result);
-        console.log(this.vegaObjectObj)
         vegaEmbed("#canvas", result, {theme: "default", mode: 'vega-lite'})
         this.$refs['settings'].getModularInfo({"config": result, "layoutname": meta["id"]});
       }

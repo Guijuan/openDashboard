@@ -305,82 +305,82 @@ dataProcess = {
     }
 }
 
-// const dataBuffer = {
-//     data: {},
-//     index: {},
-//     dimensions: [],
-//     drawData: {},
-//     getDrawData: function (dataName) {
-//         if (this.drawData.hasOwnProperty(dataName)) {
-//             return this.drawData[dataName]
-//         }
-//     },
-//     getAllDimensions: function () {
-//         return this.dimensions;
-//     },
-//     getSingleDimensions: function (dataName) {
-//         //console.log(this.dimensions)
-//         const list = []
-//         for (let i in dataBuffer.dimensions) {
-//             if (dataBuffer.dimensions[i]["name"] == dataName) {
-//                 const temp = dataBuffer.dimensions[i]["dimensions"]
-//                 for (let j = 0; j < temp.length; j++) {
-//                     list.push({"name": temp[j]["name"], "type": temp[j]["type"], "sortkey": temp[j]["name"]})
-//                 }
-//                 return list
-//             }
-//         }
-//         return null
-//     },
-//     getDataDimensions: function (dataName) {
-//         for (let i in this.dimensions) {
-//             if (this.dimensions[i]['name'] == dataName)
-//                 return this.dimensions[i]['dimensions']
-//         }
-//     },
-//     getColoumnsList: function (dataName) {
-//         let data = this.getSingleDimensions(dataName)
-//         let datalist = []
-//         data.forEach(function (d) {
-//             if (datalist.indexOf(d.name) == -1) {
-//                 datalist.push(d.name)
-//             }
-//         })
-//         return datalist
-//     },
-//     getDataPagesCount: function (dataName) {
-//         return Math.ceil(this.getDataLength(dataName) / 5)
-//     },
-//     getSingleData: function (dataName) {
-//         if (this.data.hasOwnProperty(dataName)) return this.data[dataName]
-//     },
-//     getPageData: function (dataName, page) {
-//         if (!this.data.hasOwnProperty(dataName)) return false
-//         let resdata = []
-//         page = parseInt(page)
-//         //判断页数是否在范围内
-//         let pageCounts = this.getDataLength(dataName)
-//         if (page < 1 || page > pageCounts) return false
-//
-//         let start = 5 * page,
-//             end = 5 * (page + 1)
-//         for (let i = start; i < end; i++) {
-//             resdata.push(this.data[dataName][i])
-//         }
-//         return resdata
-//
-//     },
-//     getIndex: function (dataName) {
-//         if (this.index.hasOwnProperty(dataName)) return this.index[dataName]
-//     },
-//     getDataLength: function (dataName) {
-//         if (this.data.hasOwnProperty(dataName)) return parseInt(this.data[dataName].length)
-//     },
-//     getData: function (dataName) {
-//         if (this.data.hasOwnProperty(dataName)) return this.data[dataName]
-//         // if(this.data.hasOwnProperty(dataName)) return this.data
-//     },
-// }
+const dataBuffer = {
+    data: {},
+    index: {},
+    dimensions: dataDimensions,
+    drawData: allData,
+    getDrawData: function (dataName) {
+        if (this.drawData.hasOwnProperty(dataName)) {
+            return this.drawData[dataName]
+        }
+    },
+    getAllDimensions: function () {
+        return this.dimensions;
+    },
+    getSingleDimensions: function (dataName) {
+        //console.log(this.dimensions)
+        const list = []
+        for (let i in dataBuffer.dimensions) {
+            if (dataBuffer.dimensions[i]["name"] == dataName) {
+                const temp = dataBuffer.dimensions[i]["dimensions"]
+                for (let j = 0; j < temp.length; j++) {
+                    list.push({"name": temp[j]["name"], "type": temp[j]["type"], "sortkey": temp[j]["name"]})
+                }
+                return list
+            }
+        }
+        return null
+    },
+    getDataDimensions: function (dataName) {
+        for (let i in this.dimensions) {
+            if (this.dimensions[i]['name'] == dataName)
+                return this.dimensions[i]['dimensions']
+        }
+    },
+    getColoumnsList: function (dataName) {
+        let data = this.getSingleDimensions(dataName)
+        let datalist = []
+        data.forEach(function (d) {
+            if (datalist.indexOf(d.name) == -1) {
+                datalist.push(d.name)
+            }
+        })
+        return datalist
+    },
+    getDataPagesCount: function (dataName) {
+        return Math.ceil(this.getDataLength(dataName) / 5)
+    },
+    getSingleData: function (dataName) {
+        if (this.data.hasOwnProperty(dataName)) return this.data[dataName]
+    },
+    getPageData: function (dataName, page) {
+        if (!this.data.hasOwnProperty(dataName)) return false
+        let resdata = []
+        page = parseInt(page)
+        //判断页数是否在范围内
+        let pageCounts = this.getDataLength(dataName)
+        if (page < 1 || page > pageCounts) return false
+
+        let start = 5 * page,
+            end = 5 * (page + 1)
+        for (let i = start; i < end; i++) {
+            resdata.push(this.data[dataName][i])
+        }
+        return resdata
+
+    },
+    getIndex: function (dataName) {
+        if (this.index.hasOwnProperty(dataName)) return this.index[dataName]
+    },
+    getDataLength: function (dataName) {
+        if (this.data.hasOwnProperty(dataName)) return parseInt(this.data[dataName].length)
+    },
+    getData: function (dataName) {
+        if (this.data.hasOwnProperty(dataName)) return this.data[dataName]
+        // if(this.data.hasOwnProperty(dataName)) return this.data
+    },
+}
 
 
 // const fakeDataBaseProcess = {
@@ -573,8 +573,65 @@ dataProcess = {
 const hDataBuffer = {
     dimensions: dataDimensions,
     data:allData,
+    drawData: {},
+    getDrawData: function (dataName) {
+        if (this.drawData.hasOwnProperty(dataName)) {
+            return this.drawData[dataName]
+        }
+    },
     getAllDimensions: function () {
         return this.dimensions
+    },
+    calDimensionPreview(){
+        let keys = Object.keys(this.data)
+        for(let key of keys){
+            let rawdata = this.data[key]
+            let dataName = key
+            let dimension = JSON.parse(JSON.stringify(dataBuffer.getSingleDimensions(dataName)))
+            let regression = function(data){
+                let linearData = []
+                data.forEach((d,i) => {
+                    linearData.push([i, +d])
+                })
+
+                let l = ss.linearRegressionLine(ss.linearRegression(linearData))
+                linearData.forEach((d,i) => {
+                    d.push(l(i))
+                })
+
+                let reLinearData = []
+                linearData.forEach( (d,i) =>{
+                    const obj = {"x": d[0], "cy": d[1], "ly": d[2]}
+                    reLinearData.push(obj)
+                })
+
+                return reLinearData
+            }
+            if(!dimension)continue
+            dimension.forEach(function(d,i){
+                d["data"] = []
+                rawdata.forEach(function(v,j){
+                    d["data"].push(v[d["name"]])
+                })
+                if(d["type"] == "quantitative"){
+                    //circle chart with regression line
+                    d["value"] = regression(JSON.parse(JSON.stringify(d["data"])))
+                }else if(d["type"] == "ordinal"){
+                    //barchart
+                    d["value"] = cav(d["data"])
+                }else if(d["type"] == "temporal"){
+                    //barchart
+                    d["value"] = cav(d["data"])
+                }
+            })
+            dimension.forEach((d,i) => {
+                delete d.data
+            })
+            if(!this.drawData.hasOwnProperty(dataName)){
+                this.drawData[dataName] = JSON.parse(JSON.stringify(dimension))
+                console.log(dataName, " calculate preview success")
+            }
+        }
     },
     getDataDimensions: function (dataName) {
         for(let i in this. dimensions){
@@ -624,4 +681,5 @@ const hDataBuffer = {
     },
 }
 // module.exports = {dataProcess, dataBuffer, fakeDataBaseProcess, dataInitFDB, hDataBuffer};
-module.exports = {hDataBuffer};
+hDataBuffer.calDimensionPreview()
+module.exports = {hDataBuffer, dataBuffer};

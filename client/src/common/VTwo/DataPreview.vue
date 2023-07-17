@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="overflow: auto">
         <div class="chartWindow" v-loading="loading">
             <div class="chartWindow-item" v-for="(item, index) in chartInfo" :offset="index > 0 ? 0.2 : 0">
                 <div class="manu-card">
@@ -76,7 +76,7 @@ export default {
                     "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
                     "description": title,
                     "width": 300,
-                    "height": 250,
+                    "height": 200,
                     "data": {
                         "values": data.value,
                     },
@@ -140,7 +140,6 @@ export default {
 
             }
             let req = async function(){
-                
                 if(that.tableName in that.drawDataObj){
                     that.drawData = that.drawDataObj[that.tableName]
                 } else {
@@ -148,7 +147,6 @@ export default {
                     that.drawData = response.data
                     that.drawDataObj[that.tableName] = response.data
                 }
-                
                 that.drawData.forEach((d,i) => {
                     switch(d.type){
                         case "quantitative":
@@ -164,7 +162,7 @@ export default {
                     that.loading = false
                 })
             }
-            
+
             req()
         }
     }
@@ -187,15 +185,15 @@ export default {
 }
 
 .chartWindow{
-    display:flex; 
-    margin-top:15px; 
-    overflow-x:auto
+    display:flex;
+    margin-top:15px;
+    overflow:auto;
 }
 
 .chartWindow-item{
-    padding-left:5px; 
-    padding-right:50px; 
-    height:400px; 
+    padding-left:5px;
+    padding-right:50px;
+    height:400px;
     flex: 0 0 400px;
 }
 </style>

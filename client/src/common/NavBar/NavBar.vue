@@ -29,17 +29,17 @@
         <h4>Color</h4>
         <div style="padding-left: 10px;margin-bottom: 2.5rem">
           <div style="display: flex;height: 60px;padding: 5px;border: 1px solid;
-          background: #f2f2f2;border-radius: 5px;flex-flow: wrap;">
-            <div class="color-item" v-for="(item,index) in preDefineColor" :key="index"
-                 :style="{background:item.color,opacity:item.select?1:0.5}"
-                 @click="visPaletteSetting(item, 1)"></div>
+          background: #f2f2f2;border-radius: 5px;flex-flow: wrap;overflow: auto">
+            <div class="color-item" :id="`color${index}`" v-for="(item,index) in preDefineColor" :key="index"
+                 :style="{background:item.color, border:item.select?'1px solid red':'none'}"
+                 @click="visPaletteSetting(item, 1, index)"></div>
           </div>
           <vs-button style="width: 150px;height: 30px;position: absolute;right: 10px;margin-top: 0.5rem" color="success" @click="pushSet(1)">Use In My Design</vs-button>
         </div>
         <h4>Visual Forms</h4>
         <div style="padding-left: 10px;height: 80px">
           <div style="display: flex;margin-bottom: 0.5rem;height: 60px;border: 1px solid;padding: 5px;
-          background: #f2f2f2;border-radius: 5px;flex-flow: wrap;">
+          background: #f2f2f2;border-radius: 5px;flex-flow: wrap;overflow: auto">
             <div class="color-item" v-for="(item,index) in preDefineGrid"
                  :style="{width:'auto',opacity: item.select?1:0.5}" :key="index"
                  @click="addChart(item.chart)">{{item.chart}}</div>
@@ -77,15 +77,18 @@ export default {
     }
   },
   methods:{
-    visPaletteSetting(item, type){
+    visPaletteSetting(item, type, index){
       item.select = !item.select
+      let dom = document.getElementById( `color${index}`)
       if(item.select == true){
+        dom.style.border = "2px solid red"
         switch (type){
           case 1:this.colors.push(item.color);break
           case 2:this.others.push(item.color);break
           case 3:this.forms.push(item.chart);break
         }
       }else {
+        dom.style.border = "none"
         switch (type){
           case 1:this.colors = this.colors.filter(e=>{return e!==item.color});break
           case 2:this.others = this.others.filter(e=>{return e!=item.color});break

@@ -1,22 +1,22 @@
 {
   "Chart-0": {
     "data": {
-      "width": 507,
-      "height": 350,
+      "width": 403,
+      "height": 230,
       "layer": [
         {
           "encoding": {
             "x": {
-              "field": "region",
-              "type": "ordinal"
-            },
-            "y": {
               "field": "cases",
               "type": "quantitative"
+            },
+            "y": {
+              "field": "region",
+              "type": "ordinal"
             }
           },
-          "width": 507,
-          "height": 507,
+          "width": 403,
+          "height": 403,
           "mark": {
             "type": "bar",
             "fill": "#FCCA46",
@@ -75,20 +75,20 @@
           }
         ]
       },
-      "x": 10,
-      "y": 10
+      "x": 85.8,
+      "y": 9.99999
     },
     "config": {},
     "layers": {
       "Barchart": {
         "encoding": {
           "x": {
-            "field": "region",
-            "type": "ordinal"
-          },
-          "y": {
             "field": "cases",
             "type": "quantitative"
+          },
+          "y": {
+            "field": "region",
+            "type": "ordinal"
           }
         },
         "width": 1185,
@@ -1916,7 +1916,8 @@
           "#d86422"
         ],
         "selected": "#ffffff",
-        "opacity": "0.3"
+        "opacity1": "1",
+        "opacity2": "0.1"
       }
     },
     "filterStyle": {
@@ -1930,13 +1931,14 @@
         "#d86422"
       ],
       "selected": "#ffffff",
-      "opacity": "0.3"
+      "opacity1": "1",
+      "opacity2": "0.1"
     }
   },
   "Chart-1": {
     "data": {
-      "width": 1023,
-      "height": 350,
+      "width": 1127,
+      "height": 230,
       "layer": [
         {
           "encoding": {
@@ -1953,8 +1955,8 @@
               "type": "ordinal"
             }
           },
-          "width": 1023,
-          "height": 1023,
+          "width": 1127,
+          "height": 1127,
           "mark": {
             "type": "bar",
             "fill": "#FCCA46",
@@ -3700,7 +3702,7 @@
           }
         ]
       },
-      "x": 527,
+      "x": 423,
       "y": 10
     },
     "config": {},
@@ -3746,7 +3748,8 @@
         "#d86422"
       ],
       "selected": "#ffffff",
-      "opacity": "0.3"
+      "opacity1": "1",
+      "opacity2": "0.1"
     }
   }
 }
