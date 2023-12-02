@@ -31,7 +31,7 @@
           <div style="display: flex;height: 60px;padding: 5px;border: 1px solid;
           background: #f2f2f2;border-radius: 5px;flex-flow: wrap;overflow: auto">
             <div class="color-item" :id="`color${index}`" v-for="(item,index) in preDefineColor" :key="index"
-                 :style="{background:item.color, border:item.select?'1px solid red':'none'}"
+                 :style="{background:item.color, border:item.select?'2px solid red':'none'}"
                  @click="visPaletteSetting(item, 1, index)"></div>
           </div>
           <vs-button style="width: 150px;height: 30px;position: absolute;right: 10px;margin-top: 0.5rem" color="success" @click="pushSet(1)">Use In My Design</vs-button>
@@ -95,7 +95,6 @@ export default {
           case 3:this.forms = this.forms.filter(e=>{return e!=item.chart});break
         }
       }
-      console.log(this.colors)
     },
     addChart(chart){
       console.log(chart)

@@ -10,6 +10,7 @@
 <div class="layout">
 	<div class="header">
 		SYSTEM EXAMPLE
+		<a class="about">about</a>
 	</div>
 	<div class="mutiItem">
 		<div id="select"></div>
@@ -19,7 +20,46 @@
 		<div id="Chart-3"></div>
 		<div id="WHOText"></div>
 	</div>
+	<div class="dialog">
+		<svg t="1701440056092"
+				 onclick="console.log('点击了');let dialog = document.querySelector('.dialog');let content = document.querySelector('.mutiItem');content.style.display ='block';dialog.style.display = 'none'"
+				 class="close" viewBox="0 0 1024 1024"
+				 version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9297" width="50" height="50">
+			<path d="M511.685333 128.619356c-211.509205 0-383.055233 171.467233-383.055233 383.030673 0 211.56344 171.546028 383.036813 383.055233 383.036813 211.539904 0 383.031697-171.47235 383.031697-383.036813C894.71703 300.086589 723.225237 128.619356 511.685333 128.619356zM684.782693 625.442702c-4.747117 2.677992-10.711969 2.044566-14.82566-1.570775-0.657986-0.596588-62.946634-54.753021-158.2717-59.341526l0 113.839745c0 5.258771-3.214205 9.994632-8.15575 11.941983-1.509377 0.596588-3.091408 0.87595-4.699022 0.87595-3.469008 0-6.889921-1.412163-9.373485-4.077875L335.508845 521.887184c-4.571109-4.91801-4.601808-12.525268-0.061398-17.455557L489.410004 336.251254c3.603061-3.895727 9.214872-5.185093 14.120602-3.237741 4.91801 1.922792 8.15575 6.670933 8.15575 11.94096l0 90.176812c59.841923 3.786233 109.360733 34.340109 143.773498 88.934518 27.255761 43.274596 35.314297 86.085634 35.629475 87.887676C692.087053 617.335047 689.530834 622.75243 684.782693 625.442702z" p-id="9298" fill="#707070"></path>
+		</svg>
+		<div id="dialog-content">
+			<img src="blueImage.png" alt=""/>
+			<div>
+				<h2>Source Data</h2>
+				<p id="source-data"></p>
+			</div>
+			<div>
+				<h2>Visual Forms</h2>
+				<p id="visual-forms"></p>
+			</div>
+			<div>
+				<h2>Interactions</h2>
+				<p id="interactions"></p>
+			</div>
+		</div>
+	</div>
 </div>
+<script>
+	let about = document.querySelector(".about")
+	about.addEventListener("click", function(){
+		let dialog = document.querySelector('.dialog')
+		let content = document.querySelector('.mutiItem')
+		content.style.display = "none"
+		dialog.style.display = "block"
+	})
+	function backMain(){
+		console.log("点击了")
+		let dialog = document.querySelector('.dialog')
+		let content = document.querySelector('.mutiItem')
+		content.style.display = "block"
+		dialog.style.display = "none"
+	}
+</script>
 </body>
 <script src="js/vue.min.js"></script>
 <script src="js/vega.js"></script>

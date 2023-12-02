@@ -474,7 +474,7 @@ export default class BlueComponent {
       colorDiv.style.backgroundColor = '#f2f2f2'
       colorDiv.style.borderRadius = '5px'
       colorDiv.style.flexFlow = "wrap"
-      let colors = ['#c8d65b','#c12592','#b0832c','#5200ae','#00ae8f','#0a71d5','#d86422']
+      let colors = that.fieldColor?that.fieldColor:['#c8d65b','#c12592','#b0832c','#5200ae','#00ae8f','#0a71d5','#d86422']
       for(let i=0;i<num;i++){
         let colorEle = document.createElement('input')
         colorEle.setAttribute('type', 'color')

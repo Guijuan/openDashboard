@@ -20,12 +20,33 @@
               <el-input class="colorInput" v-model="value.backgroundColor" size="mini"></el-input>
               <el-color-picker v-model="value.backgroundColor" size="mini"></el-color-picker>
             </div>
+
             <div v-if="k==='fontColor'">
               <el-input class="colorInput" v-model="value.fontColor" size="mini"></el-input>
               <el-color-picker v-model="value.fontColor" size="mini"></el-color-picker>
             </div>
+            <div v-if="k==='Fields'">
+              <el-select v-model="val.selected" size="small" @change="selectFileds">
+                <el-option
+                v-for="(v, i, index) in val.data"
+                :key="i"
+                :value="v"
+                :label="v"
+                ></el-option>
+              </el-select>
+            </div>
+            <div v-if="k==='FieldsColors'">
+              <el-color-picker
+                v-for="(v, i, index) in val"
+                :key="index"
+                v-model="val[i]"
+                size="mini"
+                v-if="value.hasOwnProperty('Color')"
+                :predefine="preColor"
+              ></el-color-picker>
+            </div>
           </div>
-          <div v-for="(v, i, index) in val" :key="index">
+          <div v-for="(v, i, index) in val" :key="index" v-if="k!=='FieldsColors'&&k !=='Fields'">
             <el-input
               class="colorInput"
               v-model="val[i]"
@@ -126,6 +147,7 @@
 import { mapGetters } from "vuex";
 import mapperdataM from "../../store/MapperDataManage.js";
 import vegaEmbed from "vega-embed";
+import {precisionFixed} from "d3";
 export default {
   name: "settingside",
   data() {
@@ -509,7 +531,6 @@ export default {
   watch: {
     getPreChartStyle:{
       handler(newVal){
-        debugger;
         this.preColor = this.$store.state.preChartStyle.visPalette.Color.Background;
         // this.preColor = ["#00ace3","#54cbf2","#95dcf4","#ffedc1","#b6b6b6"]
         // this.colorIndex++
@@ -792,42 +813,49 @@ export default {
     //   console.log(that.$store.state.chartArray);
     // },
     getModularInfo(m){
-      console.log(m);
       let that = this
       this.layoutObj = JSON.parse(JSON.stringify(m))
-      console.log(this.layoutObj)
-      console.log(this.layoutObj['config']['data']['values'].slice(0, 5));
+      let mark = this.layoutObj.config.layer[0].mark.type
+      let fields = []
+      if(mark === 'bar'){
+        fields = Object.keys(that.layoutObj.config.data.values[0])
+      }
       this.baseData={
         "Config": {
           "Title": this.layoutObj['config']['layer'][0]['mark']['type']
         },
         "Style": {
           "Color": [this.layoutObj['config']['layer'][0]['mark']['fill']],
-          "Stroke":[this.layoutObj['config']['layer'][0]['mark']['stroke']]
+          "Stroke":[this.layoutObj['config']['layer'][0]['mark']['stroke']],
+          "Fields":{selected: "", data:fields},
+          "FieldsColors":[]
         },
         "id": this.layoutObj['config']['title']['text'],
-        // "data": this.layoutObj['config']['data']['values'].slice(0,5),
-        // "datamappers": [
-        //   {
-        //     "Fieldname": "value",
-        //     "Fieldtype": "num",
-        //     "Mapfrom": null,
-        //     "Alias": null
-        //   },
-        //   {
-        //     "Fieldname": "name",
-        //     "Fieldtype": "string",
-        //     "Mapfrom": null,
-        //     "Alias": null
-        //   }
-        // ],
         " ": {
           "method": "startanalyzedata",
           "title": "Apply"
         },
-        "mapperdatas": null
+        "mapperdatas": null,
+        "fieldStyle":null
       }
       console.log('baseData',this.baseData);
+    },
+    selectFileds(e){
+      let colors = []
+      // for (let i = 0; i < this.preColor.length;i++){
+      //   colors.push(this.preColor[i])
+      // }
+      let data = this.layoutObj.config.data.values
+      const uniqueNames = [...new Set(data.map(item => item[e]))]
+      // console.log(uniqueNames, colors)
+      for(let i=0; i<uniqueNames.length; i++){
+        if(i< this.preColor.length)
+          colors.push(this.preColor[i])
+        else
+          colors.push('#f6bb42')
+      }
+      this.baseData.Style.FieldsColors = colors
+      this.baseData.fieldStyle = e
     },
     cellEditDone(newValue, oldValue, rowIndex, rowData, field) {
       this.baseData.data[rowIndex][field] = newValue;
@@ -846,7 +874,8 @@ export default {
     },
     collapseShow(key) {
       return (key=="Text"||key == "Config" ||key == "Style" ||(key == "data" && this.baseData.data.length != 0)||key == " " ||key == "datamappers");
-    }
+    },
+
   }
 };
 </script>

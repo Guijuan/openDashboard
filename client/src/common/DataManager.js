@@ -84,6 +84,17 @@ export default class DataManager {
             }
         })
     }
+
+    static uploadImage(file){
+      return axios.post('http://localhost:3000/api/uploadImage', file).then(res=>{
+        console.log(res)
+      })
+    }
+    static getDataInfo(name){
+      return axios.post('http://localhost:3000/api/getDatalist').then(res=>{
+        console.log(res)
+      })
+    }
 }
 
 //DataProvider

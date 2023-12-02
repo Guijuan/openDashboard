@@ -11,7 +11,39 @@
 	color: white;
 	border-radius: 5px;
 }
-
+.about{
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	font-size:15px;
+	cursor: pointer;
+}
+.dialog{
+	display: none;
+	position: relative;
+	height: 95%;
+	width: 100%;
+	background-color: white;
+	padding: 20px;
+}
+.close{
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	z-index: 9999;
+}
+#dialog-content{
+	display: flex;
+	position: relative;
+	height: 100%;
+	width: 100%;
+	overflow: auto;
+	flex-direction: column;
+	word-wrap: break-word;
+}
+#dialog-content p{
+	text-align: left;
+}
 .mutiItem {
 	height: 95%;
 	background-color: white;

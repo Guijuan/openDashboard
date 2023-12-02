@@ -148,7 +148,8 @@
         "type": "nominal",
         "isSelected": false,
         "checked": false,
-        "color": "#202020"
+        "color": "#202020",
+        "description": ""
       },
       {
         "index": 1,
@@ -156,7 +157,8 @@
         "type": "ordinal",
         "isSelected": false,
         "checked": false,
-        "color": "#202020"
+        "color": "#202020",
+        "description": "the date of COVID-19 confirmed cases"
       },
       {
         "index": 2,
@@ -164,10 +166,16 @@
         "type": "quantitative",
         "isSelected": false,
         "checked": false,
-        "color": "#202020"
+        "color": "#202020",
+        "description": "COVID-19 confirmed cases"
       }
     ],
-    "length":238
+    "length":238,
+    "description": {
+      "weblink": "https://covid19.who.int/",
+      "collector": "miss wang",
+      "lastUpate": "2023-11-23 15:00"
+    }
   },
   {
     "name":"COVID-19 region cases",
@@ -178,7 +186,8 @@
         "type": "ordinal",
         "isSelected": false,
         "checked": false,
-        "color": "#202020"
+        "color": "#202020",
+        "description": "COVID-19 confirmed cases"
       },
       {
         "index": 1,
@@ -186,8 +195,14 @@
         "type": "quantitative",
         "isSelected": false,
         "checked": false,
-        "color": "#202020"
-      }]
+        "color": "#202020",
+        "description": "COVID-19 confirmed cases"
+      }],
+    "description": {
+      "weblink": "https://covid19.who.int/",
+      "collector": "miss wang",
+      "lastUpate": "2023-11-23 15:00"
+    }
   },
   {
     "name": "CSSE-COVID",

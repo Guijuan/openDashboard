@@ -225,19 +225,13 @@ export default {
       console.log(index)
       let dom = this.$refs[`chartColor${index}`];
       console.log()
-      this.$store.commit("galleryColor", {
-        index: index,
-        value: dom[0].value,
-      });
+      this.imgkey[1][index] = dom[0].value
     },
     addChart() {
-      // this.selectIndex["chart"] = this.chart;
-      // this.selectIndex["color"] = this.imgkey[1];
       console.log(this.chart)
       this.$store.commit('galleryColor', this.imgkey[1])
       this.$store.commit("galleryCharts", this.chart)
       this.$router.replace('/blue')
-      // window.location.href = 'http://localhost:8080/blue'
     },
   },
 };

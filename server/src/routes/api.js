@@ -1,5 +1,6 @@
 const express = require('express');
 const upload = require('./multer')
+
 const router = express.Router();
 const fs = require('fs')
 const zipper = require("zip-local");
@@ -232,7 +233,6 @@ router.post('/downloadSetting', function(req, res) {
     let configJsonFile = "../server/src/download/app/" + template + "/config.json"
     let fileObj = req.body.data
     res.setHeader("Content-Type", "application/json");
-
     if(template == "templateA" || template == "templateB"){
         zipUrl = "../server/src/download/app/" + template
     } else {
@@ -264,6 +264,16 @@ router.post('/downloadSetting', function(req, res) {
     
 })
 
+router.post('/uploadImage',upload.single('file'), function(req, res) {
+    let dataBuffer = req.files.file.data
+    fs.writeFile(process.cwd() + "/src/download/app/templateA/"+"blueImage.png", dataBuffer, function(err) {
+        if(err){
+            res.send(err);
+        }else{
+            res.send("保存成功！");
+        }
+    });
+})
     //暂时使用默认存入数据功能
 const storeDefaultData = function(){
     fs.readdir(process.cwd() + "/src/upload", function(err, files){

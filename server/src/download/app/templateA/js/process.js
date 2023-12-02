@@ -66,7 +66,7 @@ var app = new Vue({
 				this.adaptWidthHeight()
 			}
 			this.generateGraph()
-
+			this.createAbout(this.layoutObj['config'])
 		},
 		adaptWidthHeight() {
 			//this.layoutObj.[chartA].data.height/width
@@ -141,11 +141,11 @@ var app = new Vue({
 		},
 		setConfig(result, hasStyle){
 			result.layer[0]['selection'] = {"pts": {"type": "single", "encodings": ["y"]}}
-			result.layer[0]['encoding']["opacity"] = {"condition": {"selection": "pts", "value": 1}, "value": "0.3"}
+			result.layer[0]['encoding']["opacity"] = {"condition": {"selection": "pts", "value": 1}, "value": 0.1}
 			console.log(result)
 			if(hasStyle){
-				result.layer[0]['encoding']["opacity"] = {"condition": {"selection": "pts", "value": 1}, "value": hasStyle.opacity}
-				result.layer[0]['encoding']["fill"] = {"condition": {"selection": "pts", "value": hasStyle.selected}}
+				result.layer[0]['encoding']["opacity"] = {"condition": {"selection": "pts", "value": 1}, "value": 0.1}
+				result.layer[0]['encoding']["fill"] = {"condition": {"selection": "pts", "value": 0.1}}
 				result.layer[0].encoding.fill = {"scale": {
 						"domain":['AFRO','AMRO','EMRO','EURO','Other','SEARO','WPRO'],
 						"range": hasStyle.unselected}, "field": "region"}
@@ -452,5 +452,48 @@ var app = new Vue({
 			this.map.remove();
 			this.createMap2(this.mapID,this.selected,this.mapData);
 		},
+		createAbout(dataInfo){
+			console.log(dataInfo)
+			let sourceData = document.getElementById('source-data')
+			let visualForm = document.getElementById('visual-forms')
+			let interactions = document.getElementById('interactions')
+			let sourceDataText = ""
+			let visualFormText = ""
+			let keys = Object.keys(dataInfo)
+			for(let key of keys) {
+				let baseData = dataInfo[key].data.baseData
+				let dataDes = `${baseData.name} data is originated from <a href="${baseData.description.weblink}">${baseData.description.weblink}</a>, collected by <strong>${baseData.description.collector}</strong>. The update-frequency is ${'daily'
+				}. Last update is on/at <strong>${baseData.description.lastUpate}</strong><br />`
+				sourceDataText+=dataDes
+				let aixText = "Meta for each column/field<br\>" +
+											"Name Description Note<br\>"
+				baseData.dimensions.forEach(item=>{
+					aixText += `${item.name}	${item.description}<br\>`
+				})
+				sourceDataText += aixText
+				sourceDataText += '<br\>'
+				let chartType = Object.keys(dataInfo[key].layers)[0]
+				let chartTitle = dataInfo[key].data.title.text
+				let titleText =` Coding about the ${chartType} with ${chartTitle}\n`
+				let encoding = Object.keys(dataInfo[key].data.layer[0].encoding)
+				encoding = encoding.filter(item=>{return 'field' in dataInfo[key].data.layer[0].encoding[item]})
+				let encodingText = ""
+				for(let ek of encoding){
+					let ekText = `-${ek} field encodes the ${dataInfo[key].data.layer[0].encoding[ek].field}\n`
+					encodingText += ekText
+				}
+				visualFormText += titleText
+				visualFormText += encodingText
+				visualFormText += "\n"
+			}
+			// console.log(visualFormText)
+			visualForm.innerText = visualFormText
+			sourceData.innerHTML = sourceDataText
+			//setting the text of interactions
+			let interactionText =""
+			interactionText += "Tooltip: more information is shown up on mouse over\n"
+			interactionText += "Select: data item is highlighted on mouse click\n"
+			interactions.innerText = interactionText
+		}
 	}
 })

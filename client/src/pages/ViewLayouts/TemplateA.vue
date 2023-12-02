@@ -1164,8 +1164,7 @@ export default{
       result.layer[0]['selection'] = {"pts": {"type": "single", "encodings": ["y"]}}
       result.layer[0]['encoding']["opacity"] = {"condition": {"selection": "pts", "value": 1}, "value": 0.1}
       if(hasStyle){
-        result.layer[0]['encoding']["opacity"] = {"condition": {"selection": "pts", "value": hasStyle.opacity1}, "value": hasStyle.opacity2}
-        result.layer[0]['encoding']["fill"] = {"condition": {"selection": "pts", "value": hasStyle.selected}}
+        result.layer[0]['encoding']["opacity"] = {"condition": {"selection": "pts", "value": 1}, "value": 0.1}
         result.layer[0].encoding.fill = {"scale": {
             "domain":['AFRO','AMRO','EMRO','EURO','Other','SEARO','WPRO'],
             "range": hasStyle.unselected}, "field": "region"}

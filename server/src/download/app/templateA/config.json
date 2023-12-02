@@ -1,8 +1,8 @@
 {
   "Chart-0": {
     "data": {
-      "width": 403,
-      "height": 230,
+      "width": 610,
+      "height": 350,
       "layer": [
         {
           "encoding": {
@@ -15,8 +15,8 @@
               "type": "ordinal"
             }
           },
-          "width": 403,
-          "height": 403,
+          "width": 610,
+          "height": 610,
           "mark": {
             "type": "bar",
             "fill": "#FCCA46",
@@ -75,8 +75,36 @@
           }
         ]
       },
-      "x": 85.8,
-      "y": 9.99999
+      "x": 10,
+      "y": 10,
+      "baseData": {
+        "name": "COVID-19 region cases",
+        "dimensions": [
+          {
+            "index": 0,
+            "name": "region",
+            "type": "ordinal",
+            "isSelected": false,
+            "checked": true,
+            "color": "#808080",
+            "description": "COVID-19 confirmed cases"
+          },
+          {
+            "index": 1,
+            "name": "cases",
+            "type": "quantitative",
+            "isSelected": false,
+            "checked": true,
+            "color": "#808080",
+            "description": "COVID-19 confirmed cases"
+          }
+        ],
+        "description": {
+          "weblink": "https://covid19.who.int/",
+          "collector": "miss wang",
+          "lastUpate": "2023-11-23 15:00"
+        }
+      }
     },
     "config": {},
     "layers": {
@@ -91,8 +119,8 @@
             "type": "ordinal"
           }
         },
-        "width": 1185,
-        "height": 293,
+        "width": 886,
+        "height": 274,
         "mark": {
           "type": "bar",
           "fill": "#FCCA46",
@@ -102,13 +130,13 @@
     },
     "chartType": "",
     "filterAttr": "region",
-    "filterTarget": "Chart-1",
+    "filterTarget": "Chart-2",
     "filterType": "equal",
     "isFilterSource": true,
     "filterTargetData": {
       "data": {
-        "width": 1185,
-        "height": 293,
+        "width": 886,
+        "height": 274,
         "layer": [
           {
             "encoding": {
@@ -125,8 +153,8 @@
                 "type": "ordinal"
               }
             },
-            "width": 1185,
-            "height": 293,
+            "width": 886,
+            "height": 274,
             "mark": {
               "type": "bar",
               "fill": "#FCCA46",
@@ -142,7 +170,7 @@
         "marks": [],
         "projections": [],
         "title": {
-          "text": "Chart-1",
+          "text": "Chart-2",
           "anchor": "middle",
           "fontSize": 20
         },
@@ -1890,8 +1918,8 @@
               "type": "ordinal"
             }
           },
-          "width": 1185,
-          "height": 293,
+          "width": 886,
+          "height": 274,
           "mark": {
             "type": "bar",
             "fill": "#FCCA46",
@@ -1935,10 +1963,10 @@
       "opacity2": "0.1"
     }
   },
-  "Chart-1": {
+  "Chart-2": {
     "data": {
-      "width": 1127,
-      "height": 230,
+      "width": 817,
+      "height": 350,
       "layer": [
         {
           "encoding": {
@@ -1955,8 +1983,8 @@
               "type": "ordinal"
             }
           },
-          "width": 1127,
-          "height": 1127,
+          "width": 817,
+          "height": 817,
           "mark": {
             "type": "bar",
             "fill": "#FCCA46",
@@ -1972,7 +2000,7 @@
       "marks": [],
       "projections": [],
       "title": {
-        "text": "Chart-1",
+        "text": "Chart-2",
         "anchor": "middle",
         "fontSize": 20
       },
@@ -3702,8 +3730,46 @@
           }
         ]
       },
-      "x": 423,
-      "y": 10
+      "x": 630,
+      "y": 10,
+      "baseData": {
+        "name": "COVID-19 case time series",
+        "dimensions": [
+          {
+            "index": 0,
+            "name": "date",
+            "type": "nominal",
+            "isSelected": false,
+            "checked": false,
+            "color": "#202020",
+            "description": ""
+          },
+          {
+            "index": 1,
+            "name": "region",
+            "type": "ordinal",
+            "isSelected": false,
+            "checked": false,
+            "color": "#202020",
+            "description": "the date of COVID-19 confirmed cases"
+          },
+          {
+            "index": 2,
+            "name": "cases",
+            "type": "quantitative",
+            "isSelected": false,
+            "checked": false,
+            "color": "#202020",
+            "description": "COVID-19 confirmed cases"
+          }
+        ],
+        "length": 238,
+        "description": {
+          "weblink": "https://covid19.who.int/",
+          "collector": "miss wang",
+          "lastUpate": "2023-11-23 15:00"
+        }
+      }
     },
     "config": {},
     "layers": {
@@ -3722,8 +3788,8 @@
             "type": "ordinal"
           }
         },
-        "width": 1185,
-        "height": 293,
+        "width": 886,
+        "height": 274,
         "mark": {
           "type": "bar",
           "fill": "#FCCA46",

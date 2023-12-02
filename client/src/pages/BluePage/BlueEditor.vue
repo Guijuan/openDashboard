@@ -100,7 +100,7 @@
             <div style="height:85%; border-right: 1px solid rgba(0,0,0,0.2)"></div>
             <div v-if="!CompositeCom" id='canvas' style="display:flex; width:1200px; padding-left:20px;"></div>
             <div v-if="!CompositeCom" id="settings"
-                 style="width:220px; height:150px;padding-left:20px;overflow-y: scroll">
+                 style="width:300px; height:150px;margin-left:30px;overflow-y: scroll;padding-left: 30px">
               <SettingSide v-if="settingsView" ref="settings" style="" @reGenerateChart="reGenerateChart"></SettingSide>
             </div>
             <div style="height: 100%;width:90%;display: flex;justify-content: center;align-items: center" v-else>
@@ -204,6 +204,7 @@ export default {
       layoutlist: ["A", "B"],
       stepLoction: 0,
       toDoList: [],
+      selectedDatas:{},
       A: false,
       B: false,
       tableData: null,
@@ -263,6 +264,7 @@ export default {
   created() {
     //
     this.openFullScreen()
+    // dataManager.getDataInfo("aaa")
   },
   methods: {
     //Intialized the blueprint canvas
@@ -426,7 +428,6 @@ export default {
     },
     //create a new component to canvas which need a component type and a unique name
     createNewComponent(name, color) {
-      console.log(name)
       let that = this,
         property = null,
         _com = null;
@@ -687,7 +688,8 @@ export default {
 
     reGenerateChart(baseData) {
       console.log('reGenerateChart样式更改');
-      console.log(baseData.Style.Color);
+      console.log('reGenerateChart样式更改');
+      console.log(baseData);
       // 传输数据到settings中
       console.log(this.vegaObjectObj)
       let tempObj = {DataPanel: 'DataPanel', Text: 'Text', Map: 'Map', CTable: 'CTable'}
@@ -700,7 +702,12 @@ export default {
         this.component = () => import(`../../common/DataListBar/${this.selectMeta.type}`)
       } else {
         console.log(this.vegaObjectObj[this.selectMeta["id"]]['data']);
-        this.vegaObjectObj[this.selectMeta["id"]]['data']['layer'][0]['mark']['fill'] = baseData.Style.Color;
+        if(baseData.fieldStyle){
+          this.vegaObjectObj[this.selectMeta["id"]]['data']['layer'][0]['encoding']['fill'] = {'field':'region','type':'ordinal',
+            'scale':{'range':baseData.Style.FieldsColors}};
+        }else {
+          this.vegaObjectObj[this.selectMeta["id"]]['data']['layer'][0]['mark']['fill'] = baseData.Style.Color
+        }
         this.vegaObjectObj[this.selectMeta["id"]]['data']['layer'][0]['mark']['stroke'] = baseData.Style.Stroke;
         this.vegaObjectObj[this.selectMeta["id"]]["data"]["title"]["text"] = baseData.Config.Title
         let result = this.vegaObjectObj[this.selectMeta["id"]].getOutputForced();
@@ -1293,9 +1300,11 @@ export default {
         that.blueComponents.forEach(item => {
           if (item.id === _target.id) {
             let vegaModel = that.vegaObjectObj[_source.parentid]
+            console.log(vegaModel)
             let data = vegaModel.data.data.values
             let attrs = Object.keys(data[0])
             item.filterAttrs = attrs
+            item.fieldColor = vegaModel.data.layer[0].encoding.fill?vegaModel.data.layer[0].encoding.fill.scale.range:null
             item.filterSource = _source.parentid
             item.sourceData = data
             vegaModel.isFilterSource = true
@@ -1558,10 +1567,29 @@ export default {
       let that = this
       let req = async function () {
         // let key = Object.keys(that.chartLayoutObj)
+        let Datas = that.blueComponents.filter(item=>item.type==='Data')
+        Datas = Datas.map(item=>item.name)
+        let selectedDatas = Datas.map(item=>{
+          let data = that.dataList.filter(e=>e.name === item)
+          if (data[0])return data[0]
+        })
+        let chartConfig = that.$store.state.model_config_text
+        let charts = Object.keys(chartConfig)
+        charts.forEach(item=>{
+          for(let e of selectedDatas){
+            let charDim = Object.keys(chartConfig[item].data.data.values[0])
+            charDim = charDim.filter(item => item!=='id')
+            let res = e.dimensions.every(item => charDim.includes(item.name))
+            if(res){
+              chartConfig[item].data.baseData = e
+            }
+          }
+        })
         let config = {
-          "data": that.$store.state.model_config_text,
-          "template":  "templateA"
+          "data": chartConfig,
+          "template":  "templateA",
         }
+        await that.convertSvgToImage()
         const res = await dataManager.downloadSetting(config)
         // if (key.length == 0) {
         //   that.notifications({'title': 'Notice', 'text': 'Please connect a layout', 'color': 'danger'})
@@ -1605,6 +1633,47 @@ export default {
     */
     redoAction() {
       this.createNewComponent('Map')
+    },
+    convertSvgToImage(){
+      let svgElement = document.getElementById('editorborad')
+      const svgString = new XMLSerializer().serializeToString(svgElement);
+      // Create a new Image object
+      const img = new Image();
+      // Set the source of the Image object as a data URI containing the SVG string
+      img.src = 'data:image/svg+xml;base64,' + btoa(svgString);
+
+      // Wait for the image to load
+      img.onload = function() {
+        // Create a canvas element
+        const canvas = document.createElement('canvas');
+        canvas.width = svgElement.clientWidth;
+        canvas.height = svgElement.clientHeight;
+
+        // Get the 2D context of the canvas
+        const context = canvas.getContext('2d');
+
+        // Draw the image onto the canvas
+        context.drawImage(img, 0, 0);
+
+        // Convert the canvas to a data URL
+        const dataURL = canvas.toDataURL('image/png');
+
+        function dataURLtoBlob(dataURL) {
+          const parts = dataURL.split(';base64,');
+          const contentType = parts[0].split(':')[1];
+          const raw = atob(parts[1]);
+          const array = new Uint8Array(new ArrayBuffer(raw.length));
+          for (let i = 0; i < raw.length; i++) {
+            array[i] = raw.charCodeAt(i);
+          }
+          return new Blob([array], { type: contentType });
+        }
+
+        const blob = dataURLtoBlob(dataURL);
+        const formData = new FormData();
+        formData.append('file', blob, 'converted_image.png');
+        dataManager.uploadImage(formData)
+      };
     }
   },
   watch: {
