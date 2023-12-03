@@ -1,8 +1,8 @@
 {
   "Chart-0": {
     "data": {
-      "width": 610,
-      "height": 350,
+      "width": 403,
+      "height": 510,
       "layer": [
         {
           "encoding": {
@@ -15,8 +15,8 @@
               "type": "ordinal"
             }
           },
-          "width": 610,
-          "height": 610,
+          "width": 403,
+          "height": 403,
           "mark": {
             "type": "bar",
             "fill": "#FCCA46",
@@ -130,7 +130,7 @@
     },
     "chartType": "",
     "filterAttr": "region",
-    "filterTarget": "Chart-2",
+    "filterTarget": "Chart-1",
     "filterType": "equal",
     "isFilterSource": true,
     "filterTargetData": {
@@ -170,7 +170,7 @@
         "marks": [],
         "projections": [],
         "title": {
-          "text": "Chart-2",
+          "text": "Chart-1",
           "anchor": "middle",
           "fontSize": 20
         },
@@ -1963,10 +1963,10 @@
       "opacity2": "0.1"
     }
   },
-  "Chart-2": {
+  "Chart-1": {
     "data": {
-      "width": 817,
-      "height": 350,
+      "width": 920,
+      "height": 510,
       "layer": [
         {
           "encoding": {
@@ -1983,8 +1983,8 @@
               "type": "ordinal"
             }
           },
-          "width": 817,
-          "height": 817,
+          "width": 920,
+          "height": 920,
           "mark": {
             "type": "bar",
             "fill": "#FCCA46",
@@ -2000,7 +2000,7 @@
       "marks": [],
       "projections": [],
       "title": {
-        "text": "Chart-2",
+        "text": "Chart-1",
         "anchor": "middle",
         "fontSize": 20
       },
@@ -3730,7 +3730,7 @@
           }
         ]
       },
-      "x": 630,
+      "x": 423,
       "y": 10,
       "baseData": {
         "name": "COVID-19 case time series",
@@ -3740,8 +3740,8 @@
             "name": "date",
             "type": "nominal",
             "isSelected": false,
-            "checked": false,
-            "color": "#202020",
+            "checked": true,
+            "color": "#808080",
             "description": ""
           },
           {
@@ -3749,8 +3749,8 @@
             "name": "region",
             "type": "ordinal",
             "isSelected": false,
-            "checked": false,
-            "color": "#202020",
+            "checked": true,
+            "color": "#808080",
             "description": "the date of COVID-19 confirmed cases"
           },
           {
@@ -3758,8 +3758,8 @@
             "name": "cases",
             "type": "quantitative",
             "isSelected": false,
-            "checked": false,
-            "color": "#202020",
+            "checked": true,
+            "color": "#808080",
             "description": "COVID-19 confirmed cases"
           }
         ],

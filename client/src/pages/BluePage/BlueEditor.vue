@@ -14,6 +14,8 @@
                  icon="delete"></vs-button>
       <vs-button v-on:click="downloadSetting" class='tool_button' radius color="#1473e6" type="filled"
                  icon="cloud_download"></vs-button>
+      <vs-button v-on:click="active=true" class='tool_button' radius color="#1473e6" type="filled"
+                 icon="event_note"></vs-button>
     </div>
     <vs-row style="height:95vh">
       <!--整个高度为10-->
@@ -129,6 +131,13 @@
       <TemplateB v-if="B" ref='msg-B'></TemplateB>
       <AutoPage></AutoPage>
     </vs-popup>
+    <vs-popup title="setting notes" :active.sync="active">
+      <div v-for="(item, index) in dataNotes" :key="item.id" style="display: flex;justify-content: center;align-items: center">
+        <vs-input style="width: 90%" :aria-valuetext="item.text">{{item.text}}</vs-input>
+        <vs-button v-if="index == dataNotes.length-1" color="primary" type="border" icon="add" @click="addItem"></vs-button>
+        <vs-button v-else color="primary" type="border" icon="remove" @click="removeItem(index)"></vs-button>
+      </div>
+    </vs-popup>
   </div>
 
 </template>
@@ -168,6 +177,7 @@ export default {
   name: "blue-editor",
   data() {
     return {
+      active:false,
       select_1: null,
       select_2: null,
       settingsView: false,
@@ -204,7 +214,7 @@ export default {
       layoutlist: ["A", "B"],
       stepLoction: 0,
       toDoList: [],
-      selectedDatas:{},
+      dataNotes:[{'id':0, 'text':'Update frequency for the Africa is bi-weekly for'}],
       A: false,
       B: false,
       tableData: null,
@@ -766,6 +776,12 @@ export default {
       }
     },
 
+    addItem(){
+      this.dataNotes.push({'id':this.dataNotes.length, 'text': ''})
+    },
+    removeItem(index){
+      this.dataNotes.splice(index, 1)
+    },
     ///////////////////////////////
     // Add dimension to context data from candicate dataset
     // IF the component is exsit:
@@ -1565,8 +1581,10 @@ export default {
     },
     downloadSetting: function () {
       let that = this
+      // this.active = true
       let req = async function () {
         // let key = Object.keys(that.chartLayoutObj)
+        let Notes = that.dataNotes.map(item=>item.text)
         let Datas = that.blueComponents.filter(item=>item.type==='Data')
         Datas = Datas.map(item=>item.name)
         let selectedDatas = Datas.map(item=>{
@@ -1577,6 +1595,7 @@ export default {
         let charts = Object.keys(chartConfig)
         charts.forEach(item=>{
           for(let e of selectedDatas){
+            e.notes = Notes
             let charDim = Object.keys(chartConfig[item].data.data.values[0])
             charDim = charDim.filter(item => item!=='id')
             let res = e.dimensions.every(item => charDim.includes(item.name))
@@ -1609,7 +1628,7 @@ export default {
         //   const res = await dataManager.downloadSetting(config)
         // }
       }
-      req()
+      // req()
     },
 
     /*

@@ -1,7 +1,11 @@
 .layout {
-	width: 1920px;
+	/*width: 1920px;*/
+	/*height: 1000px;*/
+	position: absolute;
+	width: 99%;
+	height: 99%;
 	margin: 0 auto;
-	height: 1000px;
+	overflow-x: hidden;
 	background-color: #171C30;
 }
 
@@ -43,6 +47,9 @@
 }
 #dialog-content p{
 	text-align: left;
+}
+#dialog-content img{
+	width: 60%;
 }
 .mutiItem {
 	height: 95%;
