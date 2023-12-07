@@ -38,8 +38,8 @@
     "length": 24348
   },
   {
-    "name":"WHO-COVID-19-global-table-data",
-    "dimensions":[
+    "name": "WHO-COVID-19-global-table-data",
+    "dimensions": [
       {
         "index": 0,
         "name": "name",
@@ -137,11 +137,11 @@
         "color": "#202020"
       }
     ],
-    "length":238
+    "length": 238
   },
   {
-    "name":"COVID-19 case time series",
-    "dimensions":[
+    "name": "COVID-19 case time series",
+    "dimensions": [
       {
         "index": 0,
         "name": "date",
@@ -170,7 +170,7 @@
         "description": "COVID-19 confirmed cases"
       }
     ],
-    "length":238,
+    "length": 238,
     "description": {
       "weblink": "https://covid19.who.int/",
       "collector": "miss wang",
@@ -178,8 +178,192 @@
     }
   },
   {
-    "name":"COVID-19 region cases",
-    "dimensions":[
+    "name": "owid monkeypox data",
+    "dimensions": [
+      {
+        "index": 0,
+        "name": "location",
+        "type": "ordinal",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020",
+        "description": ""
+      },
+      {
+        "index": 1,
+        "name": "iso_code",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020",
+        "description": ""
+      },
+      {
+        "index": 2,
+        "name": "date",
+        "type": "nominal",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020",
+        "description": ""
+      },
+      {
+        "index": 3,
+        "name": "total_cases",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020",
+        "description": ""
+      },
+      {
+        "index": 4,
+        "name": "total_deaths",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020",
+        "description": ""
+      },
+      {
+        "index": 5,
+        "name": "new_cases",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020",
+        "description": ""
+      },
+      {
+        "index": 6,
+        "name": "new_deaths",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020",
+        "description": ""
+      },
+      {
+        "index": 7,
+        "name": "new_cases_smoothed",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020",
+        "description": ""
+      },
+      {
+        "index": 8,
+        "name": "new_deaths_smoothed",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020",
+        "description": ""
+      },
+      {
+        "index": 9,
+        "name": "new_cases_per_million",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020",
+        "description": ""
+      },
+      {
+        "index": 10,
+        "name": "total_cases_per_million",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020",
+        "description": ""
+      },
+      {
+        "index": 11,
+        "name": "new_cases_smoothed_per_million",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020",
+        "description": ""
+      },
+      {
+        "index": 12,
+        "name": "new_deaths_per_million",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020",
+        "description": ""
+      },
+      {
+        "index": 13,
+        "name": "total_deaths_per_million",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020",
+        "description": ""
+      },
+      {
+        "index": 14,
+        "name": "new_deaths_smoothed_per_million",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020",
+        "description": ""
+      }
+    ],
+    "length": 53760,
+    "description": {
+      "weblink": "https://ourworldindata.org/monkeypox",
+      "collector": "miss wang",
+      "lastUpate": "2023-11-23 15:00"
+    }
+  },
+  {
+    "name": "COVID-19 case time series",
+    "dimensions": [
+      {
+        "index": 0,
+        "name": "date",
+        "type": "nominal",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020",
+        "description": ""
+      },
+      {
+        "index": 1,
+        "name": "region",
+        "type": "ordinal",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020",
+        "description": "the date of COVID-19 confirmed cases"
+      },
+      {
+        "index": 2,
+        "name": "cases",
+        "type": "quantitative",
+        "isSelected": false,
+        "checked": false,
+        "color": "#202020",
+        "description": "COVID-19 confirmed cases"
+      }
+    ],
+    "length": 238,
+    "description": {
+      "weblink": "https://covid19.who.int/",
+      "collector": "miss wang",
+      "lastUpate": "2023-11-23 15:00"
+    }
+  },
+  {
+    "name": "COVID-19 region cases",
+    "dimensions": [
       {
         "index": 0,
         "name": "region",
@@ -197,7 +381,8 @@
         "checked": false,
         "color": "#202020",
         "description": "COVID-19 confirmed cases"
-      }],
+      }
+    ],
     "description": {
       "weblink": "https://covid19.who.int/",
       "collector": "miss wang",
@@ -320,6 +505,6 @@
         "color": "#202020"
       }
     ],
-    "length":4011
+    "length": 4011
   }
 ]

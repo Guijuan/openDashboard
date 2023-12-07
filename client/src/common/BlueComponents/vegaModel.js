@@ -31,6 +31,7 @@ export default class VegaModel {
     this.filterAttr=""
     this.filterTarget = ""
     this.filterType = ""
+    this.destinctField = ""
     this.isFilterSource = false
     this.filterTargetData = null
   }

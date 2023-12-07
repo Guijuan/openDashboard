@@ -19,7 +19,8 @@
       "Sum",
       "Reduce",
       "Multi",
-      "Division"
+      "Division",
+      "Group"
     ],
     "color": "#37BC9B"
   },

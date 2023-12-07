@@ -74,6 +74,7 @@ const store = new Vuex.Store({
     covidkey: [],
     imgkey: [],
     model_config_text:"",
+    commonData:[],
 
     //gallery
     chartTypes:[],
@@ -149,6 +150,9 @@ const store = new Vuex.Store({
     },
     setMapData(state, data){
       state.mapData = data
+    },
+    setCommonData(state, data){
+      state.commonData = data
     }
   },
   getters: {

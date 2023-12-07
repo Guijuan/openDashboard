@@ -514,6 +514,25 @@
     ],
     "type": "Caculator"
   },
+  "Group": {
+    "inPorts": [
+      {
+        "name": "field",
+        "text": "field",
+        "attr": "operator",
+        "type": "in"
+      }
+    ],
+    "outPorts": [
+      {
+        "name": "grouped",
+        "text": "grouped",
+        "attr": "field",
+        "type": "out"
+      }
+    ],
+    "type": "Caculator"
+  },
   "Table": {
     "inPorts": [],
     "outPorts": [],

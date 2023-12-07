@@ -656,8 +656,8 @@ export default {
       if (meta.type in tempObj) {
         this.CompositeCom = true
         if (meta.type == 'Map') {
-          let data = this.vegaObjectObj[meta['id']].getMapData()
           let select = null
+          let data = this.vegaObjectObj[meta['id']].getMapData()
           this.blueComponents.forEach(item => {
             if (item.filterAttributeName != "") {
               select = item.filterAttributeName
@@ -671,7 +671,8 @@ export default {
           }
           this.$store.commit("setMapData", data)
         }
-
+        let data = this.vegaObjectObj[meta["id"]].getOutputForced();
+        this.$store.commit('setCommonData', data.data.values)
         this.component = () => import(`../../common/DataListBar/${meta.type}`)
       } else {
         this.CompositeCom = false
@@ -698,10 +699,8 @@ export default {
 
     reGenerateChart(baseData) {
       console.log('reGenerateChart样式更改');
-      console.log('reGenerateChart样式更改');
       console.log(baseData);
       // 传输数据到settings中
-      console.log(this.vegaObjectObj)
       let tempObj = {DataPanel: 'DataPanel', Text: 'Text', Map: 'Map', CTable: 'CTable'}
       if (this.selectMeta.type in tempObj) {
         this.CompositeCom = true
@@ -1074,7 +1073,6 @@ export default {
       let connect = con.getConnectInfo()
       let _source = connect.source
       let _target = connect.target
-
       if (_source.parent === "Filter" && _target.parentid.includes('Chart')) {
         that.blueComponents.forEach(item => {
           if (item.id === _source.parentid) {
@@ -1087,7 +1085,6 @@ export default {
             let teagetChart = that.vegaObjectObj[ _target.parentid]
             teagetChart.filterStyle = item.filterStyle
             teagetChart = JSON.parse(JSON.stringify(teagetChart))
-            console.log(teagetChart)
             sourceTarget.filterTargetData = teagetChart
           }
         })
@@ -1116,7 +1113,6 @@ export default {
 
         } else {
           if (that.chartLayoutObj[_target["id"]][_target["text"]] == undefined) {
-
             that.chartLayoutObj[_target["id"]][_target["text"]] = ""
             that.chartLayoutObj[_target["id"]][_target["text"]] = JSON.parse(JSON.stringify(that.vegaObjectObj[_source["parentid"]]))
           }
@@ -1295,6 +1291,10 @@ export default {
       if (_target.name == "select_2") {
         that.select_2 = _source.name
       }
+      if(_target.parent == 'Group'){
+        let groupE = that.blueComponents.filter(item=>item.id==_target.parentid)
+        groupE.destinctField = _source.text
+      }
       //数据转移
       if (_source.parent === 'Explore' && _target.parentid.includes('Chart')) {
         console.log(that.select_1, that.select_2)
@@ -1339,13 +1339,14 @@ export default {
           return item.id === _source.parentid
         })
         let attrF_name = attrF[0]["filterAttributeName"]
-        console.log(attrF[0]["filterAttributeName"]);
-        console.log(attrF_name);
         that.$store.state.mapData_2 = {"select_2": attrF_name, "data": that.vegaObjectObj[_target['parentid']].data.data}
         // let vegaModel = that.vegaObjectObj[_target['parentid']]
         // console.log(vegaModel)
       }
-      console.log(this.vegaObjectObj)
+      if (_source.parent === 'Group' && _target.parentid.includes('Chart')){
+        console.log(that.vegaObjectObj[_target['parentid']])
+        let taget = that.vegaObjectObj[_target['parentid']]
+      }
     },
     notifications(message) {
       this.$vs.notify({
