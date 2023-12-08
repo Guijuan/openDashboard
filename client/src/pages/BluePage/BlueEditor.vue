@@ -672,7 +672,13 @@ export default {
           this.$store.commit("setMapData", data)
         }
         let data = this.vegaObjectObj[meta["id"]].getOutputForced();
-        this.$store.commit('setCommonData', data.data.values)
+        data = data.data.values
+        data = data.map(item=>{
+          return {"location":item.location}
+        })
+        let uniqueData = [...new Set(data.map(JSON.stringify))].map(JSON.parse)
+        console.log(uniqueData)
+        this.$store.commit('setCommonData', uniqueData)
         this.component = () => import(`../../common/DataListBar/${meta.type}`)
       } else {
         this.CompositeCom = false
@@ -708,6 +714,13 @@ export default {
           let data = this.vegaObjectObj[this.selectMeta['id']].getMapData()
           this.$store.commit("setMapData", data)
         }
+        let data = this.vegaObjectObj[meta["id"]].getOutputForced();
+        data = data.data.values
+        data = data.map(item=>{
+          return {"location":item.location}
+        })
+        let uniqueData = [...new Set(data.map(JSON.stringify))].map(JSON.parse)
+        this.$store.commit('setCommonData', uniqueData)
         this.component = () => import(`../../common/DataListBar/${this.selectMeta.type}`)
       } else {
         console.log(this.vegaObjectObj[this.selectMeta["id"]]['data']);

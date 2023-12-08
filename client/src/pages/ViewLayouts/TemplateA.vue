@@ -44,6 +44,13 @@
                     :id="item.name"
                     :container="item.name"
                   ></component>
+                  <component
+                    v-if="item.component=='CTable'"
+                    ref="table"
+                    :is="item.component"
+                    :id="item.name"
+                    :container="item.name"
+                  ></component>
                   <div
                     v-if="item.component==null"
                     :id="item.name"></div>
@@ -329,7 +336,6 @@ export default{
       console.log('layoutObj',this.layoutObj)
       this.reGenerateGraphBySize(i,newWPx,newHPx)
       console.log(this.$refs);
-      debugger
       // this.$refs['MapChart'][0].reSizeMap();
       // console.log(document.getElementById(this.container).parentNode);
     },
@@ -739,7 +745,6 @@ export default{
           that.example_3_select = this.id.split('-')[0]
           // 重新绘制
           for(let d of that.example_3_charts){
-            debugger;
             that.layoutObj["config"][d]["data"]["data"]["values"] = that.covidSourceData.filter(item => {
               return item["Country_Region"] == that.example_3_select
             })
@@ -845,7 +850,6 @@ export default{
             let item_data = []
             for(let i=0;i<that.layoutObj["config"][d]["data"]["data"]["values"].length;i++){
               // that.layoutObj["config"][d]["data"]["data"]["values"][i]["type"] = "Deaths"
-              debugger;
               let item_data_row_1 = {}
               console.log(that.layoutObj["config"][d]["data"]["data"]["values"][i]["Country_Region"]);
               item_data_row_1["Country_Region"] = that.layoutObj["config"][d]["data"]["data"]["values"][i]["Country_Region"]
@@ -1010,7 +1014,6 @@ export default{
         if(that.$store.state.mapSelectType=="Select"){
           console.log("Select")
           if(this.selectCard == false){
-            debugger;
             that.createSelect2(width,height,that.$store.state.mapData_2.data.values)
             this.selectCard=true;
             that.$store.state.model_config_text[that.mapName]["select_chart"]['width'] = `${width}px`;
