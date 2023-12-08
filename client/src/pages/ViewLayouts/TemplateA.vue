@@ -74,6 +74,7 @@ import VueGridLayout from 'vue-grid-layout';
 import SettingSide from '../Settingside/SettingSide'
 import { mapGetters } from "vuex";
 import WordHighlight from "../../common/DataListBar/Text";
+import CTable from "../../common/DataListBar/CTable.vue";
 export default{
   data() {
     return {
@@ -161,7 +162,8 @@ export default{
     GridItem:VueGridLayout.GridItem,
     SettingSide,
     Map,
-    WordHighlight
+    WordHighlight,
+    CTable
   },
   watch:{
     getNewBaseData:{
@@ -814,6 +816,9 @@ export default{
         else if(that.layoutObj['config'][d]['chartType']=="Text"){
           // vegaEmbed("#" + d, that.layoutObj["config"][d]["data"])
           that.ttlayout.push({"x":charts.indexOf(d)*2+2,"y":0,"w":4,"h":4,"i":300, static: false, name:`A-${d}`,component:"WordHighlight"})
+        }
+        else if(that.layoutObj['config'][d]['chartType']=="CTable"){
+          that.ttlayout.push({"x":charts.indexOf(d)*2+2,"y":0,"w":4,"h":4,"i":300, static: false, name:`A-${d}`,component:"CTable"})
         }
         else{
           that.covidSourceData = [...that.layoutObj["config"][d]["data"]["data"]["values"]]

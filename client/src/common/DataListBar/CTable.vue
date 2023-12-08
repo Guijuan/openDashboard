@@ -1,7 +1,9 @@
 <template>
-  <div style="width: 99%;height: 200px;padding: 0px;">
-    <el-table :data="tableData" height="200">
-      <el-table-column v-if="selection" type="selection" width="55"></el-table-column>
+  <div style="width: 99%;max-height:1000px;padding: 0px;overflow: auto">
+    <el-table :data="tableData"
+              @current-change="handleChange"
+              highlight-current-row
+    >
       <el-table-column v-for="key in columns" :key="key"
                        :prop="key"
                        :label="key"
@@ -16,7 +18,8 @@ export default {
   data(){
     return{
       columns:[],
-      selection:true
+      selection:true,
+      currentRow:null
     }
   },
   computed:{
@@ -27,6 +30,11 @@ export default {
       }
       console.log(data)
       return data
+    }
+  },
+  methods:{
+    handleChange(val){
+      this.currentRow = val;
     }
   }
 }

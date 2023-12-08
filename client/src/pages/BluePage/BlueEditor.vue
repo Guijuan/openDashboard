@@ -59,14 +59,14 @@
                 <vs-collapse-item style="background:rgb(142,170,255); border-radius:10px">
                   <div slot="header"
                        style="color:white; border-left:white solid 2px; padding-left:10px; font-size:15px">
-                    {{ item.name}}
+                    {{ item.name }}
                   </div>
                   <vs-list :key="index" v-for="(meta, index) in item.childrens">
                     <vs-button style="width:80%; justify-content: left; margin-left:10%" color="rgb(167,189,255)"
                                type="filled"
                                v-on:click="createNewComponent(meta)"
                                icon="add_circle">
-                      {{ meta==="Filter"?'Select':(meta==='Select'?'Filter':meta) }}
+                      {{ meta === "Filter" ? 'Select' : (meta === 'Select' ? 'Filter' : meta) }}
                     </vs-button>
                     <vs-divider></vs-divider>
                   </vs-list>
@@ -132,9 +132,11 @@
       <AutoPage></AutoPage>
     </vs-popup>
     <vs-popup title="setting notes" :active.sync="active">
-      <div v-for="(item, index) in dataNotes" :key="item.id" style="display: flex;justify-content: center;align-items: center">
-        <vs-input style="width: 90%" :aria-valuetext="item.text">{{item.text}}</vs-input>
-        <vs-button v-if="index == dataNotes.length-1" color="primary" type="border" icon="add" @click="addItem"></vs-button>
+      <div v-for="(item, index) in dataNotes" :key="item.id"
+           style="display: flex;justify-content: center;align-items: center">
+        <vs-input style="width: 90%" :aria-valuetext="item.text">{{ item.text }}</vs-input>
+        <vs-button v-if="index == dataNotes.length-1" color="primary" type="border" icon="add"
+                   @click="addItem"></vs-button>
         <vs-button v-else color="primary" type="border" icon="remove" @click="removeItem(index)"></vs-button>
       </div>
     </vs-popup>
@@ -177,7 +179,7 @@ export default {
   name: "blue-editor",
   data() {
     return {
-      active:false,
+      active: false,
       select_1: null,
       select_2: null,
       settingsView: false,
@@ -214,7 +216,7 @@ export default {
       layoutlist: ["A", "B"],
       stepLoction: 0,
       toDoList: [],
-      dataNotes:[{'id':0, 'text':'Update frequency for the Africa is bi-weekly for'}],
+      dataNotes: [{'id': 0, 'text': 'Update frequency for the Africa is bi-weekly for'}],
       A: false,
       B: false,
       tableData: null,
@@ -228,7 +230,7 @@ export default {
         "Caculator": "#37BC9B",
         "Layout": "#37BC22",
         "Data": "#F6BB42",
-        "Filter":"#5a9bd5"
+        "Filter": "#5a9bd5"
       },
 
       //gallery
@@ -242,7 +244,7 @@ export default {
       chartTypes: [],
       chartsColor: [],
 
-      galleryChart:[],
+      galleryChart: [],
 
       component: null,
       CompositeCom: false,
@@ -462,7 +464,7 @@ export default {
         com.getAllCircles().on("click", function (d) {
           //这儿可以设置线条的颜色
           let coverType = com.getType(),
-            coverColor = d.text === 'Selection'?that.lineColor['Filter']:that.lineColor[coverType],
+            coverColor = d.text === 'Selection' ? that.lineColor['Filter'] : that.lineColor[coverType],
             params = com.getParmas(),
             x = d.parentX + d.x,
             y = d.parentY + d.y,
@@ -671,14 +673,9 @@ export default {
           }
           this.$store.commit("setMapData", data)
         }
-        let data = this.vegaObjectObj[meta["id"]].getOutputForced();
-        data = data.data.values
-        data = data.map(item=>{
-          return {"location":item.location}
-        })
-        let uniqueData = [...new Set(data.map(JSON.stringify))].map(JSON.parse)
-        console.log(uniqueData)
-        this.$store.commit('setCommonData', uniqueData)
+        let res = that.vegaObjectObj[meta["id"]].getOutputForced()
+        console.log(res)
+        this.$store.commit('setCommonData', res.data.values)
         this.component = () => import(`../../common/DataListBar/${meta.type}`)
       } else {
         this.CompositeCom = false
@@ -715,19 +712,16 @@ export default {
           this.$store.commit("setMapData", data)
         }
         let data = this.vegaObjectObj[meta["id"]].getOutputForced();
-        data = data.data.values
-        data = data.map(item=>{
-          return {"location":item.location}
-        })
-        let uniqueData = [...new Set(data.map(JSON.stringify))].map(JSON.parse)
-        this.$store.commit('setCommonData', uniqueData)
+        this.$store.commit('setCommonData', data.data.values)
         this.component = () => import(`../../common/DataListBar/${this.selectMeta.type}`)
       } else {
         console.log(this.vegaObjectObj[this.selectMeta["id"]]['data']);
-        if(baseData.fieldStyle){
-          this.vegaObjectObj[this.selectMeta["id"]]['data']['layer'][0]['encoding']['fill'] = {'field':'region','type':'ordinal',
-            'scale':{'range':baseData.Style.FieldsColors}};
-        }else {
+        if (baseData.fieldStyle) {
+          this.vegaObjectObj[this.selectMeta["id"]]['data']['layer'][0]['encoding']['fill'] = {
+            'field': 'region', 'type': 'ordinal',
+            'scale': {'range': baseData.Style.FieldsColors}
+          };
+        } else {
           this.vegaObjectObj[this.selectMeta["id"]]['data']['layer'][0]['mark']['fill'] = baseData.Style.Color
         }
         this.vegaObjectObj[this.selectMeta["id"]]['data']['layer'][0]['mark']['stroke'] = baseData.Style.Stroke;
@@ -788,10 +782,10 @@ export default {
       }
     },
 
-    addItem(){
-      this.dataNotes.push({'id':this.dataNotes.length, 'text': ''})
+    addItem() {
+      this.dataNotes.push({'id': this.dataNotes.length, 'text': ''})
     },
-    removeItem(index){
+    removeItem(index) {
       this.dataNotes.splice(index, 1)
     },
     ///////////////////////////////
@@ -1012,10 +1006,10 @@ export default {
         this.$store.commit("setMapData", data)
 
       }
-      if(target.parent == "Text"){
+      if (target.parent == "Text") {
         this.vegaObjectObj[vegaObjKey]['chartType'] = 'Text';
       }
-      if(target.parent == "CTable"){
+      if (target.parent == "CTable") {
         this.vegaObjectObj[vegaObjKey]['chartType'] = 'CTable';
       }
       if (target.parent == 'TextChart') {
@@ -1081,7 +1075,7 @@ export default {
 
     ////******************这个位置传递连线的数据************************
     buildBlueGraph(con) {
-      document.getElementById('settings').style.height = `${window.innerHeight * 0.29}px`;
+      // document.getElementById('settings').style.height = `${window.innerHeight * 0.29}px`;
       let that = this
       let connect = con.getConnectInfo()
       let _source = connect.source
@@ -1089,13 +1083,13 @@ export default {
       if (_source.parent === "Filter" && _target.parentid.includes('Chart')) {
         that.blueComponents.forEach(item => {
           if (item.id === _source.parentid) {
-            let source  = item.filterSource
+            let source = item.filterSource
             let sourceTarget = that.vegaObjectObj[source]
             sourceTarget.filterStyle = item.filterStyle
             sourceTarget.filterTarget = _target.parentid
             sourceTarget.filterType = item.filterType
             sourceTarget.filterAttr = item.filterAttributeName
-            let teagetChart = that.vegaObjectObj[ _target.parentid]
+            let teagetChart = that.vegaObjectObj[_target.parentid]
             teagetChart.filterStyle = item.filterStyle
             teagetChart = JSON.parse(JSON.stringify(teagetChart))
             sourceTarget.filterTargetData = teagetChart
@@ -1299,13 +1293,14 @@ export default {
 
       // 设置select组件
       if (_target.name == "select_1") {
+        console.log(that.vegaObjectObj[_source.parentid])
         that.select_1 = _source.name
       }
       if (_target.name == "select_2") {
         that.select_2 = _source.name
       }
-      if(_target.parent == 'Group'){
-        let groupE = that.blueComponents.filter(item=>item.id==_target.parentid)
+      if (_target.parent == 'Group') {
+        let groupE = that.blueComponents.filter(item => item.id == _target.parentid)[0]
         groupE.destinctField = _source.text
       }
       //数据转移
@@ -1333,7 +1328,7 @@ export default {
             let data = vegaModel.data.data.values
             let attrs = Object.keys(data[0])
             item.filterAttrs = attrs
-            item.fieldColor = vegaModel.data.layer[0].encoding.fill?vegaModel.data.layer[0].encoding.fill.scale.range:null
+            item.fieldColor = vegaModel.data.layer[0].encoding.fill ? vegaModel.data.layer[0].encoding.fill.scale.range : null
             item.filterSource = _source.parentid
             item.sourceData = data
             vegaModel.isFilterSource = true
@@ -1352,13 +1347,26 @@ export default {
           return item.id === _source.parentid
         })
         let attrF_name = attrF[0]["filterAttributeName"]
-        that.$store.state.mapData_2 = {"select_2": attrF_name, "data": that.vegaObjectObj[_target['parentid']].data.data}
+        that.$store.state.mapData_2 = {
+          "select_2": attrF_name,
+          "data": that.vegaObjectObj[_target['parentid']].data.data
+        }
         // let vegaModel = that.vegaObjectObj[_target['parentid']]
         // console.log(vegaModel)
       }
-      if (_source.parent === 'Group' && _target.parentid.includes('Chart')){
-        console.log(that.vegaObjectObj[_target['parentid']])
-        let taget = that.vegaObjectObj[_target['parentid']]
+      if (_source.parent === 'Group' && _target.parentid.includes('Chart')) {
+        let vObj = JSON.parse(JSON.stringify(that.vegaObjectObj[_target['parentid']]))
+        console.log(vObj)
+        let groupE = that.blueComponents.filter(item => item.id == _source.parentid)[0]
+        let key = groupE.destinctField
+        let udata = vObj.data.data.values
+        udata = udata.map(item => {
+          let obj = {}
+          obj[key] = item[key]
+          return obj
+        })
+        let uniqueData = [...new Set(udata.map(JSON.stringify))].map(JSON.parse)
+        that.vegaObjectObj[_target['parentid']].data.data.values = uniqueData
       }
     },
     notifications(message) {
@@ -1390,8 +1398,8 @@ export default {
         }
         // that.$refs[_ref].getModularInfo({"config": that.chartLayoutObj[key[0]], "layoutname": key[0]})
         // config:chartA:{},layoutname:Layout-0
-        Object.keys(this.vegaObjectObj).forEach(item=>{
-          if(this.vegaObjectObj[item].isFilterSource){
+        Object.keys(this.vegaObjectObj).forEach(item => {
+          if (this.vegaObjectObj[item].isFilterSource) {
             let target = this.vegaObjectObj[item].filterTarget
             this.vegaObjectObj[target] = this.vegaObjectObj[item].filterTargetData
             console.log(this.vegaObjectObj[item])
@@ -1598,29 +1606,29 @@ export default {
       // this.active = true
       let req = async function () {
         // let key = Object.keys(that.chartLayoutObj)
-        let Notes = that.dataNotes.map(item=>item.text)
-        let Datas = that.blueComponents.filter(item=>item.type==='Data')
-        Datas = Datas.map(item=>item.name)
-        let selectedDatas = Datas.map(item=>{
-          let data = that.dataList.filter(e=>e.name === item)
-          if (data[0])return data[0]
+        let Notes = that.dataNotes.map(item => item.text)
+        let Datas = that.blueComponents.filter(item => item.type === 'Data')
+        Datas = Datas.map(item => item.name)
+        let selectedDatas = Datas.map(item => {
+          let data = that.dataList.filter(e => e.name === item)
+          if (data[0]) return data[0]
         })
         let chartConfig = that.$store.state.model_config_text
         let charts = Object.keys(chartConfig)
-        charts.forEach(item=>{
-          for(let e of selectedDatas){
+        charts.forEach(item => {
+          for (let e of selectedDatas) {
             e.notes = Notes
             let charDim = Object.keys(chartConfig[item].data.data.values[0])
-            charDim = charDim.filter(item => item!=='id')
+            charDim = charDim.filter(item => item !== 'id')
             let res = e.dimensions.every(item => charDim.includes(item.name))
-            if(res){
+            if (res) {
               chartConfig[item].data.baseData = e
             }
           }
         })
         let config = {
           "data": chartConfig,
-          "template":  "templateA",
+          "template": "templateA",
         }
         await that.convertSvgToImage()
         const res = await dataManager.downloadSetting(config)
@@ -1656,7 +1664,7 @@ export default {
         this.remove(com)
       }
     },
-    addChart(chart){
+    addChart(chart) {
       this.galleryChart.push(chart)
       this.initChartComponent()
     },
@@ -1667,7 +1675,7 @@ export default {
     redoAction() {
       this.createNewComponent('Map')
     },
-    convertSvgToImage(){
+    convertSvgToImage() {
       let svgElement = document.getElementById('editorborad')
       const svgString = new XMLSerializer().serializeToString(svgElement);
       // Create a new Image object
@@ -1676,7 +1684,7 @@ export default {
       img.src = 'data:image/svg+xml;base64,' + btoa(svgString);
 
       // Wait for the image to load
-      img.onload = function() {
+      img.onload = function () {
         // Create a canvas element
         const canvas = document.createElement('canvas');
         canvas.width = svgElement.clientWidth;
@@ -1699,7 +1707,7 @@ export default {
           for (let i = 0; i < raw.length; i++) {
             array[i] = raw.charCodeAt(i);
           }
-          return new Blob([array], { type: contentType });
+          return new Blob([array], {type: contentType});
         }
 
         const blob = dataURLtoBlob(dataURL);
