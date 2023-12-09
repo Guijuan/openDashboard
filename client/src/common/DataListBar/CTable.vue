@@ -1,7 +1,7 @@
 <template>
-  <div style="width: 99%;max-height:1000px;padding: 0px;overflow: auto">
+  <div class="table" style="width: 99%;max-height:1000px;padding: 0px;overflow: auto">
     <el-table :data="tableData"
-              @current-change="handleChange"
+              @row-click="handleChange"
               highlight-current-row
     >
       <el-table-column v-for="key in columns" :key="key"
@@ -33,8 +33,11 @@ export default {
     }
   },
   methods:{
-    handleChange(val){
-      this.currentRow = val;
+    handleChange(val, column, event){
+      let par = document.querySelector('.table')
+      event.preventDefault()
+      const customEvent = new CustomEvent('childClick', { detail: val });
+      par.dispatchEvent(customEvent)
     }
   }
 }

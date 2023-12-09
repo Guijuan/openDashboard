@@ -52,7 +52,7 @@
                     :container="item.name"
                   ></component>
                   <div
-                    v-if="item.component==null"
+                    v-show="item.component==null"
                     :id="item.name"></div>
                 </grid-item>
               </grid-layout>
@@ -95,6 +95,7 @@ export default{
       selectText:false,
       component:'null',
       ModularInfo:{},
+      reSizeCount:0,
       chartStyle:{"chartA":{"width": 197,"height": 70},
         "chartB":{"width": 197,"height": 70},
         "chartC":{"width": 197,"height": 70},
@@ -700,6 +701,31 @@ export default{
     //   csse_div.style.height="200px"
     //   formContainer.appendChild(csse_div);
     // },
+    createExploreSelect(data, target){
+      let formContainer = document.getElementById('A-select');
+      formContainer.style.width="100px"
+      formContainer.style.height="50px"
+      for(let option of data){
+        let seDom = document.createElement('select')
+        seDom.style.width="100px"
+        seDom.style.height="50px"
+        seDom.style.padding = "5px"
+        for(let text of option){
+          let optionDom = document.createElement('option')
+          optionDom.value = text
+          optionDom.innerText = text
+          seDom.appendChild(optionDom)
+        }
+        const onchangeAction = function (event){
+          event.preventDefault();
+          const customEvent = new CustomEvent('selectChange', { detail: event.target.value });
+          formContainer.dispatchEvent(customEvent)
+        }
+        seDom.addEventListener('change', onchangeAction)
+        formContainer.appendChild(seDom)
+      }
+      formContainer.filterTarget = target
+    },
     createSelect2(width=200,height=400,data){
       let that = this;
       let data2 = data.slice(0,100)
@@ -782,6 +808,10 @@ export default{
         // document.getElementById("select").remove();
       }
       charts.forEach(function(d){
+        if("options" in that.layoutObj["config"][d] && document.getElementById("select")==null){
+          that.ttlayout.push({"x":charts.indexOf(d)*2+2,"y":0,"w":4,"h":4,"i":100, static: false, name:`A-select`,component:null})
+          setTimeout(()=>{that.createExploreSelect(that.layoutObj["config"][d].options, d)},2000)
+        }
         // 构造ttlayout
         if(that.layoutObj['config'][d]['chartType']=='Map'){
           that.ttlayout.push({"x":charts.indexOf(d)*2+2,"y":0,"w":2,"h":2,"i":charts.indexOf(d).toString(), static: false, name:`A-${d}`,component:'Map'})
@@ -998,6 +1028,7 @@ export default{
     },
     reGenerateGraphBySize(i,width,height){
       let that = this
+      this.reSizeCount++
       if(that.mapName!=null&&that.select_text_flag==false){
         that.$store.state.model_config_text[that.mapName]["select_chart"] = {}
         that.$store.state.model_config_text[that.mapName]["text_chart"] = {}
@@ -1009,9 +1040,34 @@ export default{
       let _ref = "MapChart"
       let x = this.getTranslate(document.getElementById(i),'x')
       let y = this.getTranslate(document.getElementById(i),'y')
+      for(let item of this.ttlayout){
+        if(item['i']==i){
+          name = item['name']
+        }
+      }
+      name = name.slice(2,);
       console.log(that.ttlayout)
       console.log(i);
       if(i==100){
+        if(name === "select"){
+          let selectDiv = document.getElementById('A-select')
+          selectDiv.style.width = `${width}px`
+          selectDiv.style.height = `${height}px`
+          let selectDom = document.querySelector("#A-select select")
+          selectDom.style.width = `${width}px`
+          selectDom.style.height = `${height}px`
+          if(!selectDiv.registerEvent){
+            selectDiv.addEventListener("selectChange", function (event){
+              let value = event.detail
+              let filterTarget = that.layoutObj['config'][selectDiv.filterTarget]
+              filterTarget.data.layer[0].encoding.y = {'field':value, 'type':'quantitative'}
+              filterTarget.data.layer[0].encoding.x.type = "temporal"
+              vegaEmbed(`#A-${selectDiv.filterTarget}`, filterTarget.data)
+              selectDiv.registerEvent = true
+              console.log(value)
+            })
+          }
+        }
         // this.createSelect(width,height,that.$store.state.mapData_2.select,that.$store.state.mapData_2.data.values);
         if(that.$store.state.mapSelectType=="Select"){
           console.log("Select")
@@ -1074,25 +1130,39 @@ export default{
         let select_div = document.getElementById(that.wordChartName)
         select_div.style.width = `${width}px`
         select_div.style.height = `${height}px`
-      }
-      else {
-        for(let item of this.ttlayout){
-          if(item['i']==i){
-            name = item['name']
+
+        if(that.layoutObj['config'][name]['chartType']==='CTable'){
+          let tableDiv = document.getElementById(`A-${name}`)
+          tableDiv.style.width = `${width}px`
+          tableDiv.style.height = `${height}px`
+          let table = that.layoutObj['config'][name]
+          console.log(table)
+          if(table.isFilterSource && !tableDiv.registerEvent){
+            const clientFun = function (event){
+              let data = event.detail
+              let filterTarget = that.layoutObj['config'][table.filterTarget]
+              let attr = table.filterAttr
+              filterTarget.data.layer[0].transform = [{filter:{'field':attr, 'equal':data[attr]}}]
+              filterTarget.data.layer[0].encoding.x.type = "temporal"
+              vegaEmbed(`#A-${table.filterTarget}`, filterTarget.data)
+              console.log(filterTarget)
+            }
+            tableDiv.addEventListener('childClick', clientFun)
+            tableDiv.registerEvent = true
           }
         }
-        name = name.slice(2,);
+        console.log(that.layoutObj)
+      }
+      else {
+
         if(that.layoutObj['config'][name]['chartType']=='Map'){
           console.log("map重绘");
           // that.$refs[_ref].clearMap();
           this.$refs.MapChart[0].reCreate();
           // this.generateGraph();
         }
-        if(that.layoutObj['config'][name]['chartType']=='CTable'){
-          let table = that.layoutObj['config'][name]
 
-        }
-        console.log(name);
+        console.log(that.layoutObj['config'][name]);
         // debugger
         that.layoutObj["config"][name]["data"]['layer'][0]['width'] =width
         that.layoutObj["config"][name]["data"]['layer'][0]['height'] =height
@@ -1118,7 +1188,6 @@ export default{
         let data = this.layoutObj["config"][name]["data"]
         let hasStyle =  this.layoutObj["config"][name].filterStyle
         this.setConfig(data, hasStyle)
-        console.log(data)
         vegaEmbed(`#A-${name}`, data).then(res=>{
             this.addChartEvent(res.view, name)
         })

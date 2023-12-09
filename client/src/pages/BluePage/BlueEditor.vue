@@ -690,7 +690,11 @@ export default {
           }
           result.layer[0].encoding.fill = {"scale": "color", "field": result.layer[0].encoding.stacked.field}
         }
-        if (result['chartType'] != "textChart") {
+        if(result.layer.length > 1){
+          delete result.layer[0].encoding.filter
+          result.layer.pop()
+        }
+        if (["textChart", "Bar"].includes(result['chartType'])) {
           result.layer[0]['selection'] = {"pts": {"type": "single", "encodings": ["y"]}}
           result.layer[0]['encoding']["opacity"] = {"condition": {"selection": "pts", "value": 1}, "value": "0.3"}
         }
@@ -1080,7 +1084,7 @@ export default {
       let connect = con.getConnectInfo()
       let _source = connect.source
       let _target = connect.target
-      if (_source.parent === "Filter" && _target.parentid.includes('Chart')) {
+      if ((_source.parent === "Filter"||_source.parent==='Select') && _target.parentid.includes('Chart')) {
         that.blueComponents.forEach(item => {
           if (item.id === _source.parentid) {
             let source = item.filterSource
@@ -1292,8 +1296,7 @@ export default {
       // }
 
       // 设置select组件
-      if (_target.name == "select_1") {
-        // console.log(that.vegaObjectObj[_source.parentid])
+      if(_target.parent == 'Select'){
         let source = that.vegaObjectObj[_source.parentid]
         source.isFilterSource = true
         if('backup' in source){
@@ -1304,6 +1307,9 @@ export default {
         seletE.filterSource = _source.parentid
         seletE.sletectPorts = [{'options':keys}]
         seletE.drawSelector()
+      }
+      if (_target.name == "select_1") {
+        // console.log(that.vegaObjectObj[_source.parentid])
         that.select_1 = _source.name
       }
       if (_target.name == "select_2") {
@@ -1312,6 +1318,11 @@ export default {
       if (_target.parent == 'Group') {
         let groupE = that.blueComponents.filter(item => item.id == _target.parentid)[0]
         groupE.destinctField = _source.text
+      }
+      if(_target.parent == "Explore") {
+        let groupE = that.blueComponents.filter(item => item.id == _target.parentid)[0]
+        groupE.sletectPorts[0].options.push(_source.text.toLowerCase())
+        groupE.drawSelector()
       }
       //数据转移
       if (_source.parent === 'Explore' && _target.parentid.includes('Chart')) {
@@ -1324,7 +1335,18 @@ export default {
           return item.id === _source.parentid
         })
         let attrF_name = attrF[0]["filterAttributeName"]
-        console.log(attrF[0]["filterAttributeName"]);
+        //GH
+        that.vegaObjectObj[_target['parentid']]
+        if('options' in that.vegaObjectObj[_target['parentid']]){
+          that.vegaObjectObj[_target['parentid']].options.push(attrF[0].sletectPorts[0].options)
+        }else {
+          that.vegaObjectObj[_target['parentid']].options = []
+          that.vegaObjectObj[_target['parentid']].options.push(attrF[0].sletectPorts[0].options)
+        }
+        that.vegaObjectObj[_target['parentid']].filterAttr = attrF_name
+        that.vegaObjectObj[_target['parentid']].data.layer[0].encoding[_target.name]={field:attrF_name, type:'quantitative'}
+        //
+          console.log(attrF[0]["filterAttributeName"]);
         console.log(attrF_name);
         that.$store.state.mapData_2 = {"select": attrF_name, "data": that.vegaObjectObj[_target['parentid']].data.data}
         // let vegaModel = that.vegaObjectObj[_target['parentid']]
@@ -1348,18 +1370,15 @@ export default {
         })
       }
       if (_source.parent === 'Select' && _target.parentid.includes('Chart')) {
-        let target =  that.vegaObjectObj[_target['parentid']]
-        target.selectType = _source.parent
+        let target = that.vegaObjectObj[_target.parentid]
         that.$store.state.mapSelectType = _source.parent
-        let attrF = that.blueComponents.filter(item=> item.id == _source.parentid)[0]
+        let attrF = that.blueComponents.filter(item=> item.id === _source.parentid)[0]
+        target.selectType = _source.parent
         let attrF_name = attrF["filterAttributeName"]
-        let filterSource = that.vegaObjectObj[attrF.filterSource]
-        filterSource.filterTarget = _target['parentid']
         that.$store.state.mapData_2 = {
           "select_2": attrF_name,
           "data": that.vegaObjectObj[_target['parentid']].data.data
         }
-        console.log(target, filterSource)
       }
       if (_source.parent === 'Group' && _target.parentid.includes('Chart')) {
         let vObj = JSON.parse(JSON.stringify(that.vegaObjectObj[_target['parentid']]))
@@ -1409,7 +1428,6 @@ export default {
           if (this.vegaObjectObj[item].isFilterSource) {
             let target = this.vegaObjectObj[item].filterTarget
             this.vegaObjectObj[target] = this.vegaObjectObj[item].filterTargetData
-            console.log(this.vegaObjectObj[item])
           }
         })
         that.$refs[_ref].getModularInfo({"config": this.vegaObjectObj, "layoutname": 'Layout-0'})
