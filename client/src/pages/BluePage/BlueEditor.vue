@@ -1293,7 +1293,17 @@ export default {
 
       // 设置select组件
       if (_target.name == "select_1") {
-        console.log(that.vegaObjectObj[_source.parentid])
+        // console.log(that.vegaObjectObj[_source.parentid])
+        let source = that.vegaObjectObj[_source.parentid]
+        source.isFilterSource = true
+        if('backup' in source){
+          source.data.data.values = source.backup
+        }
+        let keys = Object.keys(source.data.data.values[0])
+        let seletE = that.blueComponents.filter(item=>item.id == _target.parentid)[0]
+        seletE.filterSource = _source.parentid
+        seletE.sletectPorts = [{'options':keys}]
+        seletE.drawSelector()
         that.select_1 = _source.name
       }
       if (_target.name == "select_2") {
@@ -1338,25 +1348,21 @@ export default {
         })
       }
       if (_source.parent === 'Select' && _target.parentid.includes('Chart')) {
-        // console.log(that.select_1, that.select_2)
-        // that.vegaObjectObj[_target['parentid']].select_1 = that.select_1
-        // that.vegaObjectObj[_target['parentid']].select_2 = that.select_2
-        that.vegaObjectObj[_target['parentid']].selectType = _source.parent
+        let target =  that.vegaObjectObj[_target['parentid']]
+        target.selectType = _source.parent
         that.$store.state.mapSelectType = _source.parent
-        let attrF = that.blueComponents.filter(item => {
-          return item.id === _source.parentid
-        })
-        let attrF_name = attrF[0]["filterAttributeName"]
+        let attrF = that.blueComponents.filter(item=> item.id == _source.parentid)[0]
+        let attrF_name = attrF["filterAttributeName"]
+        let filterSource = that.vegaObjectObj[attrF.filterSource]
+        filterSource.filterTarget = _target['parentid']
         that.$store.state.mapData_2 = {
           "select_2": attrF_name,
           "data": that.vegaObjectObj[_target['parentid']].data.data
         }
-        // let vegaModel = that.vegaObjectObj[_target['parentid']]
-        // console.log(vegaModel)
+        console.log(target, filterSource)
       }
       if (_source.parent === 'Group' && _target.parentid.includes('Chart')) {
         let vObj = JSON.parse(JSON.stringify(that.vegaObjectObj[_target['parentid']]))
-        console.log(vObj)
         let groupE = that.blueComponents.filter(item => item.id == _source.parentid)[0]
         let key = groupE.destinctField
         let udata = vObj.data.data.values
@@ -1367,6 +1373,7 @@ export default {
         })
         let uniqueData = [...new Set(udata.map(JSON.stringify))].map(JSON.parse)
         that.vegaObjectObj[_target['parentid']].data.data.values = uniqueData
+        that.vegaObjectObj[_target['parentid']].backup = uniqueData
       }
     },
     notifications(message) {

@@ -829,7 +829,6 @@ export default{
           //   return item["Country_Region"] == that.example_3_select
           // })
           // that.ttlayout.push({"x":charts.indexOf(d)*2+2,"y":0,"w":4,"h":4,"i":charts.indexOf(d).toString(), static: false, name:`A-${d}`,component:null})
-          console.log(that.layoutObj["config"][d]["data"]);
           try{
             // that.layoutObj["config"][d]["data"]['layer'][0]['mark']['fill'] = color
             // that.layoutObj["config"][d]["data"]["layer"]["0"]["encoding"]["x"]["axis"]={
@@ -937,11 +936,9 @@ export default{
               "axis": {"grid": true, "tickBand": "extent"}
             }
           }
-          console.log(that.layoutObj["config"][d]["data"]);
           that.ttlayout.push({"x":charts.indexOf(d)*2+2,"y":0,"w":4,"h":4,"i":charts.indexOf(d).toString(), static: false, name:`A-${d}`,component:null})
           vegaEmbed("#" + `A-${d}`, that.layoutObj["config"][d]["data"])
           that.example_3_charts.push(d)
-          console.log(that.example_3_charts);
         }
       })
       console.log(that.ttlayout)
@@ -1091,6 +1088,10 @@ export default{
           this.$refs.MapChart[0].reCreate();
           // this.generateGraph();
         }
+        if(that.layoutObj['config'][name]['chartType']=='CTable'){
+          let table = that.layoutObj['config'][name]
+
+        }
         console.log(name);
         // debugger
         that.layoutObj["config"][name]["data"]['layer'][0]['width'] =width
@@ -1098,7 +1099,6 @@ export default{
         that.layoutObj["config"][name]["data"]['width'] = width
         that.layoutObj["config"][name]["data"]['height'] = height
 
-        console.log(that.$store.state.model_config_text)
         that.$store.state.model_config_text[name]['data']['width'] = width
         that.$store.state.model_config_text[name]['data']['height'] = height
         that.$store.state.model_config_text[name]['data']['layer'][0]['width'] = width
@@ -1181,9 +1181,7 @@ export default{
     addChartEvent(view, name){
       let that = this
       view.addSignalListener('pts', function (e, value) {
-        console.log(value)
         let vegaModel = that.layoutObj["config"][name]
-        console.log(vegaModel)
         if(vegaModel.isFilterSource){
           let target = vegaModel.filterTarget
           let targetObj = that.layoutObj["config"][target]
@@ -1194,7 +1192,6 @@ export default{
           dom.innerHTML = ""
           vegaEmbed(`#A-${target}`, data).then(res=>{
             res.view.addEventListener('click', function (e){
-              console.log(e)
               data.layer[0]['encoding']['opacity'] = {"condition":{"selection":"pts", "value":1}, "value":0.1}
               vegaEmbed(`#A-${target}`, data)
             })

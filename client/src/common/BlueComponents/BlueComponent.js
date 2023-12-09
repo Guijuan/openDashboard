@@ -358,7 +358,7 @@ export default class BlueComponent {
 
   drawSelector(){
     let that = this
-    var options = ['option1', 'option2', 'option3']
+    if(this.sletectPorts.length > 0){this.filterAttributeName = this.sletectPorts[0].options[0]}
     this.container
       .selectAll("selector")
       .data(this.sletectPorts)

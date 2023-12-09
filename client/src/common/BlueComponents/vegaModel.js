@@ -97,6 +97,7 @@ export default class VegaModel {
       let fill = ''
       let stroke = '#FE7F2D'
       this.layers[parent].mark = {'type': mark, 'fill': fill, 'stroke': stroke}
+
     } else if (mark == 'bar') {
 
       let fill = '#FCCA46'
